@@ -10,7 +10,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <div className="min-h-screen  bg-slate-900 flex items-center justify-center">
+    <div className="min-h-screen  bg-slate-900 flex items-center">
       {/* Solo mostramos la Navbar si está logueado */}
       {isAuthenticated && <Navbar />}
 

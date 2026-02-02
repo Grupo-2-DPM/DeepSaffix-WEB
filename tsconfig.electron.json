@@ -12,6 +12,6 @@
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["electron/**/*"],
+  "include": ["electron/*"],
   "exclude": ["node_modules", "dist"]
 }

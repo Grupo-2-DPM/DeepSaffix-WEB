@@ -37,7 +37,7 @@ export const AuthForm = ({ onLoginSuccess }: AuthFormProps) => {
           onClick={() => setIsLogin(!isLogin)}
           className="text-blue-600 font-bold hover:underline"
         >
-          {isLogin ? 'Regístrate' : 'Inicia sesión'}
+        {isLogin ? 'Regístrate' : 'Inicia sesión'}
         </button>
       </p>
     </div>

@@ -1,5 +1,11 @@
+// electron/main.ts
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Polyfill para __dirname en ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -8,21 +14,15 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: false,
-      contextIsolation: true
+      nodeIntegration: true,
+      contextIsolation: false,
+      webSecurity: false
     }
   });
 
-  // Cargar la aplicación React
-  if (process.env.NODE_ENV === 'development') {
-    // En desarrollo, cargar desde el servidor de Vite
-    mainWindow.loadURL('http://localhost:5173');
-    mainWindow.webContents.openDevTools();
-  } else {
-    // En producción, cargar el build
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
-  }
+  // Cargar desde el servidor de Vite
+  mainWindow.loadURL('http://localhost:5173');
+  mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);

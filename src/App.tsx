@@ -8,18 +8,17 @@ import { DashboardPage } from './pages/DashboardPage'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+
   return (
-    <body className="min-h-screen bg-slate-900 flex items-center justify-center">
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        {/* Solo mostramos la Navbar si está logueado */}
-        {isAuthenticated && <Navbar />}
-          
-        <main className="flex-grow flex items-center justify-center">
-          {!isAuthenticated ? (
-            // Si no está logueado, centramos el formulario en la pantalla
-            <AuthForm onLoginSuccess={() => setIsAuthenticated(true)} />
-          ) : (
+    <div className="min-h-screen  bg-slate-900 flex items-center justify-center">
+      {/* Solo mostramos la Navbar si está logueado */}
+      {isAuthenticated && <Navbar />}
+
+      <main className="flex-grow flex items-center justify-center">
+        {!isAuthenticated ? (
+          // Si no está logueado, centramos el formulario en la pantalla
+          <AuthForm onLoginSuccess={() => setIsAuthenticated(true)} />
+        ) : (
           // Si está logueado, mostramos el Hero
           <main className="flex-grow">
             <Hero />
@@ -29,11 +28,10 @@ function App() {
             <DashboardPage></DashboardPage>
             {/* Aquí irían más secciones como 'Features' o 'Pricing' */}
           </main>
-          )}
-        </main>
-        {isAuthenticated && <Footer />}
-      </div>
-    </body>
+        )}
+      </main>
+      {isAuthenticated && <Footer />}
+    </div>
   )
 }
 export default App

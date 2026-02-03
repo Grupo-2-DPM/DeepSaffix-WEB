@@ -25,3 +25,5 @@ dist-ssr
 
 # Enviroments
 .env
+dist-electron
+dist-electron-dev

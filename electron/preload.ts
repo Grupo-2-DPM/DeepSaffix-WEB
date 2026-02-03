@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge } from 'electron';
 
 // Exponer APIs seguras al renderer process
 contextBridge.exposeInMainWorld('electronAPI', {

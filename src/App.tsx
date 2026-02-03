@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import './App.css'
+import { useState } from 'react'
 import { Hero } from './components/common/Hero'
 import { AuthForm } from './features/auth/components/AuthForm'
 import { Footer } from './layouts/footer/Footer'
 import { Navbar } from './layouts/navbar/Navbar'
-import { DashboardPage } from './pages/DashboardPage'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,10 +21,6 @@ function App() {
           // Si está logueado, mostramos el Hero
           <main className="flex-grow">
             <Hero />
-            <h1 className="text-4xl font-bold text-sky-400 drop-shadow-lg">
-              ¡Tailwind funcionando!
-            </h1>
-            <DashboardPage></DashboardPage>
             {/* Aquí irían más secciones como 'Features' o 'Pricing' */}
           </main>
         )}

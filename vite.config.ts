@@ -7,7 +7,8 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist',
-    emptyOutDir: true
+    emptyOutDir: true,
+    target: 'esnext'
   },
   server: {
     port: 5173,

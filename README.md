@@ -8,28 +8,30 @@ Este proyecto utiliza **Electron**, **React**, **TypeScript** y **Vite** para cr
 deepsaffix-cliente/
 ├── electron/                    # Código del proceso principal de Electron
 │   ├── main.ts                 # Punto de entrada principal de Electron
-│   └── preload.ts              # Scripts de pre-carga (opcional)
+│   └── preload.ts              # Scripts de pre-carga
 ├── src/                        # Aplicación React
 ├── dist-electron/              # Código compilado de Electron (generado)
 ├── dist/                       # Build de React (generado)
+├── release/                    # Aplicaciones empaquetadas (generado)
 ├── index.html                  # Punto de entrada HTML
 ├── vite.config.ts              # Configuración de Vite
 ├── tsconfig.electron.json      # Configuración TypeScript para Electron
 ├── tsconfig.json               # Configuración TypeScript para React
+├── electron-builder.json       # Configuración para empaquetado
 └── package.json                # Dependencias y scripts
 ```
 
 ## Prerrequisitos
 
-- **Node.js** (v16 o superior)
-- **npm** (v8 o superior)
+- **Node.js** (v18 o superior)
+- **npm** (v9 o superior)
 - **Git**
 
 ## Configuración Inicial
 
 ### 1. Clonar el repositorio
 ```bash
-git clone [<url-del-repositorio>](https://github.com/Grupo-2-DPM/DeepSaffix-CLIENTE.git)
+git clone https://github.com/Grupo-2-DPM/DeepSaffix-CLIENTE.git
 cd deepsaffix-cliente
 ```
 
@@ -41,55 +43,71 @@ npm install
 ### 3. Instalar dependencias de desarrollo
 ```bash
 npm install --save-dev electron typescript @types/node @types/electron
-npm install --save-dev concurrently wait-on
+npm install --save-dev concurrently wait-on electron-builder
 ```
 
 ## Scripts Disponibles
 
 ### Desarrollo
 ```bash
-# Iniciar servidor de desarrollo Vite + Electron
+# Iniciar servidor de desarrollo Vite + Electron (recomendado)
 npm run dev:all
 
 # O ejecutar por separado:
-npm run dev          # Iniciar solo Vite
-npm run electron     # Iniciar solo Electron (después de Vite)
+npm run dev                     # Iniciar solo Vite (React)
+npm run build:electron          # Compilar Electron
+npm run electron                # Iniciar solo Electron
 ```
 
 ### Build y Producción
 ```bash
-# Build para producción
-npm run build          # Build de React
-npm run build:electron # Build de Electron
+# Build completo para producción
+npm run build:all               # Build de React + Electron
 
-# Ejecutar en modo producción
-npm run start
+# Empaquetar aplicación (genera ejecutables en /release)
+npm run package                 # Para sistema operativo actual
+npm run package:linux           # Para Linux
+npm run package:win             # Para Windows
+npm run package:mac             # Para macOS
+
+# Ejecutar en modo producción (después de build)
+npm start                       # Ejecutar desde archivos compilados
+```
+
+### Linting y Testing
+```bash
+npm run lint                    # Verificar código con ESLint
+npm test                        # Ejecutar pruebas (si están configuradas)
 ```
 
 ## Configuración Técnica
 
 ### Archivos de Configuración Clave
 
-#### **1. `tsconfig.electron.json`**
+#### **1. `tsconfig.electron.json`** (Configuración ES Modules)
 ```json
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2020"],
+    "lib": ["ES2022", "DOM"],
     "outDir": "./dist-electron",
     "rootDir": "./electron",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true
-  }
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true
+  },
+  "include": ["electron/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
 ```
 
-#### **2. `package.json` - Scripts**
+#### **2. `package.json` - Scripts principales**
 ```json
 {
   "scripts": {
@@ -100,12 +118,17 @@ npm run start
     "build:electron": "tsc -p tsconfig.electron.json",
     "electron": "electron . --no-sandbox",
     "dev:electron": "concurrently -k \"npm run dev\" \"npm run build:electron && wait-on tcp:5173 && npm run electron\"",
-    "dev:all": "npm run dev:electron"
-  },
+    "dev:all": "npm run dev:electron",
+    "build:all": "npm run build && npm run build:electron",
+    "package": "npm run build:all && electron-builder",
+    "package:linux": "npm run build:all && electron-builder --linux",
+    "package:win": "npm run build:all && electron-builder --win",
+    "package:mac": "npm run build:all && electron-builder --mac"
+  }
 }
 ```
 
-#### **3. `electron/main.ts`** (Ejemplo básico)
+#### **3. `electron/main.ts`** (Punto de entrada principal)
 ```typescript
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
@@ -115,8 +138,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 let mainWindow: BrowserWindow | null = null;
+const isDev = process.env.NODE_ENV === 'development';
 
-function createWindow(): void {
+async function createWindow(): Promise<void> {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -126,191 +150,355 @@ function createWindow(): void {
     }
   });
 
-  mainWindow.loadURL('http://localhost:5173');
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:5173');
+    mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+  }
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+});
+```
+
+#### **4. `electron/preload.ts`** (Comunicación segura)
+```typescript
+import { contextBridge } from 'electron';
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  platform: process.platform,
+  isDev: process.env.NODE_ENV === 'development',
+  // Añadir APIs personalizadas aquí
+});
+```
+
+#### **5. `vite.config.ts`** (Configuración de Vite)
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  base: './',  // Importante para rutas relativas en Electron
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    target: 'esnext'
+  },
+  server: {
+    port: 5173,
+    strictPort: true
+  }
+});
+```
+
+#### **6. `electron-builder.json`** (Configuración de empaquetado)
+```json
+{
+  "appId": "com.deepsaffix.cliente",
+  "productName": "DeepSaffix Cliente",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "dist-electron/**/*",
+    "node_modules/**/*"
+  ],
+  "linux": {
+    "target": ["AppImage", "deb", "rpm", "snap"],
+    "category": "Utility",
+    "icon": "public/icon.png"
+  },
+  "win": {
+    "target": ["nsis", "portable"],
+    "icon": "public/icon.ico"
+  },
+  "mac": {
+    "target": ["dmg", "zip"],
+    "category": "public.app-category.utilities",
+    "icon": "public/icon.icns"
+  }
+}
 ```
 
 ## Solución de Problemas Comunes
 
-### 1. **Error de sandbox en Linux**
+### 1. **Error: `exports is not defined in ES module scope`**
+**Causa:** Conflicto entre CommonJS y ES Modules.
+
+**Solución:**
+1. Asegurar que `tsconfig.electron.json` use `"module": "ESNext"`
+2. Usar `import.meta.url` en lugar de `__dirname`:
+```typescript
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+```
+
+### 2. **Error de sandbox en Linux**
 ```
 FATAL:sandbox/linux/suid/client/setuid_sandbox_host.cc:166]
 ```
 
-**Solución:** Ejecutar con `--no-sandbox` o configurar permisos:
+**Solución:**
 ```bash
-# Opción A: Añadir flag (recomendado para desarrollo)
-electron . --no-sandbox
+# Opción A: Ejecutar con flag (desarrollo)
+npm run electron -- --no-sandbox
 
-# Opción B: Configurar permisos (Linux)
+# Opción B: Configurar permisos (solo Linux)
 sudo chown root node_modules/electron/dist/chrome-sandbox
 sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
 ```
 
-### 2. **Error: `__dirname is not defined`**
-**Causa:** Uso de módulos ES sin configuración adecuada.
-
-**Solución:** Usar `import.meta.url` en TypeScript:
-```typescript
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-```
-
-### 3. **Electron no se conecta a Vite**
+### 3. **Electron no se conecta a Vite en desarrollo**
 **Solución:** Verificar que:
 1. Vite esté corriendo en puerto 5173
-2. Añadir timeout en `main.ts`:
-```typescript
-setTimeout(() => {
-  mainWindow.loadURL('http://localhost:5173');
-}, 3000);
+2. El script `dev:electron` espere correctamente:
+```json
+"wait-on tcp:5173 && npm run electron"
 ```
 
-### 4. **Errores de TypeScript**
-**Solución:** Asegurar configuración correcta:
+### 4. **Errores de TypeScript con import.meta**
+**Solución:** Configurar TypeScript correctamente:
 ```json
 {
   "compilerOptions": {
-    "module": "ESNext"  // Necesario para import.meta
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2022"
   }
 }
 ```
 
 ## Empaquetado para Producción
 
-### 1. Instalar electron-builder
+### Paso a paso:
+1. **Crear iconos** en `public/`:
+   - `icon.png` (512x512) para Linux
+   - `icon.ico` para Windows
+   - `icon.icns` para macOS
+
+2. **Construir la aplicación:**
 ```bash
-npm install --save-dev electron-builder
+# Build completo
+npm run build:all
+
+# Empaquetar para tu sistema
+npm run package
+
+# Empaquetar específico
+npm run package:linux
+npm run package:win
+npm run package:mac
 ```
 
-### 2. Configurar scripts de build
-```json
-{
-  "scripts": {
-    "dist": "electron-builder",
-    "dist:linux": "electron-builder --linux",
-    "dist:win": "electron-builder --win",
-    "dist:mac": "electron-builder --mac"
-  }
-}
-```
+3. **Los ejecutables** se generan en `/release/`
 
-### 3. Configurar electron-builder en `package.json`
-```json
-{
-  "build": {
-    "appId": "com.deepsaffix.app",
-    "productName": "DeepSaffix",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/**/*",
-      "dist-electron/**/*",
-      "node_modules/**/*"
-    ],
-    "linux": {
-      "target": ["AppImage", "deb"]
-    }
-  }
-}
-```
-
-## Configuración de Desarrollo
-
-### Hot Reload para Electron
-Instalar `electron-reloader`:
+### Configuración avanzada de electron-builder:
 ```bash
-npm install --save-dev electron-reloader
-```
+# Build con configuración específica
+electron-builder --linux --x64 --arm64
 
-Añadir en `main.ts`:
-```typescript
-try {
-  require('electron-reloader')(module, {
-    debug: true,
-    watchRenderer: true
-  });
-} catch {}
-```
+# Build para Windows desde Linux (requiere wine)
+electron-builder --win --x64
 
-### Configurar alias en Vite
-```typescript
-// vite.config.ts
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    }
-  }
-});
+# Firmar aplicaciones (macOS/Windows)
+electron-builder --mac --publish always
 ```
 
 ## Comunicación entre Procesos
 
-### 1. **Preload Script** (`electron/preload.ts`)
+### Desde el Renderer (React):
 ```typescript
-import { contextBridge } from 'electron';
+// Usar APIs expuestas en preload
+console.log(window.electronAPI.platform); // 'linux', 'win32', 'darwin'
+console.log(window.electronAPI.isDev);    // true/false
 
-contextBridge.exposeInMainWorld('api', {
+// Ejemplo de API personalizada
+window.electronAPI.myCustomFunction?.('datos');
+```
+
+### Añadir APIs adicionales en preload:
+```typescript
+contextBridge.exposeInMainWorld('electronAPI', {
+  // API existente
   platform: process.platform,
-  nodeVersion: process.version
+  
+  // Nueva API de ejemplo
+  showDialog: async (message: string) => {
+    return await ipcRenderer.invoke('show-dialog', message);
+  },
+  
+  // API de sistema de archivos (con restricciones)
+  readFile: async (filePath: string) => {
+    return await ipcRenderer.invoke('read-file', filePath);
+  }
 });
 ```
 
-### 2. **Enviar mensajes desde Renderer**
+## Configuración de Desarrollo Avanzada
+
+### Hot Reload con electron-reloader
+```bash
+npm install --save-dev electron-reloader
+```
+
+**En main.ts:**
 ```typescript
-// En tu componente React
-const handleMessage = () => {
-  if (window.api) {
-    console.log(window.api.platform);
+import { app, BrowserWindow } from 'electron';
+
+// Solo en desarrollo
+if (process.env.NODE_ENV === 'development') {
+  try {
+    const { default: reload } = await import('electron-reloader');
+    reload(module, {
+      debug: true,
+      watchRenderer: true
+    });
+  } catch {}
+}
+```
+
+### Variables de entorno
+Crear `.env`:
+```env
+VITE_APP_NAME=DeepSaffix
+VITE_API_URL=http://localhost:3000
+```
+
+**En Vite/React:**
+```typescript
+const apiUrl = import.meta.env.VITE_API_URL;
+```
+
+### Configurar alias en Vite
+```typescript
+import path from 'path';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@assets': path.resolve(__dirname, './src/assets')
+    }
   }
-};
+});
 ```
 
 ## Testing
 
-### Pruebas unitarias
+### Pruebas unitarias con Jest
 ```bash
-# Instalar dependencias
-npm install --save-dev jest @testing-library/react
-
-# Ejecutar tests
-npm test
+npm install --save-dev jest ts-jest @testing-library/react @testing-library/jest-dom
 ```
 
-### Configuración de Jest
-```json
-{
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"]
+**`jest.config.js`:**
+```javascript
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1'
   }
-}
+};
 ```
+
+### Pruebas de integración con Spectron
+```bash
+npm install --save-dev spectron
+```
+
+## Despliegue y Distribución
+
+### Automatizar releases con GitHub Actions
+Crear `.github/workflows/build.yml`:
+```yaml
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      - run: npm ci
+      - run: npm run build:all
+      - run: npm run package
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-build
+          path: release/
+```
+
+### Notas de publicación
+1. **Versionado:** Usar semantic versioning (v1.0.0)
+2. **Changelog:** Mantener CHANGELOG.md actualizado
+3. **Releases:** Crear tags en GitHub con releases
+4. **Auto-updater:** Considerar electron-updater para actualizaciones automáticas
 
 ## Recursos Adicionales
 
 - [Documentación oficial de Electron](https://www.electronjs.org/docs)
-- [Guía de Electron con Vite](https://www.electronjs.org/docs/latest/tutorial/tutorial-vite)
-- [Electron + React + TypeScript](https://www.electronforge.io/guides/framework-integration/react-with-typescript)
+- [Electron con Vite](https://www.electronjs.org/docs/latest/tutorial/tutorial-vite)
+- [Electron + TypeScript Best Practices](https://www.electronforge.io/guides/framework-integration/react-with-typescript)
+- [Electron Builder Documentation](https://www.electron.build/)
 - [Vite Documentation](https://vitejs.dev/guide/)
+- [TypeScript con ES Modules](https://www.typescriptlang.org/docs/handbook/esm-node.html)
 
 ## Contribución
 
 1. Fork del repositorio
-2. Crear rama de características (`git checkout -b feature/AmazingFeature`)
-3. Commit de cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
+2. Crear rama de características (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit de cambios (`git commit -m 'Añadir nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abrir Pull Request
+
+### Guía de estilo
+- Usar TypeScript estricto
+- Sigue las convenciones de ESLint configuradas
+- Documentar funciones complejas
+- Añadir tests para nuevas funcionalidades
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT.
+Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
 ---
 
-**Nota**: Este documento se actualiza regularmente. Para sugerencias o correcciones, por favor abre un issue o pull request.
+**Nota**: Este documento se actualiza regularmente. Para sugerencias o correcciones, por favor abre un issue o pull request en el repositorio.
+
+## Changelog
+
+### v1.0.0 (Actual)
+- Configuración inicial de Electron + React + Vite + TypeScript
+- Solución de problemas ES Modules
+- Sistema de empaquetado con electron-builder
+- Configuración multiplataforma (Linux, Windows, macOS)
+- Comunicación entre procesos establecida
+- Scripts de desarrollo y producción optimizados

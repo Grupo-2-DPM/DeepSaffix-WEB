@@ -396,72 +396,6 @@ export default defineConfig({
 });
 ```
 
-## Testing
-
-### Pruebas unitarias con Jest
-```bash
-npm install --save-dev jest ts-jest @testing-library/react @testing-library/jest-dom
-```
-
-**`jest.config.js`:**
-```javascript
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
-  }
-};
-```
-
-### Pruebas de integración con Spectron
-```bash
-npm install --save-dev spectron
-```
-
-## Despliegue y Distribución
-
-### Automatizar releases con GitHub Actions
-Crear `.github/workflows/build.yml`:
-```yaml
-name: Build and Release
-
-on:
-  push:
-    tags:
-      - 'v*'
-
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      
-      - run: npm ci
-      - run: npm run build:all
-      - run: npm run package
-      
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.os }}-build
-          path: release/
-```
-
-### Notas de publicación
-1. **Versionado:** Usar semantic versioning (v1.0.0)
-2. **Changelog:** Mantener CHANGELOG.md actualizado
-3. **Releases:** Crear tags en GitHub con releases
-4. **Auto-updater:** Considerar electron-updater para actualizaciones automáticas
-
 ## Recursos Adicionales
 
 - [Documentación oficial de Electron](https://www.electronjs.org/docs)
@@ -471,34 +405,7 @@ jobs:
 - [Vite Documentation](https://vitejs.dev/guide/)
 - [TypeScript con ES Modules](https://www.typescriptlang.org/docs/handbook/esm-node.html)
 
-## Contribución
-
-1. Fork del repositorio
-2. Crear rama de características (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit de cambios (`git commit -m 'Añadir nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abrir Pull Request
-
-### Guía de estilo
-- Usar TypeScript estricto
-- Sigue las convenciones de ESLint configuradas
-- Documentar funciones complejas
-- Añadir tests para nuevas funcionalidades
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
-
----
-
-**Nota**: Este documento se actualiza regularmente. Para sugerencias o correcciones, por favor abre un issue o pull request en el repositorio.
 
 ## Changelog
 
 ### v1.0.0 (Actual)
-- Configuración inicial de Electron + React + Vite + TypeScript
-- Solución de problemas ES Modules
-- Sistema de empaquetado con electron-builder
-- Configuración multiplataforma (Linux, Windows, macOS)
-- Comunicación entre procesos establecida
-- Scripts de desarrollo y producción optimizados

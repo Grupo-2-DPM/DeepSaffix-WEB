@@ -31,3 +31,4 @@ dist-electron-dev
 
 # Build
 release
+.vscode

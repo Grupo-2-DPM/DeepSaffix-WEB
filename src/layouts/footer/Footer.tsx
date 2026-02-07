@@ -9,17 +9,14 @@ export const Footer = () => {
         
         {/* Columna de Marca */}
         <div className="space-y-4">
-          <h2 className="text-white text-xl font-bold">MiProyecto</h2>
-          <p className="text-sm">
-            Construyendo el futuro de la web con rigor y escalabilidad.
-          </p>
+          <h2 className="text-white text-xl font-bold">DeepSaffix-WEB</h2>
         </div>
 
         {/* Columnas Dinámicas de Enlaces */}
         {FOOTER_LINKS.map((group) => (
           <div key={group.title}>
             <h3 className="text-white font-semibold mb-4">{group.title}</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               {group.links.map((link) => (
                 <li key={link.label}>
                   <a href={link.href} className="hover:text-blue-400 transition-colors">
@@ -33,7 +30,7 @@ export const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto border-t border-slate-800 mt-10 pt-6 text-center text-sm">
-        <p>&copy; {currentYear} MiProyecto Inc. Todos los derechos reservados.</p>
+        <p>&copy; {currentYear} DeepSaffix-WEB Todos los derechos reservados.</p>
       </div>
     </footer>
   );

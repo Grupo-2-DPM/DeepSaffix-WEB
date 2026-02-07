@@ -1,7 +1,7 @@
 export const Hero = () => {
   const content = {
-    title: "Construye tu futuro con software de calidad",
-    subtitle: "Diseñamos y desarrollamos soluciones web escalables con rigor de ingeniería y diseño moderno.",
+    title: "DeepSaffix",
+    subtitle: "DHerramienta Especializada para el simulacro de las pruebas Saber Pro",
     cta: "Ver Proyectos",
     secondaryCta: "Saber más"
   };
@@ -18,7 +18,7 @@ export const Hero = () => {
         <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-blue-200 transition-all">
           {content.cta}
         </button>
-        <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-all">
+        <button className="border border-gray-300 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-all">
           {content.secondaryCta}
         </button>
       </div>

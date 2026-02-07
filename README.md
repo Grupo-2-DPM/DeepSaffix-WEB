@@ -5,11 +5,61 @@ Este proyecto utiliza **TypeScript**, **React** y **Vite** para crear una aplica
 ## Estructura del Proyecto
 
 ```
-deepsaffix-wen/
-├── src/                        # Aplicación React
-├── vite.config.ts              # Configuración de Vite
-├── tsconfig.json               # Configuración TypeScript para React
-└── package.json                # Dependencias y scripts
+deepsaffix-web/
+├── src
+│   ├── main.tsx            # Punto de entrada
+│   ├── App.tsx             # Componente raíz
+│   ├── App.css             # Estilos globales
+│   ├── index.css           # Estilos base/Tailwind
+│   │
+│   ├── api/                # Conexiones externas
+│   │   └── http.ts
+│   │
+│   ├── assets/             # Recursos estáticos
+│   │   └── react.svg
+│   │
+│   ├── components/         # Componentes transversales
+│   │   ├── common/
+│   │   │   └── Hero.tsx
+│   │   └── ui/                # Botones, Inputs, etc.
+│   │
+│   ├── features/           # Módulos por dominio (Lógica de negocio)
+│   │   ├── auth/
+│   │   │   └── components/
+│   │   │       └── AuthForm.tsx
+│   │   └── simulation/
+│   │       └── components/
+│   │           ├── index.ts
+│   │           └── SimulationPanel.tsx
+│   │
+│   ├── layouts/            # Estructura de página
+│   │   ├── footer/
+│   │   │   ├── footer.data.ts
+│   │   │   └── Footer.tsx
+│   │   └── navbar/
+│   │       ├── navbar,data.ts
+│   │       └── Navbar.tsx
+│   │
+│   └── soporte/            # Carpetas de utilidad y lógica
+│       ├── config/            # Constantes y variables de entorno
+│       ├── hooks/             # Lógica de React reutilizable
+│       ├── pages/             # Vistas de la aplicación
+│       ├── services/          # Lógica de servicios adicional
+│       ├── store/             # Gestión de estado global
+│       ├── types/             # Definiciones TypeScript
+│       └── utils/             # Funciones auxiliares
+│   ├── eslint.config.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── postcss.config.js
+│   ├── tailwind.config.js
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   ├── tsconfig.app.json
+│   ├── tsconfig.node.json
+│   ├── README.md
+│   └── index.html
+│
 ```
 
 ## Prerrequisitos
@@ -81,7 +131,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 });
 ```
 
-## Configuración de Desarrollo Avanzada
+## Configuración de con electron
 
 ### Hot Reload con electron-reloader
 ```bash

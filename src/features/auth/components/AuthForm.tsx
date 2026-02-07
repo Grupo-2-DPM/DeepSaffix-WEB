@@ -14,7 +14,7 @@ export const AuthForm = ({ onLoginSuccess }: AuthFormProps) => {
   };
 
   return (
-    <div className="flex-grow ax-w-md w-full p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
+    <div className="grow ax-w-md w-full p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
         {isLogin ? 'Bienvenido de nuevo' : 'Crea tu cuenta'}
       </h2>

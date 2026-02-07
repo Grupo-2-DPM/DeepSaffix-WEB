@@ -1,6 +1,6 @@
 export const SimulationPanel = () => {
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md border border-blue-100">
+    <div className="grow p-6 bg-white shadow-md border border-blue-100">
       <h3 className="text-xl font-bold text-gray-800 mb-4">Panel de Simulación</h3>
       <div className="space-y-4">
         <div className="h-4 w-full bg-gray-100 rounded-full overflow-hidden">

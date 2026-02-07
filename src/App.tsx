@@ -10,23 +10,21 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <div className="flex-grow items-center bg-slate-900">
+    <div className="grow items-center bg-slate-900">
       {/* Solo mostramos la Navbar si está logueado */}
       {isAuthenticated && <Navbar />}
 
-      <main className="flex-grow flex items-center justify-center">
+      <main className="grow flex items-center justify-center">
         {!isAuthenticated ? (
           // Si no está logueado, centramos el formulario en la pantalla
           <AuthForm onLoginSuccess={() => setIsAuthenticated(true)} />
         ) : (
           // Si está logueado, mostramos el Hero
-          <main className="flex-grow">
+          <main className="grow">
             <Hero />
             {/* Aquí irían más secciones como 'Features' o 'Pricing' */}
             {/* Agregamos la nueva sección de simulación */}
-            <div className="px-6">
-               <SimulationPanel />
-            </div>
+            <SimulationPanel />
           </main>
         )}
       </main>

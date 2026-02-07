@@ -7,7 +7,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center text-center py-24 px-6 bg-gradient-to-b from-blue-50 to-white">
+    <section className="flex flex-col items-center justify-center text-center py-24 px-6 bg-linear-to-b from-blue-50 to-white">
       <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 max-w-4xl leading-tight">
         {content.title}
       </h1>

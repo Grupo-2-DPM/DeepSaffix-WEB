@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState, useRef } from 'react';
 import simulationService from '../../../backend/services/simulationService';
 
@@ -57,6 +58,7 @@ export const SimulationRun: React.FC = () => {
               map[opcion.id_pregunta] = opcion.id_opcion;
             }
           });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) { /* ignore */ }
         setSelected(map);
         // keep questions visible but read-only
@@ -65,7 +67,7 @@ export const SimulationRun: React.FC = () => {
     }).catch(err => {
       console.warn('No se pudieron cargar preguntas del simulacro', err);
     });
-  }, [attempt]);
+  }, [attempt, viewOnly]);
 
   // Progress should reflect elapsed time relative to simulacro.duracion_minutos when available.
   useEffect(() => {
@@ -118,6 +120,7 @@ export const SimulationRun: React.FC = () => {
                 const result = await simulationService.finishAttempt(attempt.id_intento);
                 setAttempt(result);
                 // dispatch event so panels can refresh
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 try { window.dispatchEvent(new CustomEvent('attemptFinished', { detail: { id_intento: attempt.id_intento } })); } catch (e) { /* ignore */ }
               }
               // close form and notify user
@@ -163,37 +166,6 @@ export const SimulationRun: React.FC = () => {
     setStatus('Detenido por usuario');
   };
 
-  const handleFinish = async () => {
-    if (!attempt) return;
-    if (finishLockRef.current) return;
-    finishLockRef.current = true;
-    try {
-      // ensure latest answers are submitted before finishing
-      const optionIds = Object.values(selected).map(Number).filter(Boolean);
-      if (optionIds.length) {
-        try {
-          setSaving(true);
-          await simulationService.submitAnswers(attempt.id_intento, optionIds);
-          setSavedAt(Date.now());
-        } catch (err) {
-          console.warn('Error enviando respuestas antes de finalizar', err);
-        } finally {
-          setSaving(false);
-        }
-      }
-
-      const result = await simulationService.finishAttempt(attempt.id_intento);
-      setAttempt(result);
-      setStatus('Finalizado');
-      setProgress(100);
-    } catch (err) {
-      console.error(err);
-      alert('Error finalizando intento');
-    }
-    finally {
-      finishLockRef.current = false;
-    }
-  };
 
   const formatRemaining = (ms: number) => {
     if (ms <= 0) return '00:00';
@@ -248,7 +220,8 @@ export const SimulationRun: React.FC = () => {
       // Close form
       setFormClosed(true);
       // notify other components that this attempt finished
-      try { window.dispatchEvent(new CustomEvent('attemptFinished', { detail: { id_intento: attempt.id_intento } })); } catch (e) {}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      try { window.dispatchEvent(new CustomEvent('attemptFinished', { detail: { id_intento: attempt.id_intento } })); } catch (e) { /* empty */ }
       alert('Respuestas guardadas y intento finalizado');
     } catch (err) {
       console.error(err);

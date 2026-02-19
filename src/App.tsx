@@ -1,5 +1,7 @@
+/* eslint-disable no-self-assign */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import './App.css'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Profile } from './features/usuarios/components/Profile'
 import { Hero } from './components/common/Hero'
 import { AuthForm } from './features/auth/components/AuthForm'
@@ -21,15 +23,13 @@ function App() {
   if (route === '#/profile') {
     if (!isAuthenticated) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-900">
-          <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/profile'; }} />
-        </div>
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/profile'; }} />
       );
     }
 
     return (
       <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <div className="w-full p-6">
+        <div className="w-full p-6 bg-slate-900 ">
           <div className="mb-4">
             <a href="#/" className="text-gray-800 underline">&larr; Volver</a>
           </div>
@@ -42,17 +42,13 @@ function App() {
   if (route === '#/simulacros') {
     if (!isAuthenticated) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-900">
-          <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulacros'; }} />
-        </div>
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulacros'; }} />
       );
     }
 
     return (
       <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <div className="max-w-3xl mx-auto w-full">
-          <SimulationPanel />
-        </div>
+        <SimulationPanel />
       </DashboardLayout>
     );
   }
@@ -60,9 +56,7 @@ function App() {
   if (route.startsWith('#/simulacros/run')) {
     if (!isAuthenticated) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-900">
-          <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
-        </div>
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
       );
     }
 
@@ -76,9 +70,7 @@ function App() {
   if (route.startsWith('#/simulacros/view')) {
     if (!isAuthenticated) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-900">
-          <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
-        </div>
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
       );
     }
 
@@ -91,20 +83,13 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); }} />
-      </div>
+      <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); }} />
     );
   }
 
   return (
     <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
       <Hero />
-
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold text-slate-700 mb-4">Panel</h2>
-        <p className="text-slate-600">Bienvenido al panel. Usa la navegación para ver tu perfil o simulacros.</p>
-      </div>
     </DashboardLayout>
   )
 }

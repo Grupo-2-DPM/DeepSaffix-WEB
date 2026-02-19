@@ -7,8 +7,8 @@ export const Hero = () => {
   };
 
   return (
-    <section className="flex flex-col items-start justify-center text-left py-20 px-8 bg-slate-900 text-white border-b border-slate-800">
-      <h1 className="text-4xl md:text-5xl font-bold max-w-4xl leading-tight text-white">
+    <section className="flex flex-col items-start justify-center text-left py-20 px-8 bg-slate-900 text-gray-500 border-b border-slate-800">
+      <h1 className="text-4xl md:text-5xl font-bold max-w-4xl leading-tight text-gray-500">
         {content.title}
       </h1>
 
@@ -17,13 +17,13 @@ export const Hero = () => {
       </p>
 
       <div className="mt-10 flex gap-4">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition">
+        <a href="#/proyectos" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition">
           {content.cta}
-        </button>
+        </a>
 
-        <button className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-6 py-3 rounded-md font-medium transition">
+        <a href="#/saber-mas" className="bg-slate-800 hover:bg-slate-700 text-gray-500 px-6 py-3 rounded-md font-medium transition">
           {content.secondaryCta}
-        </button>
+        </a>
       </div>
     </section>
 

@@ -45,7 +45,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
       <div className="bg-white max-w-lg w-full rounded-2xl shadow-lg hover:shadow-xl transition-shadow p-8">
         <div className="flex flex-col items-center text-center">
           <div className="w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 mb-4">
-            <span className="text-white font-semibold text-xl">{initials(displayUser.nombre, displayUser.apellido)}</span>
+            <span className="text-gray-500 font-semibold text-xl">{initials(displayUser.nombre, displayUser.apellido)}</span>
           </div>
           <h2 className="text-2xl font-bold text-gray-800">{displayUser.nombre} {displayUser.apellido}</h2>
           <p className="text-sm text-gray-500 mt-1 mb-4">{displayUser.correo}</p>
@@ -84,7 +84,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
             )}
 
             <div className="mt-3 flex gap-2">
-              <button onClick={() => setEditing(e => !e)} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">{editing ? 'Cerrar' : 'Editar perfil académico'}</button>
+              <button onClick={() => setEditing(e => !e)} className="px-3 py-1 bg-blue-600 text-gray-500 rounded text-sm">{editing ? 'Cerrar' : 'Editar perfil'}</button>
             </div>
             {editing && displayUser && (
               <div className="mt-3">
@@ -93,7 +93,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
             )}
 
             <div className="w-full flex justify-center mt-6">
-              <button onClick={() => setConfirmOpen(true)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">Desactivar cuenta</button>
+              <button onClick={() => setConfirmOpen(true)} className="bg-red-500 hover:bg-red-600 text-gray-500 px-4 py-2 rounded-lg transition-colors">Desactivar cuenta</button>
             </div>
           </div>
         </div>

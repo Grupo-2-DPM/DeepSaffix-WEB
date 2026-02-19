@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import Login from './Login';
 import { usuariosService } from '../../../backend/services/usuariosService';
@@ -63,31 +64,33 @@ export const AuthForm = ({ onLoginSuccess }: AuthFormProps) => {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 sm:p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Crea tu cuenta</h2>
+    <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
+      <div className="lex items-center justify-center bg-white p-6 rounded-2xl">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Crea tu cuenta</h2>
 
-      <form onSubmit={handleRegister} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <input value={nombre} onChange={e => setNombre(e.target.value)} type="text" placeholder="Nombre" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
-          <input value={apellido} onChange={e => setApellido(e.target.value)} type="text" placeholder="Apellido" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
-        </div>
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input value={nombre} onChange={e => setNombre(e.target.value)} type="text" placeholder="Nombre" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
+            <input value={apellido} onChange={e => setApellido(e.target.value)} type="text" placeholder="Apellido" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
+          </div>
 
-        <input value={correo} onChange={e => setCorreo(e.target.value)} type="email" placeholder="Correo electrónico" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
-        <input value={contraseña} onChange={e => setContraseña(e.target.value)} type="password" placeholder="Contraseña" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
+          <input value={correo} onChange={e => setCorreo(e.target.value)} type="email" placeholder="Correo electrónico" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
+          <input value={contraseña} onChange={e => setContraseña(e.target.value)} type="password" placeholder="Contraseña" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <input value={programa} onChange={e => setPrograma(e.target.value)} type="text" placeholder="Programa académico (opcional)" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
-          <input value={semestre as any} onChange={e => setSemestre(e.target.value === '' ? '' : Number(e.target.value))} type="number" placeholder="Semestre (opcional)" min={1} max={10} className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
-        </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input value={programa} onChange={e => setPrograma(e.target.value)} type="text" placeholder="Programa académico (opcional)" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
+            <input value={semestre as any} onChange={e => setSemestre(e.target.value === '' ? '' : Number(e.target.value))} type="number" placeholder="Semestre (opcional)" min={1} max={10} className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
 
-        <button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-          {loading ? 'Registrando...' : 'Registrarse'}
-        </button>
-      </form>
+          <button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+            {loading ? 'Registrando...' : 'Registrarse'}
+          </button>
+        </form>
 
-      {error && <p className="mt-4 text-red-600">{error}</p>}
+        {error && <p className="mt-4 text-red-600">{error}</p>}
 
-      <p className="mt-6 text-center text-gray-600">¿Ya tienes cuenta? <button onClick={() => setIsRegister(false)} className="text-blue-600 font-bold hover:underline">Inicia sesión</button></p>
+        <p className="mt-6 text-center text-gray-600">¿Ya tienes cuenta? <button onClick={() => setIsRegister(false)} className="text-blue-600 font-bold hover:underline">Inicia sesión</button></p>
+      </div>
     </div>
   );
 };

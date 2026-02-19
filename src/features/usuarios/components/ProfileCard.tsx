@@ -41,7 +41,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
   const formattedDate = displayUser.fecha_registro ? new Date(displayUser.fecha_registro).toLocaleString() : '-';
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-gray-100 ${mounted ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}>
+    <div className={`min-h-screen flex items-center justify-center bg-slate-900  ${mounted ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}>
       <div className="bg-white max-w-lg w-full rounded-2xl shadow-lg hover:shadow-xl transition-shadow p-8">
         <div className="flex flex-col items-center text-center">
           <div className="w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 mb-4">

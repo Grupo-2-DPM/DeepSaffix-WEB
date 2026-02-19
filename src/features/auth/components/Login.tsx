@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { LoginDto } from '../../../backend/services/authService';
 import { authService } from '../../../backend/services/authService';
 
-export interface LoginFormData extends LoginDto {}
+export type LoginFormData = LoginDto
 
 interface Props {
   onLoginSuccess: (user: unknown) => void;
@@ -19,6 +19,7 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const parseError = (raw: any) => {
     try {
       const j = JSON.parse(raw);
@@ -38,6 +39,7 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
       const user = await authService.login(form);
       localStorage.setItem('user', JSON.stringify(user));
       onLoginSuccess(user);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(parseError(err?.message ?? err));
     } finally {
@@ -46,8 +48,8 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
-      <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full transform transition-transform hover:scale-105 duration-300">
+    <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
+      <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Iniciar sesión</h1>
           <p className="text-sm text-gray-500 mt-2">Accede a tu cuenta para gestionar tus simulacros</p>

@@ -95,22 +95,18 @@ function App() {
         <div className="mb-4">
           <a href="#/" className="text-gray-800 underline">&larr; Volver</a>
         </div>
-        <h2 className="text-3xl font-bold text-center">Proyectos destacados</h2>
+        <h2 className="text-3xl font-bold text-center">Proyectos</h2>
         <p className="mt-3 text-slate-300 max-w-2xl mx-auto text-center">
-          Explora pilotos de simulacros y analitica aplicada a evaluaciones. Cada proyecto resume objetivos, metodologia y resultados esperados.
+          Realiza simulacros de pruebas Saber Pro y consulta tus resultados. Practica con preguntas similares a las reales y mejora tu desempeño.
         </p>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="border border-slate-800 rounded p-4 bg-slate-950">
-          <h3 className="font-semibold">Simulacro adaptativo</h3>
-          <p className="mt-2 text-sm text-slate-400">Banco de preguntas con dificultad ajustable y retroalimentacion inmediata.</p>
+          <h3 className="font-semibold">Realizar Simulacro</h3>
+          <p className="mt-2 text-sm text-slate-400">Accede a nuevos simulacros y practica con preguntas de todas las competencias.</p>
           </div>
           <div className="border border-slate-800 rounded p-4 bg-slate-950">
-          <h3 className="font-semibold">Mapa de competencias</h3>
-          <p className="mt-2 text-sm text-slate-400">Visualizacion de fortalezas y brechas por componente evaluado.</p>
-          </div>
-          <div className="border border-slate-800 rounded p-4 bg-slate-950">
-          <h3 className="font-semibold">Analitica de cohortes</h3>
-          <p className="mt-2 text-sm text-slate-400">Comparativos por programa, semestre y resultados historicos.</p>
+          <h3 className="font-semibold">Ver Resultados</h3>
+          <p className="mt-2 text-sm text-slate-400">Consulta el desempeño de tus simulacros anteriores y tu progreso.</p>
           </div>
         </div>
         </div>
@@ -138,9 +134,9 @@ function App() {
           DeepSaffix centraliza simulacros, reportes y seguimiento academico para preparar las pruebas Saber Pro con informacion clara.
         </p>
         <div className="mt-6 space-y-3 max-w-2xl mx-auto text-slate-300 text-center">
-          <p>Metodologia basada en resultados historicos y practicas recomendadas para mejorar el rendimiento.</p>
-          <p>Seguimiento por usuario, programa y cohortes, con reportes exportables y analisis por componente.</p>
-          <p>Enfoque practico: simulacros con retroalimentacion y rutas de mejora personalizadas.</p>
+            <p>Realiza simulacros completos de las pruebas Saber Pro con preguntas actualizadas.</p>
+            <p>Consulta tus resultados detallados y analiza tu desempeño por componente.</p>
+            <p>Intenta los simulacros nuevamente para mejorar tu puntuación y prepararte mejor.</p>
         </div>
         </div>
       </div>

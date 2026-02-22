@@ -166,7 +166,7 @@ export const SimulationPanel: React.FC = () => {
                         alert('Error iniciando simulacro');
                       }
                     }}
-                    className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    className="px-3 py-2 bg-blue-600 text-gray-500 rounded-md hover:bg-blue-700 transition-colors"
                   >Iniciar</button>
                   <button className="px-3 py-2 border border-slate-200 text-slate-600 rounded-md hover:bg-slate-50">Detalles</button>
                 </div>

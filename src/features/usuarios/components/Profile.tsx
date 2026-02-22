@@ -46,7 +46,7 @@ export const Profile: React.FC<Props> = ({ user, onLogout }) => {
   return (
     <>
       <ProfileCard
-        user={profile ?? { id_usuario: user.id_usuario, nombre: user.nombre ?? '', apellido: user.apellido ?? '', correo: user.correo ?? '', fecha_registro: user.fecha_registro ?? new Date().toISOString(), estado_cuenta: (user.estado_cuenta as any) ?? 'ACTIVO', perfilAcademico: (profile && profile.perfilAcademico) ?? null }}
+        user={profile ?? { id_usuario: user.id_usuario, nombre: user.nombre ?? '', apellido: user.apellido ?? '', correo: user.correo ?? '', fecha_registro: user.fecha_registro ?? new Date().toISOString(), estado_cuenta: (user.estado_cuenta as any) ?? 'ACTIVO', perfilAcademico: (profile) ?? null }}
         onDelete={handleDelete}
         onProfileUpdated={fetchProfile}
       />

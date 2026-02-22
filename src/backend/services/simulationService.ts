@@ -16,37 +16,39 @@ export interface IntentoDTO {
   tiempo_utilizado?: number;
   puntaje_total?: number;
   simulacro?: SimulacroDTO;
+  respuestas?: { id_pregunta: number; id_opcion: number }[];
 }
 
 export const simulationService = {
   async list(): Promise<SimulacroDTO[]> {
-    return http<SimulacroDTO[]>('/simulation');
+    return http<SimulacroDTO[]>('/simulacros');
   },
 
   async startAttempt(simId: number, id_usuario: number): Promise<IntentoDTO> {
-    return http<IntentoDTO>(`/simulation/${simId}/attempts`, {
+    return http<IntentoDTO>(`/simulacros/${simId}/intentos`, {
       method: 'POST',
       body: JSON.stringify({ id_usuario }),
     });
   },
 
   async getAttempt(attemptId: number): Promise<IntentoDTO> {
-    return http<IntentoDTO>(`/simulation/attempts/${attemptId}`);
+    return http<IntentoDTO>(`/simulacros/intentos/${attemptId}`);
   },
 
   async listAttemptsByUser(id_usuario: number): Promise<IntentoDTO[]> {
-    return http<IntentoDTO[]>(`/simulation/attempts/user/${id_usuario}`);
+    return http<IntentoDTO[]>(`/simulacros/usuarios/${id_usuario}/intentos`);
   },
 
   async finishAttempt(attemptId: number): Promise<IntentoDTO> {
-    return http<IntentoDTO>(`/simulation/attempts/${attemptId}/finish`, { method: 'POST' });
+    return http<IntentoDTO>(`/simulacros/intentos/${attemptId}/finalizar`, { method: 'POST' });
   },
+
   async getSimulacro(simId: number): Promise<SimulacroDTO> {
-    return http<SimulacroDTO>(`/simulation/${simId}`);
+    return http<SimulacroDTO>(`/simulacros/${simId}`);
   },
 
   async submitAnswers(attemptId: number, optionIds: number[]): Promise<{ inserted: number }> {
-    return http<{ inserted: number }>(`/simulation/attempts/${attemptId}/answers`, {
+    return http<{ inserted: number }>(`/simulacros/intentos/${attemptId}/respuestas`, {
       method: 'POST',
       body: JSON.stringify({ selected_option_ids: optionIds }),
     });

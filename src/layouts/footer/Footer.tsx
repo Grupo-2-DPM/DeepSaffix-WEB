@@ -9,13 +9,13 @@ export const Footer = () => {
         
         {/* Columna de Marca */}
         <div className="space-y-4">
-          <h2 className="text-white text-xl font-bold">DeepSaffix-WEB</h2>
+          <h2 className="text-gray-500 text-xl font-bold">DeepSaffix-WEB</h2>
         </div>
 
         {/* Columnas Dinámicas de Enlaces */}
         {FOOTER_LINKS.map((group) => (
           <div key={group.title}>
-            <h3 className="text-white font-semibold mb-4">{group.title}</h3>
+            <h3 className="text-gray-500 font-semibold mb-4">{group.title}</h3>
             <ul className="space-y-1">
               {group.links.map((link) => (
                 <li key={link.label}>

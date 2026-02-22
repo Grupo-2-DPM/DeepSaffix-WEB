@@ -18,8 +18,15 @@ export const usuariosService = {
   },
 
   async deactivateUsuario(id: number): Promise<void> {
-    return http<void>(`/usuarios/${id}/eliminar`, {
+    return http<void>(`/usuarios/${id}/desactivar`, {
       method: 'PATCH',
     });
   },
+
+  async updatePerfil(id: number, payload: Partial<Usuario>): Promise<Usuario> {
+    return http<Usuario>(`/usuarios/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+  }
 };

@@ -282,8 +282,8 @@ export const SimulationRun: React.FC = () => {
 
         {!viewOnly && (
           <div className="mt-6 flex gap-3">
-            <button onClick={() => setRunning(true)} disabled={running || progress >= 100} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60">Continuar</button>
-            <button onClick={handleStop} disabled={!running} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-60">Detener</button>
+            <button onClick={() => setRunning(true)} disabled={running || progress >= 100} className="px-4 py-2 bg-blue-600 text-gray-500 rounded hover:bg-blue-700 disabled:opacity-60">Continuar</button>
+            <button onClick={handleStop} disabled={!running} className="px-4 py-2 bg-red-600 text-gray-500 rounded hover:bg-red-700 disabled:opacity-60">Detener</button>
           </div>
         )}
         {/* Guardado automático indicador */}
@@ -348,7 +348,7 @@ export const SimulationRun: React.FC = () => {
             </ul>
 
             <div className="mt-4 flex gap-3">
-              <button onClick={handleSubmitAnswers} className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Enviar respuestas</button>
+              <button onClick={handleSubmitAnswers} className="px-4 py-2 bg-indigo-600 text-gray-500 rounded hover:bg-indigo-700">Enviar respuestas</button>
             </div>
           </div>
         )}

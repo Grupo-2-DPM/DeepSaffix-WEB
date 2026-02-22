@@ -4,8 +4,9 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-neutral-950 text-neutral-400 py-12 px-6 border-t border-neutral-800 animate-fade-in">
-      <div className="max-w-7xl mx-auto">
+    <footer className="bg-neutral-950 text-neutral-400 py-8 border-t border-neutral-800">
+      {/* Cambio: max-w-7xl y padding consistente */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Primera fila: marca y enlaces */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           {/* Marca con estilo consola */}

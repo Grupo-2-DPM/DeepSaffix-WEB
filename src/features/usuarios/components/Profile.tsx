@@ -41,17 +41,61 @@ export const Profile: React.FC<Props> = ({ user, onLogout }) => {
     }
   };
 
-  if (!user) return <p className="text-gray-800">No hay sesión activa.</p>;
-  if (loading) return <p className="text-gray-800">Cargando perfil...</p>;
-  if (error) return <p className="text-red-400">{error}</p>;
+  // Si no hay sesión activa
+  if (!user) {
+    return (
+      <div className="bg-neutral-900 rounded-lg border border-neutral-800 p-6 text-center animate-fade-in">
+        <p className="text-neutral-500 text-sm font-mono tracking-widest">
+          <span className="text-accent-cyan">➜</span> No hay sesión activa.
+        </p>
+      </div>
+    );
+  }
 
+  // Estado de carga
+  if (loading) {
+    return (
+      <div className="bg-neutral-900 rounded-lg border border-neutral-800 p-6 text-center animate-fade-in">
+        <div className="flex items-center justify-center gap-2">
+          <i className="fas fa-spinner fa-spin text-accent-cyan text-sm"></i>
+          <p className="text-neutral-400 text-sm font-mono tracking-widest">
+            CARGANDO_PERFIL...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Estado de error
+  if (error) {
+    return (
+      <div className="bg-neutral-900 rounded-lg border border-neutral-800 p-6 text-center animate-fade-in">
+        <p className="text-red-400 text-sm font-mono tracking-widest">
+          <span className="text-red-400">⚠</span> {error}
+        </p>
+      </div>
+    );
+  }
+
+  // Perfil cargado correctamente
   return (
-    <>
-      <ProfileCard
-        user={profile ?? { id_usuario: user.id_usuario, nombre: user.nombre ?? '', apellido: user.apellido ?? '', correo: user.correo ?? '', fecha_registro: user.fecha_registro ?? new Date().toISOString(), estado_cuenta: (user.estado_cuenta as any) ?? 'ACTIVO', perfilAcademico: (profile) ?? null }}
-        onDelete={handleDelete}
-        onProfileUpdated={fetchProfile}
-      />
-    </>
+    <div className="w-full h-full flex flex-col items-center justify-start py-4 animate-fade-in">
+      {/* Contenedor que permite que la tarjeta crezca si es necesario */}
+      <div className="w-full max-w-5xl">
+        <ProfileCard
+          user={profile ?? {
+            id_usuario: user.id_usuario,
+            nombre: user.nombre ?? '',
+            apellido: user.apellido ?? '',
+            correo: user.correo ?? '',
+            fecha_registro: user.fecha_registro ?? new Date().toISOString(),
+            estado_cuenta: (user.estado_cuenta as any) ?? 'ACTIVO',
+            perfilAcademico: (profile) ?? null
+          }}
+          onDelete={handleDelete}
+          onProfileUpdated={fetchProfile}
+        />
+      </div>
+    </div>
   );
 };

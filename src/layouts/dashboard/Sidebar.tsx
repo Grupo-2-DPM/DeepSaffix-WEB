@@ -26,8 +26,9 @@ const Sidebar: React.FC<Props> = ({ isOpen, onClose }) => {
       )}
 
       <aside
-        className={`fixed left-0 top-0 h-full w-64 bg-neutral-950 border-r border-neutral-800 transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 transition-transform duration-200 ease-in-out z-40`}
+        className={`fixed left-0 top-0 h-full w-64 bg-neutral-950 border-r border-neutral-800 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+          md:translate-x-0 transition-transform duration-200 ease-in-out z-40
+          shadow-[2px_0_15px_-5px_rgba(0,242,255,0.15)]`}
       >
         <div className="h-full flex flex-col">
           {/* Cabecera con logo y versión (estilo consola) */}

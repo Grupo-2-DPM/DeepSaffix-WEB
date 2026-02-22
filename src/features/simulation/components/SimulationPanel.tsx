@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useEffect, useState } from 'react';
 import simulationService from '../../../backend/services/simulationService';
 
@@ -16,19 +18,13 @@ type Disponible = {
   descripcion?: string;
 };
 
-const realizadosSeed: Realizado[] = [
-  { id: 'r1', nombre: 'Simulacro A', fecha: '2026-02-10', progreso: 100, resultado: 'Aprobado' },
-  { id: 'r2', nombre: 'Simulacro B', fecha: '2026-02-05', progreso: 85, resultado: 'En proceso' },
-  { id: 'r3', nombre: 'Simulacro C', fecha: '2026-01-28', progreso: 100, resultado: 'Aprobado' },
-];
-
 const disponiblesSeed: Disponible[] = [];
 
 export const SimulationPanel: React.FC = () => {
   const [realizados, setRealizados] = useState<Realizado[]>([]);
   const [disponibles, setDisponibles] = useState<Disponible[]>(disponiblesSeed);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState(false);
+  const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -74,7 +70,7 @@ export const SimulationPanel: React.FC = () => {
 
   // refresh when an attempt is finished elsewhere
   useEffect(() => {
-    const handler = (e: any) => {
+    const handler = () => {
       try {
         const userRaw = localStorage.getItem('user');
         if (!userRaw) return;

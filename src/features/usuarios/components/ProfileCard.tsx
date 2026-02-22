@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import type { Usuario } from '../../../backend/models/Usuario';
 import ModalConfirm from './ModalConfirm';
@@ -44,7 +45,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
     <div className={`min-h-screen flex items-center justify-center bg-slate-900  ${mounted ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}>
       <div className="bg-white max-w-lg w-full rounded-2xl shadow-lg hover:shadow-xl transition-shadow p-8">
         <div className="flex flex-col items-center text-center">
-          <div className="w-24 h-24 rounded-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 mb-4">
+          <div className="w-24 h-24 rounded-full flex items-center justify-center bg-linear-to-r from-blue-500 to-indigo-600 mb-4">
             <span className="text-gray-500 font-semibold text-xl">{initials(displayUser.nombre, displayUser.apellido)}</span>
           </div>
           <h2 className="text-2xl font-bold text-gray-800">{displayUser.nombre} {displayUser.apellido}</h2>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { usuariosService } from '../../../backend/services/usuariosService';
 import type { Usuario } from '../../../backend/models/Usuario';

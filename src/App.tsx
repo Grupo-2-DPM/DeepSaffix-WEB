@@ -9,6 +9,7 @@ import { SimulationPanel } from './features/simulation/components/SimulationPane
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
 import {About} from './layouts/about/about'
+import { SimulacroContainer } from './components/ui/SimulationDashboard'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,10 +28,10 @@ function App() {
     );
   }
 
-  if (route === '#/profile') {
+  if (route === '#/simulation') {
     if (!isAuthenticated) {
       return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/profile'; }} />
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulation'; }} />
       );
     }
 
@@ -41,10 +42,10 @@ function App() {
     );
   }
 
-  if (route === '#/simulacros') {
+  if (route === '#/historial') {
     if (!isAuthenticated) {
       return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulacros'; }} />
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/historial'; }} />
       );
     }
 
@@ -55,7 +56,7 @@ function App() {
     );
   }
 
-  if (route.startsWith('#/simulacros/run')) {
+  if (route.startsWith('#/historial/run')) {
     if (!isAuthenticated) {
       return (
         <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
@@ -69,7 +70,7 @@ function App() {
     );
   }
 
-  if (route.startsWith('#/simulacros/view')) {
+  if (route.startsWith('#/historial/view')) {
     if (!isAuthenticated) {
       return (
         <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
@@ -92,27 +93,7 @@ function App() {
 
     return (
       <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-      <div className="w-full p-6 bg-slate-900 text-slate-200 flex items-center justify-center">
-        <div className="max-w-4xl w-full">
-        <div className="mb-4">
-          <a href="#/" className="text-gray-800 underline">&larr; Volver</a>
-        </div>
-        <h2 className="text-3xl font-bold text-center">Proyectos</h2>
-        <p className="mt-3 text-slate-300 max-w-2xl mx-auto text-center">
-          Realiza simulacros de pruebas Saber Pro y consulta tus resultados. Practica con preguntas similares a las reales y mejora tu desempeño.
-        </p>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-slate-800 rounded p-4 bg-slate-950">
-          <h3 className="font-semibold">Realizar Simulacro</h3>
-          <p className="mt-2 text-sm text-slate-400">Accede a nuevos simulacros y practica con preguntas de todas las competencias.</p>
-          </div>
-          <div className="border border-slate-800 rounded p-4 bg-slate-950">
-          <h3 className="font-semibold">Ver Resultados</h3>
-          <p className="mt-2 text-sm text-slate-400">Consulta el desempeño de tus simulacros anteriores y tu progreso.</p>
-          </div>
-        </div>
-        </div>
-      </div>
+        <SimulacroContainer></SimulacroContainer>
       </DashboardLayout>
     );
     }

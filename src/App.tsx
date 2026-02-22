@@ -28,10 +28,10 @@ function App() {
     );
   }
 
-  if (route === '#/simulation') {
+  if (route === '#/profile') {
     if (!isAuthenticated) {
       return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulation'; }} />
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/profile'; }} />
       );
     }
 
@@ -84,10 +84,10 @@ function App() {
     );
   }
 
-  if (route === '#/proyectos') {
+  if (route === '#/simulation') {
     if (!isAuthenticated) {
       return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/proyectos'; }} />
+        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulation'; }} />
       );
     }
 

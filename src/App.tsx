@@ -20,6 +20,12 @@ function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
+  if (!isAuthenticated) {
+    return (
+      <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); }} />
+    );
+  }
+
   if (route === '#/profile') {
     if (!isAuthenticated) {
       return (
@@ -29,12 +35,7 @@ function App() {
 
     return (
       <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <div className="w-full p-6 bg-slate-900 ">
-          <div className="mb-4">
-            <a href="#/" className="text-gray-800 underline">&larr; Volver</a>
-          </div>
           <Profile user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }} />
-        </div>
       </DashboardLayout>
     );
   }
@@ -143,12 +144,6 @@ function App() {
       </DashboardLayout>
     );
     }
-
-  if (!isAuthenticated) {
-    return (
-      <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); }} />
-    );
-  }
 
   return (
     <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>

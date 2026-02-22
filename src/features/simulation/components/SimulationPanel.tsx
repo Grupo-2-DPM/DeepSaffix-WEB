@@ -29,7 +29,6 @@ export const SimulationPanel: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     simulationService.list().then(list => {
-      // map backend simulacros to Disponible
       const mapped = list.map(s => ({ id: String(s.id_simulacro), nombre: s.nombre, descripcion: s.descripcion }));
       setDisponibles(mapped);
     }).catch(err => {
@@ -38,7 +37,6 @@ export const SimulationPanel: React.FC = () => {
     }).finally(() => setLoading(false));
   }, []);
 
-  // load realizados (attempts) for current user
   useEffect(() => {
     const userRaw = localStorage.getItem('user');
     if (!userRaw) return;
@@ -53,7 +51,6 @@ export const SimulationPanel: React.FC = () => {
 
     setLoading(true);
     simulationService.listAttemptsByUser(userId).then(list => {
-      // map attempts into Realizado model
       const mapped = list.map(a => ({
         id: String(a.id_intento),
         nombre: a.simulacro?.nombre ?? `Simulacro ${a.id_simulacro}`,
@@ -68,7 +65,6 @@ export const SimulationPanel: React.FC = () => {
     }).finally(() => setLoading(false));
   }, []);
 
-  // refresh when an attempt is finished elsewhere
   useEffect(() => {
     const handler = () => {
       try {
@@ -97,78 +93,116 @@ export const SimulationPanel: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full">
+    <section className="w-full bg-neutral-950 p-4 animate-fade-in">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Simulacros realizados */}
-        <div className="bg-white shadow-sm border border-slate-100 rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h4 className="text-lg font-semibold text-gray-800">Simulacros realizados</h4>
-            <span className="text-sm text-slate-500">{realizados.length} registros</span>
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4 border-b border-neutral-800 pb-3">
+            <div className="flex items-center gap-2">
+              <i className="fas fa-history text-accent-cyan text-sm"></i>
+              <h4 className="text-white font-mono text-sm tracking-widest uppercase">Simulacros realizados</h4>
+            </div>
+            <span className="text-[10px] font-mono text-neutral-500 border border-neutral-800 px-2 py-0.5 rounded">
+              {realizados.length} REGISTROS
+            </span>
           </div>
 
-          <ul className="space-y-4">
-            {realizados.map(r => (
-              <li key={r.id} className="border border-gray-100 rounded-lg p-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-gray-800">{r.nombre}</div>
-                    <div className="text-xs text-slate-500">{r.fecha} • {r.resultado}</div>
-                  </div>
-                  <div className="w-40">
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-500" style={{ width: `${r.progreso}%` }} />
+          {realizados.length === 0 ? (
+            <div className="text-center py-8 text-neutral-500 text-xs font-mono">
+              <i className="fas fa-database mr-1 text-neutral-600"></i> NO HAY REGISTROS
+            </div>
+          ) : (
+            <ul className="space-y-3">
+              {realizados.map(r => (
+                <li key={r.id} className="bg-neutral-950 border border-neutral-800 rounded-lg p-3 hover:border-neutral-700 transition-all">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-white truncate">{r.nombre}</div>
+                      <div className="flex items-center gap-2 text-[10px] font-mono text-neutral-500">
+                        <span><i className="far fa-calendar mr-1 text-accent-cyan"></i>{r.fecha}</span>
+                        <span><i className="far fa-clock mr-1 text-accent-cyan"></i>{r.resultado}</span>
+                      </div>
                     </div>
-                    <div className="text-xs text-right text-slate-500 mt-1">{r.progreso}%</div>
+                    <div className="w-32">
+                      <div className="h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-brand-500" style={{ width: `${r.progreso}%` }} />
+                      </div>
+                      <div className="text-right text-[10px] font-mono text-neutral-500 mt-1">{r.progreso}%</div>
+                    </div>
+                    <button
+                      onClick={() => { window.location.hash = `#/simulacros/view/${r.id}`; }}
+                      className="text-[10px] font-mono tracking-widest text-neutral-400 hover:text-accent-cyan transition-all active:scale-95 uppercase border border-neutral-800 px-2 py-1 rounded"
+                    >
+                      Ver
+                    </button>
                   </div>
-                  <div className="ml-4 flex items-center gap-2">
-                    <button onClick={() => { window.location.hash = `#/simulacros/view/${r.id}`; }} className="px-3 py-1 border border-slate-200 text-slate-600 rounded text-xs hover:bg-slate-50">Ver</button>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Simulacros disponibles */}
-        <div className="bg-white shadow-sm border border-slate-100 rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h4 className="text-lg font-semibold text-gray-800">Simulacros disponibles</h4>
-            <span className="text-sm text-slate-500">{disponibles.length} disponibles</span>
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4 border-b border-neutral-800 pb-3">
+            <div className="flex items-center gap-2">
+              <i className="fas fa-play-circle text-accent-cyan text-sm"></i>
+              <h4 className="text-white font-mono text-sm tracking-widest uppercase">Simulacros disponibles</h4>
+            </div>
+            <span className="text-[10px] font-mono text-neutral-500 border border-neutral-800 px-2 py-0.5 rounded">
+              {disponibles.length} DISPONIBLES
+            </span>
           </div>
 
-          <ul className="space-y-4">
-            {disponibles.map(d => (
-              <li key={d.id} className="flex items-start justify-between border border-gray-100 rounded-lg p-4">
-                <div>
-                  <div className="text-sm font-medium text-gray-800">{d.nombre}</div>
-                  {d.descripcion && <div className="text-xs text-slate-500 mt-1">{d.descripcion}</div>}
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={async () => {
-                      const userRaw = localStorage.getItem('user');
-                      if (!userRaw) return window.location.hash = '#/';
-                      const user = JSON.parse(userRaw);
-                      const userId = user.id_usuario ?? user.id ?? user.userId;
-                      if (!userId) return alert('Usuario no identificado');
+          {disponibles.length === 0 ? (
+            <div className="text-center py-8 text-neutral-500 text-xs font-mono">
+              <i className="fas fa-box-open mr-1 text-neutral-600"></i> NO HAY SIMULACROS DISPONIBLES
+            </div>
+          ) : (
+            <ul className="space-y-3">
+              {disponibles.map(d => (
+                <li key={d.id} className="bg-neutral-950 border border-neutral-800 rounded-lg p-4 hover:border-neutral-700 transition-all">
+                  <div className="flex items-start justify-between gap-3 flex-wrap">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-white">{d.nombre}</div>
+                      {d.descripcion && (
+                        <div className="text-[10px] font-mono text-neutral-500 mt-1 line-clamp-2">{d.descripcion}</div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={async () => {
+                          const userRaw = localStorage.getItem('user');
+                          if (!userRaw) return window.location.hash = '#/';
+                          const user = JSON.parse(userRaw);
+                          const userId = user.id_usuario ?? user.id ?? user.userId;
+                          if (!userId) return alert('Usuario no identificado');
 
-                      try {
-                        const simId = Number(d.id);
-                        const intento = await simulationService.startAttempt(simId, Number(userId));
-                        // navigate to run page with intento id
-                        window.location.hash = `#/simulacros/run/${intento.id_intento}`;
-                      } catch (err: any) {
-                        console.error(err);
-                        alert('Error iniciando simulacro');
-                      }
-                    }}
-                    className="px-3 py-2 bg-blue-600 text-gray-500 rounded-md hover:bg-blue-700 transition-colors"
-                  >Iniciar</button>
-                  <button className="px-3 py-2 border border-slate-200 text-slate-600 rounded-md hover:bg-slate-50">Detalles</button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                          try {
+                            const simId = Number(d.id);
+                            const intento = await simulationService.startAttempt(simId, Number(userId));
+                            window.location.hash = `#/simulacros/run/${intento.id_intento}`;
+                          } catch (err: any) {
+                            console.error(err);
+                            alert('Error iniciando simulacro');
+                          }
+                        }}
+                        className="text-[10px] font-mono tracking-widest bg-brand-600 hover:bg-brand-500 text-white px-3 py-1.5 rounded transition-all active:scale-95 uppercase"
+                      >
+                        Iniciar
+                      </button>
+                      <button
+                        onClick={() => { /* detalles */ }}
+                        className="text-[10px] font-mono tracking-widest text-neutral-400 hover:text-accent-cyan transition-all active:scale-95 uppercase border border-neutral-800 px-3 py-1.5 rounded"
+                      >
+                        Detalles
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>

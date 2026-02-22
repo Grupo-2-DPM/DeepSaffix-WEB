@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react'
 import { Profile } from './features/usuarios/components/Profile'
 import { Hero } from './components/common/Hero'
 import { AuthForm } from './features/auth/components/AuthForm'
-import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import { SimulationPanel } from './features/simulation/components/SimulationPanel'
+import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
-
+import {About} from './layouts/about/about'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -126,22 +126,7 @@ function App() {
 
     return (
       <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-      <div className="w-full p-6 bg-slate-900 text-slate-200 flex items-center justify-center">
-        <div className="max-w-4xl w-full">
-        <div className="mb-4">
-          <a href="#/" className="text-gray-800 underline">&larr; Volver</a>
-        </div>
-        <h2 className="text-3xl font-bold text-center">Sobre DeepSaffix</h2>
-        <p className="mt-3 text-slate-300 max-w-2xl mx-auto text-center">
-          DeepSaffix centraliza simulacros, reportes y seguimiento academico para preparar las pruebas Saber Pro con informacion clara.
-        </p>
-        <div className="mt-6 space-y-3 max-w-2xl mx-auto text-slate-300 text-center">
-            <p>Realiza simulacros completos de las pruebas Saber Pro con preguntas actualizadas.</p>
-            <p>Consulta tus resultados detallados y analiza tu desempeño por componente.</p>
-            <p>Intenta los simulacros nuevamente para mejorar tu puntuación y prepararte mejor.</p>
-        </div>
-        </div>
-      </div>
+        <About></About>
       </DashboardLayout>
     );
     }

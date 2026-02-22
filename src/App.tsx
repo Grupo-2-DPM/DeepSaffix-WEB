@@ -9,6 +9,7 @@ import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import { SimulationPanel } from './features/simulation/components/SimulationPanel'
 import SimulationRun from './features/simulation/pages/SimulationRun'
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any | null>(null);

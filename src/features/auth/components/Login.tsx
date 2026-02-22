@@ -39,7 +39,7 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
       const user = await authService.login(form);
       localStorage.setItem('user', JSON.stringify(user));
       onLoginSuccess(user);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(parseError(err?.message ?? err));
     } finally {
@@ -48,54 +48,68 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
-      <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Iniciar sesión</h1>
-          <p className="text-sm text-gray-500 mt-2">Accede a tu cuenta para gestionar tus simulacros</p>
+    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 p-6">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-xl shadow-2xl p-8 max-w-md w-full animate-fade-in">
+        <div className="mb-10 text-left border-l-4 border-brand-500 pl-4">
+          <h1 className="text-2xl font-black text-white tracking-tight uppercase">
+            Deep <span className="text-brand-400">Saffix</span>
+          </h1>
+          <p className="text-xs text-neutral-400 font-mono tracking-widest mt-1">SISTEMA DE SIMULACROS V2.0</p>
         </div>
 
         {error && (
-          <div className="bg-red-100 text-red-700 rounded-lg p-3 mb-4 text-sm">{error}</div>
+          <div className="bg-red-900/20 border border-red-500/50 text-red-400 rounded-lg p-3 mb-6 text-sm font-medium">
+            {error}
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4" aria-label="login-form">
-          <div>
-            <label htmlFor="correo" className="sr-only">Correo electrónico</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-1">
+            <label htmlFor="correo" className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Identificación de Usuario</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2.94 6.94A2 2 0 014 6h12a2 2 0 011.06.94L10 11 2.94 6.94z" /><path d="M18 8.2V14a2 2 0 01-2 2H4a2 2 0 01-2-2V8.2l8 4.8 8-4.8z" /></svg>
-              </span>
-              <input id="correo" name="correo" value={form.correo} onChange={handleChange} placeholder="Correo electrónico" type="email" required className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+              <input
+                id="correo" name="correo" value={form.correo} onChange={handleChange}
+                type="email" required placeholder="usuario@institucion.edu.co"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 placeholder:text-neutral-700 outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
+              />
             </div>
           </div>
 
-          <div>
-            <label htmlFor="contraseña" className="sr-only">Contraseña</label>
+          <div className="space-y-1">
+            <label htmlFor="contraseña" className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Clave de Acceso</label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 8a5 5 0 1110 0v2h1a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6a1 1 0 011-1h1V8zm2 0v2h6V8a3 3 0 00-6 0z" clipRule="evenodd" /></svg>
-              </span>
-              <input id="contraseña" name="contraseña" value={form.contraseña} onChange={handleChange} placeholder="Contraseña" type={showPassword ? 'text' : 'password'} required className="w-full pl-10 pr-14 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
-
-              <button type="button" onClick={() => setShowPassword(s => !s)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-gray-600">
-                {showPassword ? 'Ocultar' : 'Mostrar'}
+              <input
+                id="contraseña" name="contraseña" value={form.contraseña} onChange={handleChange}
+                type={showPassword ? 'text' : 'password'} required placeholder="••••••••"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 placeholder:text-neutral-700 outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
+              />
+              <button
+                type="button" onClick={() => setShowPassword(s => !s)}
+                className="absolute right-3 top-3 text-[10px] font-bold text-neutral-600 hover:text-brand-400 transition-colors"
+              >
+                {showPassword ? 'HIDE' : 'SHOW'}
               </button>
             </div>
           </div>
 
-          <div>
-            <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-gray-500 font-semibold py-3 rounded-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3">
-              {loading ? (
-                <svg className="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
-              ) : null}
-              <span>{loading ? 'Conectando...' : 'Iniciar sesión'}</span>
-            </button>
-          </div>
+          <button
+            type="submit" disabled={loading}
+            className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 border-b-2 border-brand-800"
+          >
+            {loading ? (
+              <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : null}
+            <span className="tracking-widest uppercase text-sm">Ejecutar Ingreso</span>
+          </button>
         </form>
 
-        <div className="mt-4 text-center text-sm text-gray-500">
-          ¿No tienes cuenta? <button onClick={() => { window.dispatchEvent(new CustomEvent('show-register')); }} className="text-blue-500 hover:underline font-medium">Regístrate</button>
+        <div className="mt-8 pt-6 border-t border-neutral-800 text-center">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('show-register'))}
+            className="text-xs font-bold text-brand-400 hover:text-accent-cyan transition-colors"
+          >
+            + SOLICITAR NUEVA CUENTA
+          </button>
         </div>
       </div>
     </div>

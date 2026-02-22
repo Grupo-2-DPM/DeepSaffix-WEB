@@ -64,32 +64,70 @@ export const AuthForm = ({ onLoginSuccess }: AuthFormProps) => {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
-      <div className="lex items-center justify-center bg-white p-6 rounded-2xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Crea tu cuenta</h2>
+    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 p-6">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl p-8 max-w-2xl w-full animate-fade-in">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="h-10 w-10 bg-brand-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(0,115,187,0.4)]">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-white uppercase tracking-tight">Registro de Perfil</h2>
+            <p className="text-[10px] text-neutral-500 font-mono">ESTABLISHING NEW USER PROTOCOL</p>
+          </div>
+        </div>
 
         <form onSubmit={handleRegister} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input value={nombre} onChange={e => setNombre(e.target.value)} type="text" placeholder="Nombre" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
-            <input value={apellido} onChange={e => setApellido(e.target.value)} type="text" placeholder="Apellido" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Nombre</label>
+              <input value={nombre} onChange={e => setNombre(e.target.value)} type="text" placeholder="John" required
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Apellido</label>
+              <input value={apellido} onChange={e => setApellido(e.target.value)} type="text" placeholder="Doe" required
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
+            </div>
           </div>
 
-          <input value={correo} onChange={e => setCorreo(e.target.value)} type="email" placeholder="Correo electrónico" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
-          <input value={contraseña} onChange={e => setContraseña(e.target.value)} type="password" placeholder="Contraseña" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" required />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input value={programa} onChange={e => setPrograma(e.target.value)} type="text" placeholder="Programa académico (opcional)" className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
-            <input value={semestre as any} onChange={e => setSemestre(e.target.value === '' ? '' : Number(e.target.value))} type="number" placeholder="Semestre (opcional)" min={1} max={10} className="text-gray-800 w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Configuración de Correo</label>
+            <input value={correo} onChange={e => setCorreo(e.target.value)} type="email" placeholder="email@dominio.com" required
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
           </div>
 
-          <button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-            {loading ? 'Registrando...' : 'Registrarse'}
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Contraseña Maestra</label>
+            <input value={contraseña} onChange={e => setContraseña(e.target.value)} type="password" placeholder="••••••••" required
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Programa Académico</label>
+              <input value={programa} onChange={e => setPrograma(e.target.value)} type="text" placeholder="Ingeniería..."
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Semestre</label>
+              <input value={semestre as any} onChange={e => setSemestre(e.target.value === '' ? '' : Number(e.target.value))} type="number" min={1} max={10} placeholder="1"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
+            </div>
+          </div>
+
+          <button disabled={loading} type="submit"
+            className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-lg mt-4 shadow-lg shadow-brand-900/50 transition-all active:scale-[0.98] uppercase text-xs tracking-[0.2em]">
+            {loading ? 'Sincronizando...' : 'Finalizar Configuración'}
           </button>
         </form>
 
-        {error && <p className="mt-4 text-red-600">{error}</p>}
+        {error && <p className="mt-4 text-red-500 text-[10px] font-mono text-center uppercase tracking-widest">{error}</p>}
 
-        <p className="mt-6 text-center text-gray-600">¿Ya tienes cuenta? <button onClick={() => setIsRegister(false)} className="text-blue-600 font-bold hover:underline">Inicia sesión</button></p>
+        <p className="mt-8 text-center">
+          <button onClick={() => setIsRegister(false)} className="text-[10px] font-bold text-neutral-500 hover:text-brand-400 tracking-widest">
+            ¿YA TIENES ACCESO? <span className="text-brand-500"></span>
+          </button>
+        </p>
       </div>
     </div>
   );

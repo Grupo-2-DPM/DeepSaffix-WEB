@@ -1,1 +1,25 @@
 @import "tailwindcss";
+@import "tailwindcss";
+
+@theme {
+  /* Paleta "Deep Tech" - Estilo AWS/Intel */
+  --color-brand-50: #ebf8ff;
+  --color-brand-400: #00a1c9; /* Cian AWS */
+  --color-brand-500: #0073bb; /* Azul Corporativo */
+  --color-brand-600: #005a92;
+  
+  --color-neutral-800: #192735; /* Gris azulado oscuro */
+  --color-neutral-900: #0f1720; /* Fondo principal */
+  --color-neutral-950: #080c12; /* Fondo de inputs */
+
+  --color-accent-cyan: #00f2ff; /* El color de "energía" */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}

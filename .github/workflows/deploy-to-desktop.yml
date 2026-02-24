@@ -27,18 +27,29 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACTION_TOKEN }}
         run: |
-          # Clonar solo la carpeta dist del repo desktop de forma temporal
           git config --global user.email "bot@deepsaffix.com"
           git config --global user.name "DeepSaffix CI Bot"
           
+          # 1. Clonar el repo desktop
           git clone https://x-access-token:${{ secrets.ACTION_TOKEN }}@github.com/Grupo-2-DPM/DeepSaffix-DESKTOP.git desktop-repo
           
-          # Limpiar el dist antiguo en el repo desktop y copiar el nuevo
-          rm -rf desktop-repo/dist/*
-          cp -r dist/* desktop-repo/dist/
-          
           cd desktop-repo
+          
+          # 2. Asegurar que estamos en main
+          git checkout main || git checkout -b main
+          
+          # 3. Sincronizar archivos
+          rm -rf dist/*
+          cp -r ../dist/* ./dist/
+          
+          # 4. Configurar la URL remota para incluir el token (ESTO EVITA EL ERROR 128)
+          git remote set-url origin https://x-access-token:${{ secrets.ACTION_TOKEN }}@github.com/Grupo-2-DPM/DeepSaffix-DESKTOP.git
+          
+          # 5. Commit y Push
           git add dist/
-          # Solo hacer commit si hay cambios
-          git diff-index --quiet HEAD || git commit -m "build: sincronización frontend v${{ github.run_number }}"
-          git push origin main
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "build: sincronización frontend v${{ github.run_number }} [DeepSaffix Protocol]"
+            git push origin main
+          else
+            echo "Sin cambios detectados."
+          fi

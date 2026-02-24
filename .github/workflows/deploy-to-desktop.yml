@@ -1,0 +1,44 @@
+name: Protocolo Sincronización Frontend -> Desktop
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout WEB Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Push Dist to Desktop Repo
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACTION_TOKEN }}
+        run: |
+          # Clonar solo la carpeta dist del repo desktop de forma temporal
+          git config --global user.email "bot@deepsaffix.com"
+          git config --global user.name "DeepSaffix CI Bot"
+          
+          git clone https://x-access-token:${{ secrets.ACTION_TOKEN }}@github.com/Grupo-2-DPM/DeepSaffix-DESKTOP.git desktop-repo
+          
+          # Limpiar el dist antiguo en el repo desktop y copiar el nuevo
+          rm -rf desktop-repo/dist/*
+          cp -r dist/* desktop-repo/dist/
+          
+          cd desktop-repo
+          git add dist/
+          # Solo hacer commit si hay cambios
+          git diff-index --quiet HEAD || git commit -m "build: sincronización frontend v${{ github.run_number }}"
+          git push origin main

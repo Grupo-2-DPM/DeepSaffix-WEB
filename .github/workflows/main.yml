@@ -23,10 +23,12 @@ jobs:
           path: dist/
           retention-days: 1
 
-      # SEÑAL DE DISPATCH: Avisa al repo Desktop
+# SEÑAL DE DISPATCH: Avisa al repo Desktop
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.ACTION_TOKEN }}
+          # CAMBIO CLAVE: Se usa 'token' como parámetro de la acción
+          token: ${{ secrets.ACTION_TOKEN }} 
           repository: Grupo-2-DPM/DeepSaffix-DESKTOP
           event-type: frontend-updated
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'

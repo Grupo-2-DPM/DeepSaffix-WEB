@@ -1,0 +1,32 @@
+name: Protocolo Origin - Build & Dispatch
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
+
+      # SUBIR ARTEFACTO: Esto guarda el dist en los servidores de GitHub
+      - name: Upload Frontend Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+          retention-days: 1
+
+      # SEÑAL DE DISPATCH: Avisa al repo Desktop
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.ACTION_TOKEN }}
+          repository: Grupo-2-DPM/DeepSaffix-DESKTOP
+          event-type: frontend-updated

@@ -1,4 +1,3 @@
-/* eslint-disable no-self-assign */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import './App.css'
 import { useState, useEffect } from 'react'
@@ -8,8 +7,10 @@ import { AuthForm } from './features/auth/components/AuthForm'
 import { SimulationPanel } from './features/simulation/components/SimulationPanel'
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
-import {About} from './layouts/about/about'
+import { About } from './layouts/about/about'
 import { SimulationDashboard } from './components/ui/SimulationDashboard'
+import { LicenseView } from './layouts/legal/LicenseView'
+import { PrivacyPolicy } from './layouts/legal/PrivacyPolicy'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,98 +23,82 @@ function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
+  // Función auxiliar para cerrar sesión (evita repetir código)
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    localStorage.removeItem('user');
+    window.location.hash = '#/';
+  };
+
   if (!isAuthenticated) {
     return (
-      <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); }} />
+      <AuthForm onLoginSuccess={(u: any) => { setIsAuthenticated(true); setUser(u); }} />
     );
   }
 
+  // --- RUTAS EXISTENTES ---
   if (route === '#/profile') {
-    if (!isAuthenticated) {
-      return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/profile'; }} />
-      );
-    }
-
     return (
-      <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-          <Profile user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }} />
+      <DashboardLayout user={user} onLogout={logout}>
+        <Profile user={user} onLogout={logout} />
       </DashboardLayout>
     );
   }
 
-  if (route === '#/historial') {
-    if (!isAuthenticated) {
-      return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/historial'; }} />
-      );
-    }
-
+  if (route === '#/simulacros') {
     return (
-      <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
+      <DashboardLayout user={user} onLogout={logout}>
         <SimulationPanel />
       </DashboardLayout>
     );
   }
 
-  if (route.startsWith('#/historial/run')) {
-    if (!isAuthenticated) {
-      return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
-      );
-    }
-
+  if (route.startsWith('#/simulacros/run') || route.startsWith('#/simulacros/view')) {
     return (
-      <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <SimulationRun />
-      </DashboardLayout>
-    );
-  }
-
-  if (route.startsWith('#/historial/view')) {
-    if (!isAuthenticated) {
-      return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = window.location.hash; }} />
-      );
-    }
-
-    return (
-      <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
+      <DashboardLayout user={user} onLogout={logout}>
         <SimulationRun />
       </DashboardLayout>
     );
   }
 
   if (route === '#/simulation') {
-    if (!isAuthenticated) {
-      return (
-        <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/simulation'; }} />
-      );
-    }
-
     return (
-      <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <SimulationDashboard></SimulationDashboard>
+      <DashboardLayout user={user} onLogout={logout}>
+        <SimulationDashboard />
       </DashboardLayout>
     );
-    }
+  }
 
-    if (route === '#/saber-mas') {
-    if (!isAuthenticated) {
-      return (
-      <AuthForm onLoginSuccess={(u:any) => { setIsAuthenticated(true); setUser(u); window.location.hash = '#/saber-mas'; }} />
-      );
-    }
-
+  if (route === '#/saber-mas') {
     return (
-      <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <About></About>
+      <DashboardLayout user={user} onLogout={logout}>
+        <About />
       </DashboardLayout>
     );
-    }
+  }
 
+  // --- NUEVAS RUTAS: PRIVACIDAD Y LICENCIA ---
+
+  if (route === '#/privacidad') {
+    return (
+      <DashboardLayout user={user} onLogout={logout}>
+        <PrivacyPolicy />
+      </DashboardLayout>
+    );
+  }
+
+  if (route === '#/licencia') {
+    return (
+      <DashboardLayout user={user} onLogout={logout}>
+        <LicenseView />
+      </DashboardLayout>
+    );
+  }
+
+  // RUTA POR DEFECTO (HERO)
   return (
-    <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
+    <DashboardLayout user={user} onLogout={logout}>
       <Hero />
     </DashboardLayout>
   )

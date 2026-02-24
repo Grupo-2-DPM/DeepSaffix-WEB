@@ -63,7 +63,11 @@ export const Hero = () => {
 
             {/* Botones de acción con efectos técnicos */}
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-neutral-950 shadow-brand-600/50">
+              <button
+                onClick={async () => {
+                  return window.location.hash = '#/simulation';
+                }}
+                className="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-neutral-950 shadow-brand-600/50">
                 {content.cta}
               </button>
               <button className="px-8 py-4 bg-transparent border border-neutral-700 hover:bg-neutral-800 text-neutral-300 hover:text-white font-semibold rounded-lg transition-all duration-200 active:scale-95">

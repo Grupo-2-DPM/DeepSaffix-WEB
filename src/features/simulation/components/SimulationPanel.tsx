@@ -191,12 +191,6 @@ export const SimulationPanel: React.FC = () => {
                       >
                         Iniciar
                       </button>
-                      <button
-                        onClick={() => { /* detalles */ }}
-                        className="text-[10px] font-mono tracking-widest text-neutral-400 hover:text-accent-cyan transition-all active:scale-95 uppercase border border-neutral-800 px-3 py-1.5 rounded"
-                      >
-                        Detalles
-                      </button>
                     </div>
                   </div>
                 </li>

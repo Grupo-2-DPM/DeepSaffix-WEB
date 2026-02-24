@@ -14,7 +14,7 @@ export async function http<T>(path: string, options?: RequestInit): Promise<T> {
     const baseUrl = getActiveApiUrl();
     
     // Log para depuración en consola
-    console.log(`📡 Request a: ${baseUrl}${path}`);
+    console.log(`Request a: ${baseUrl}${path}`);
 
     const res = await fetch(`${baseUrl}${path}`, {
         headers: { 

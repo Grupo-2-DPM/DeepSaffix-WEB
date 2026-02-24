@@ -1,18 +1,21 @@
-// URLs constantes
-export const ONLINE_API_URL = import.meta.env.VITE_API_URL || "https://tu-api-produccion.com";
+// URLs base
+export const REMOTE_API_URL = import.meta.env.VITE_API_URL || "https://deepsaffix-api.onrender.com";
 export const LOCAL_API_URL = "http://localhost:3000";
 
 /**
- * Obtiene la URL configurada por el usuario o la de producción por defecto
+ * Función auxiliar para obtener la URL activa basada en la preferencia del usuario
  */
-export const getBaseUrl = (): string => {
+export const getActiveApiUrl = (): string => {
   const preference = localStorage.getItem('api_preference');
-  return preference === 'local' ? LOCAL_API_URL : ONLINE_API_URL;
+  return preference === 'local' ? LOCAL_API_URL : REMOTE_API_URL;
 };
 
 export async function http<T>(path: string, options?: RequestInit): Promise<T> {
-    const baseUrl = getBaseUrl();
+    const baseUrl = getActiveApiUrl();
     
+    // Log para depuración en consola
+    console.log(`📡 Request a: ${baseUrl}${path}`);
+
     const res = await fetch(`${baseUrl}${path}`, {
         headers: { 
             "Content-Type": "application/json", 
@@ -22,8 +25,9 @@ export async function http<T>(path: string, options?: RequestInit): Promise<T> {
     });
 
     if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || `HTTP ${res.status}`);
+        // Intentamos parsear el error del backend
+        const errorText = await res.text();
+        throw new Error(errorText || `Error HTTP ${res.status}`);
     }
 
     if (res.status === 204) return undefined as T;

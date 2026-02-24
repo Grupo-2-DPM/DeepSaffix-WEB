@@ -81,7 +81,7 @@ cd deepsaffix-web
 npm install
 ```
 
-### 3. Instalar dependencias de desarrollo
+### 3. Instalar dependencias de desarrollo (Electron opcional)
 ```bash
 npm install --save-dev electron typescript @types/node @types/electron
 npm install --save-dev concurrently wait-on electron-builder
@@ -95,7 +95,7 @@ npm install --save-dev concurrently wait-on electron-builder
 npm run dev
 ```
 
-### Linting y Testing
+### Linting y Testing (Opcional)
 ```bash
 npm run lint                    # Verificar código con ESLint
 npm test                        # Ejecutar pruebas (si están configuradas)

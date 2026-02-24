@@ -10,7 +10,7 @@ export const About: React.FC = () => {
         <div className="text-center space-y-6">
           <div className="flex justify-center gap-3 flex-wrap">
             <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 border border-neutral-800 bg-neutral-900 px-3 py-1.5 rounded-full">
-              ⚡ ESTADO: EN DESARROLLO
+              ⚡ ESTADO: EN PRODUCCION
             </span>
             <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 border border-neutral-800 bg-neutral-900 px-3 py-1.5 rounded-full">
               🛡️ LICENCIA: MIT

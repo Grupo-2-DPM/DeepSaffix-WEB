@@ -1,5 +1,5 @@
 export const FOOTER_LINKS = [
-  { label: 'ACERCA_DE', href: '#' },
+  { label: 'SABER MAS', href: '#' },
   { label: 'PRIVACIDAD', href: '#' },
   { label: 'LICENCIA', href: '#' },
 ];

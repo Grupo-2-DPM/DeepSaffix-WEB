@@ -9,7 +9,7 @@ import { SimulationPanel } from './features/simulation/components/SimulationPane
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
 import {About} from './layouts/about/about'
-import { SimulacroContainer } from './components/ui/SimulationDashboard'
+import { SimulationDashboard } from './components/ui/SimulationDashboard'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -93,7 +93,7 @@ function App() {
 
     return (
       <DashboardLayout user={user} onLogout={() => { setIsAuthenticated(false); setUser(null); localStorage.removeItem('user'); window.location.hash = '#/'; }}>
-        <SimulacroContainer></SimulacroContainer>
+        <SimulationDashboard></SimulationDashboard>
       </DashboardLayout>
     );
     }

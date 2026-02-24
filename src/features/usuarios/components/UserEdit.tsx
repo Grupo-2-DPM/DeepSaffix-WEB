@@ -53,20 +53,105 @@ export const UserEdit: React.FC<Props> = ({ user, onSaved, onCancel }) => {
   };
 
   return (
-    <div className="p-4 border rounded">
-      <h4 className="font-semibold mb-2">Editar datos de perfil: {user.nombre}</h4>
-      <div className="space-y-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <input value={nombre} onChange={e => setNombre(e.target.value)} placeholder="Nombre" className="w-full px-3 py-2 border rounded" />
-          <input value={apellido} onChange={e => setApellido(e.target.value)} placeholder="Apellido" className="w-full px-3 py-2 border rounded" />
+    <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 animate-fade-in">
+      {/* Encabezado con estilo consola */}
+      <div className="flex items-center gap-2 border-b border-neutral-800 pb-3 mb-4">
+        <i className="fas fa-user-edit text-accent-cyan text-sm"></i>
+        <h4 className="text-white font-mono text-sm tracking-widest uppercase">
+          Editar perfil
+        </h4>
+        <span className="text-[10px] font-mono text-neutral-500 border border-neutral-800 px-2 py-0.5 rounded ml-auto">
+          {user.nombre}
+        </span>
+      </div>
+
+      <div className="space-y-4">
+        {/* Fila: Nombre y Apellido */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">
+              Nombre
+            </label>
+            <input
+              value={nombre}
+              onChange={e => setNombre(e.target.value)}
+              placeholder="Ingrese nombre"
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-2.5 text-neutral-300 font-mono text-sm placeholder:text-neutral-600 focus:outline-none focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan/50 transition-all"
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">
+              Apellido
+            </label>
+            <input
+              value={apellido}
+              onChange={e => setApellido(e.target.value)}
+              placeholder="Ingrese apellido"
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-2.5 text-neutral-300 font-mono text-sm placeholder:text-neutral-600 focus:outline-none focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan/50 transition-all"
+            />
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <input value={programa} onChange={e => setPrograma(e.target.value)} placeholder="Programa académico" className="w-full px-3 py-2 border rounded" />
-          <input value={semestre as any} onChange={e => setSemestre(e.target.value === '' ? '' : Number(e.target.value))} type="number" placeholder="Semestre" className="w-full px-3 py-2 border rounded" />
+
+        {/* Fila: Programa y Semestre */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">
+              Programa académico
+            </label>
+            <input
+              value={programa}
+              onChange={e => setPrograma(e.target.value)}
+              placeholder="Ej: Ingeniería de Sistemas"
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-2.5 text-neutral-300 font-mono text-sm placeholder:text-neutral-600 focus:outline-none focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan/50 transition-all"
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">
+              Semestre
+            </label>
+            <input
+              value={semestre as any}
+              onChange={e => setSemestre(e.target.value === '' ? '' : Number(e.target.value))}
+              type="number"
+              placeholder="Ej: 5"
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-2.5 text-neutral-300 font-mono text-sm placeholder:text-neutral-600 focus:outline-none focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan/50 transition-all"
+            />
+          </div>
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <button disabled={loading} onClick={handleSave} className="w-full sm:w-auto px-4 py-2 bg-green-600 text-gray-500 rounded">{loading ? 'Guardando...' : 'Guardar'}</button>
-          <button onClick={onCancel} className="w-full sm:w-auto px-4 py-2 bg-gray-200 rounded">Cancelar</button>
+
+        {/* Botones de acción */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <button
+            disabled={loading}
+            onClick={handleSave}
+            className={`
+          flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg
+          font-mono text-[10px] tracking-widest uppercase transition-all active:scale-95
+          ${loading
+                ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
+                : 'bg-brand-600 hover:bg-brand-500 text-white shadow-lg shadow-brand-600/20'
+              }
+        `}
+          >
+            {loading ? (
+              <>
+                <i className="fas fa-spinner fa-spin text-accent-cyan"></i>
+                <span>Guardando...</span>
+              </>
+            ) : (
+              <>
+                <i className="fas fa-save text-accent-cyan"></i>
+                <span>Guardar cambios</span>
+              </>
+            )}
+          </button>
+          <button
+            onClick={onCancel}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-transparent border border-neutral-700 text-neutral-400 font-mono text-[10px] tracking-widest uppercase hover:bg-neutral-800 hover:text-accent-cyan transition-all active:scale-95"
+          >
+            <i className="fas fa-times"></i>
+            <span>Cancelar</span>
+          </button>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SimulationPanel } from '../../features/simulation/components/SimulationPanel';
 import SimulationRun from '../../features/simulation/pages/SimulationRun';
 
-export const SimulacroContainer: React.FC = () => {
+export const SimulationDashboard: React.FC = () => {
   const [view, setView] = useState<'dashboard' | 'run' | 'view'>('dashboard');
 
   useEffect(() => {

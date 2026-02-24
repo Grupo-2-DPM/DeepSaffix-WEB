@@ -129,7 +129,7 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
               ) : null}
               <span className="tracking-widest uppercase text-sm">Ejecutar Ingreso</span>
             </button>
-            <p className="text-[9px] text-center mt-4 text-neutral-700 font-mono italic">
+            <p className="text-[9px] text-center mt-4 text-neutral-700 hover:bg-brand-500 font-mono italic">
               Conexión actual: {isLocal ? LOCAL_API_URL : REMOTE_API_URL}
             </p>
           </div>

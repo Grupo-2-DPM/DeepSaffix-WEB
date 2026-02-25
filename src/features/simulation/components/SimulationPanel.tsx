@@ -69,9 +69,13 @@ export const SimulationPanel: React.FC = () => {
     }
 
     try {
-      const body: any = { nombre: String(form.nombre).trim(), descripcion: form.descripcion, duracion_minutos: Number(form.duracion_minutos) };
-      // if pool cantidad provided, include pool
-      if (form.pool && Number(form.pool.cantidad) > 0) body.pool = { cantidad: Number(form.pool.cantidad), nivel_dificultad: form.pool.nivel_dificultad || undefined };
+      // When editing, do not allow changing duration or pool cantidad; only update name/description
+      const body: any = { nombre: String(form.nombre).trim(), descripcion: form.descripcion };
+      if (!editingId) {
+        body.duracion_minutos = Number(form.duracion_minutos);
+        // if pool cantidad provided, include pool for create
+        if (form.pool && Number(form.pool.cantidad) > 0) body.pool = { cantidad: Number(form.pool.cantidad), nivel_dificultad: form.pool.nivel_dificultad || undefined };
+      }
 
       if (editingId) {
         await simulationService.updateSimulacro(editingId, body);
@@ -290,9 +294,9 @@ export const SimulationPanel: React.FC = () => {
               <div className="grid grid-cols-1 gap-2">
                 <input value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} placeholder="Nombre" className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm" />
                 <input value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} placeholder="Descripción" className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm" />
-                <input type="number" value={form.duracion_minutos} onChange={e => setForm({ ...form, duracion_minutos: Number(e.target.value) })} placeholder="Duración (min)" className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm" />
+                <input type="number" value={form.duracion_minutos} onChange={e => setForm({ ...form, duracion_minutos: Number(e.target.value) })} placeholder="Duración (min)" className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm" disabled={!!editingId} />
                 <div className="grid grid-cols-2 gap-2">
-                  <input type="number" value={form.pool.cantidad} onChange={e => setForm({ ...form, pool: { ...form.pool, cantidad: Number(e.target.value) } })} placeholder="Cantidad desde pool" className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm" />
+                  <input type="number" value={form.pool.cantidad} onChange={e => setForm({ ...form, pool: { ...form.pool, cantidad: Number(e.target.value) } })} placeholder="Cantidad desde pool" className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm" disabled={!!editingId} />
                   <select value={form.pool.nivel_dificultad} onChange={e => setForm({ ...form, pool: { ...form.pool, nivel_dificultad: e.target.value } })} className="p-2 bg-neutral-900 border border-neutral-800 rounded text-white text-sm">
                     <option value="">Nivel (opcional)</option>
                     <option value="BAJO">BAJO</option>

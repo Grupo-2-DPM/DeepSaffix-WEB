@@ -233,6 +233,28 @@ export const SimulationRun: React.FC = () => {
   };
 
   const handleBack = () => { window.location.hash = '#/simulacros'; };
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+
+  const confirmLeave = async () => {
+    setShowLeaveConfirm(false);
+    try {
+      if (!attempt || !attempt.id_intento) {
+        window.location.hash = '#/simulacros';
+        return;
+      }
+
+      const optionIds = Object.values(selected).map(Number).filter(Boolean);
+      if (optionIds.length) {
+        await simulationService.submitAnswers(attempt.id_intento, optionIds);
+      }
+
+      // navigate back after sending answers
+      window.location.hash = '#/simulacros';
+    } catch (err) {
+      console.error('Error enviando respuestas al salir', err);
+      alert('Hubo un error al enviar las respuestas. Intenta nuevamente o revisa tu conexión.');
+    }
+  };
 
   // compute correct/incorrect from attempt respuestas (useful for view-only)
   const respuestas = attempt?.respuestas ?? [];
@@ -259,7 +281,7 @@ export const SimulationRun: React.FC = () => {
             </h2>
           </div>
           <button
-            onClick={handleBack}
+            onClick={() => setShowLeaveConfirm(true)}
             className="text-[10px] font-bold tracking-widest uppercase text-neutral-400 hover:text-accent-cyan transition-colors active:scale-95"
           >
             ← Volver a simulacros
@@ -314,20 +336,7 @@ export const SimulationRun: React.FC = () => {
 
             {/* Botones de control */}
             <div className="flex gap-3">
-              <button
-                onClick={() => setRunning(true)}
-                disabled={running || progress >= 100}
-                className="px-4 py-2 bg-brand-600 hover:bg-brand-500 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:border-neutral-700 text-neutral-200 text-sm font-medium rounded-lg border border-brand-400/30 transition-all active:scale-95 flex items-center gap-2"
-              >
-                <i className="fas fa-play text-[10px]"></i> Continuar
-              </button>
-              <button
-                onClick={handleStop}
-                disabled={!running}
-                className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:border-neutral-700 text-red-500 text-sm font-medium rounded-lg border border-red-800 transition-all active:scale-95 flex items-center gap-2"
-              >
-                <i className="fas fa-stop text-[10px]"></i> Detener
-              </button>
+              {/* El botón 'Continuar' fue removido por requerimiento */}
             </div>
 
             {/* Indicador de guardado automático */}
@@ -469,6 +478,20 @@ export const SimulationRun: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Modal confirmación salir */}
+      {showLeaveConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 w-[90%] max-w-lg">
+            <h3 className="text-white text-lg font-semibold mb-2">Confirmar salida</h3>
+            <p className="text-sm text-neutral-400 mb-4">Si sales ahora, se enviarán las respuestas tal como están en el simulacro. ¿Deseas continuar?</p>
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setShowLeaveConfirm(false)} className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded">Cancelar</button>
+              <button onClick={confirmLeave} className="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded">Enviar y salir</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

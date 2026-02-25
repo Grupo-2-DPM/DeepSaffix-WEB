@@ -47,6 +47,18 @@ export const simulationService = {
     return http<SimulacroDTO>(`/simulacros/${simId}`);
   },
 
+  async createSimulacro(body: any): Promise<SimulacroDTO> {
+    return http<SimulacroDTO>(`/simulacros`, { method: 'POST', body: JSON.stringify(body) });
+  },
+
+  async updateSimulacro(simId: number, body: any): Promise<SimulacroDTO> {
+    return http<SimulacroDTO>(`/simulacros/${simId}`, { method: 'PATCH', body: JSON.stringify(body) });
+  },
+
+  async deleteSimulacro(simId: number): Promise<void> {
+    return http<void>(`/simulacros/${simId}`, { method: 'DELETE' });
+  },
+
   async submitAnswers(attemptId: number, optionIds: number[]): Promise<{ inserted: number }> {
     return http<{ inserted: number }>(`/simulacros/intentos/${attemptId}/respuestas`, {
       method: 'POST',

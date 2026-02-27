@@ -59,7 +59,7 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
           <button type="button" onClick={toggleApiMode} className="group text-right">
             <p className="text-[7px] font-black text-neutral-600 uppercase mb-1 tracking-tighter group-hover:text-neutral-400 transition-colors">Entorno de Datos</p>
             <div className={`px-2 py-1 rounded-md text-[9px] font-bold border transition-all ${isLocal ? 'bg-amber-500/5 border-amber-500/40 text-amber-500' : 'bg-emerald-500/5 border-emerald-500/40 text-emerald-500'}`}>
-              {isLocal ? 'NODO_LOCAL' : 'NUBE_REMOTA'}
+              {isLocal ? 'NODO_LOCAL' : 'API_REMOTA'}
             </div>
           </button>
         </header>

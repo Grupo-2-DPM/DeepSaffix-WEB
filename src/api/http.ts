@@ -16,7 +16,7 @@ export const getActiveApiUrl = (): string => {
 export const checkHealth = async (): Promise<boolean> => {
     try {
         const baseUrl = localStorage.getItem('api_preference') === 'local' ? LOCAL_API_URL : REMOTE_API_URL;
-        const res = await fetch(`${baseUrl}/health`, { method: 'GET' }); // O simplemente `${baseUrl}/`
+        const res = await fetch(`${baseUrl}/usuarios`, { method: 'GET' }); // O simplemente `${baseUrl}/`
         return res.ok;
     } catch {
         return false;

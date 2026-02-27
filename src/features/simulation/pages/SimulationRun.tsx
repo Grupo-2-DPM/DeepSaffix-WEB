@@ -157,7 +157,7 @@ export const SimulationRun: React.FC = () => {
     };
   }, [running, attempt, selected]);
 
-  const handleStop = () => {
+  const _handleStop = () => {
     if (intervalRef.current) window.clearInterval(intervalRef.current);
     if (timerRef.current) window.clearInterval(timerRef.current);
     // mark paused time start
@@ -232,7 +232,7 @@ export const SimulationRun: React.FC = () => {
     }
   };
 
-  const handleBack = () => { window.location.hash = '#/simulacros'; };
+  const _handleBack = () => { window.location.hash = '#/simulacros'; };
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
 
   const confirmLeave = async () => {

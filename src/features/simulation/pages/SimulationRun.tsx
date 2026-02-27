@@ -157,16 +157,15 @@ export const SimulationRun: React.FC = () => {
     };
   }, [running, attempt, selected]);
 
-  const _handleStop = () => {
-    if (intervalRef.current) window.clearInterval(intervalRef.current);
-    if (timerRef.current) window.clearInterval(timerRef.current);
-    // mark paused time start
-    pausedAtRef.current = Date.now();
-    setRunning(false);
-    setStatus('Detenido por usuario');
-  };
-
-
+  // const _handleStop = () => {
+  //   if (intervalRef.current) window.clearInterval(intervalRef.current);
+  //   if (timerRef.current) window.clearInterval(timerRef.current);
+  //   // mark paused time start
+  //   pausedAtRef.current = Date.now();
+  //   setRunning(false);
+  //   setStatus('Detenido por usuario');
+  // };
+  
   const formatRemaining = (ms: number) => {
     if (ms <= 0) return '00:00';
     const totalSeconds = Math.max(0, Math.floor(ms / 1000));
@@ -232,7 +231,7 @@ export const SimulationRun: React.FC = () => {
     }
   };
 
-  const _handleBack = () => { window.location.hash = '#/simulacros'; };
+  // const _handleBack = () => { window.location.hash = '#/simulacros'; };
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
 
   const confirmLeave = async () => {

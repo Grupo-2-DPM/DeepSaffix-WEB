@@ -95,7 +95,7 @@ export const SimulationPanel: React.FC = () => {
         if (Array.isArray(msg)) return alert(msg.join('\n'));
         if (typeof msg === 'string') return alert(msg);
         return alert('Error creando/actualizando simulacro');
-      } catch (e) {
+      } catch {
         return alert('Error creando/actualizando simulacro');
       }
     }

@@ -49,6 +49,3 @@ export const Footer = () => {
     </footer>
   );
 };
-
-// El archivo footer.data.js puede quedar intacto, pero no se usa. 
-// Si quieres limpiar, puedes eliminar el import y definir FOOTER_LINKS en otro lado.

@@ -46,7 +46,7 @@ function App() {
     );
   }
 
-  if (route === '#/simulacros') {
+  if (route === '#/simulacrum') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <SimulationPanel />
@@ -54,7 +54,7 @@ function App() {
     );
   }
 
-  if (route.startsWith('#/simulacros/run') || route.startsWith('#/simulacros/view')) {
+  if (route.startsWith('#/simulacrum/run') || route.startsWith('#/simulacrum/view')) {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <SimulationRun />
@@ -70,7 +70,7 @@ function App() {
     );
   }
 
-  if (route === '#/saber-mas') {
+  if (route === '#/about') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <About />
@@ -78,7 +78,7 @@ function App() {
     );
   }
 
-  if (route === '#/privacidad') {
+  if (route === '#/privacy-policy') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <PrivacyPolicy />
@@ -86,7 +86,7 @@ function App() {
     );
   }
 
-  if (route === '#/licencia') {
+  if (route === '#/license') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <LicenseView />

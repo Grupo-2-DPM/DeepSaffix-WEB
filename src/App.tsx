@@ -62,7 +62,7 @@ function App() {
     );
   }
 
-  if (route === '#/simulation') {
+  if (route === '#/overview') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <OverviewDashboard />

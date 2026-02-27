@@ -2,6 +2,6 @@ export const NAV_LINKS = [
   { label: 'Inicio', href: '#/' },
   { label: 'Perfil', href: '#/profile' },
   // { label: 'Historial', href: '#/simulacro' },
-  { label: 'Simulacros', href: '#/simulation' },
+  { label: 'Overview', href: '#/overview' },
   { label: 'Saber Mas', href: '#/saber-mas' },
 ];

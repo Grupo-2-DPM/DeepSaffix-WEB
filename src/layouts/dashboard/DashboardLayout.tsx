@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Sidebar from './Sidebar';
+import Sidebar from '../sidebar/Sidebar';
 import { Navbar } from '../navbar/Navbar'; // nuestro Navbar adaptado
 import { Footer } from '../footer/Footer';
 

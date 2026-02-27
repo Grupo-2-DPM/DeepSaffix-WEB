@@ -8,7 +8,7 @@ import { SimulationPanel } from './features/simulation/components/SimulationPane
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
 import { About } from './layouts/about/about'
-import { SimulationDashboard } from './components/ui/SimulationDashboard'
+import { OverviewDashboard } from './components/ui/OverviewDashboard'
 import { LicenseView } from './layouts/legal/LicenseView'
 import { PrivacyPolicy } from './layouts/legal/PrivacyPolicy'
 
@@ -65,7 +65,7 @@ function App() {
   if (route === '#/simulation') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
-        <SimulationDashboard />
+        <OverviewDashboard />
       </DashboardLayout>
     );
   }

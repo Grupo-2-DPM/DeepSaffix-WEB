@@ -10,6 +10,20 @@ export const getActiveApiUrl = (): string => {
   return preference === 'local' ? LOCAL_API_URL : REMOTE_API_URL;
 };
 
+/**
+ * Función auxiliar Health Checker que verifica que la API este activa.
+ */
+export const checkHealth = async (): Promise<boolean> => {
+    try {
+        const baseUrl = getActiveApiUrl();
+        const res = await fetch(`${baseUrl}/`, { method: 'GET' });
+        return res.ok;
+    } catch {
+        return false;
+    }
+};
+
+
 export async function http<T>(path: string, options?: RequestInit): Promise<T> {
     const baseUrl = getActiveApiUrl();
     

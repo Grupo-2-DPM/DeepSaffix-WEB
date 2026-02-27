@@ -8,7 +8,7 @@ import { SimulationPanel } from './features/simulation/components/SimulationPane
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
 import { About } from './layouts/about/about'
-import { OverviewDashboard } from './components/ui/OverviewDashboard'
+import { OverviewDashboard } from './layouts/dashboard/OverviewDashboard'
 import { LicenseView } from './layouts/legal/LicenseView'
 import { PrivacyPolicy } from './layouts/legal/PrivacyPolicy'
 
@@ -78,8 +78,6 @@ function App() {
     );
   }
 
-  // --- NUEVAS RUTAS: PRIVACIDAD Y LICENCIA ---
-
   if (route === '#/privacidad') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
@@ -96,7 +94,6 @@ function App() {
     );
   }
 
-  // RUTA POR DEFECTO (HERO)
   return (
     <DashboardLayout user={user} onLogout={logout}>
       <Hero />

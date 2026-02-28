@@ -1,10 +1,13 @@
 
-// 1. Definimos la interfaz para aceptar las funciones del Layout
+interface User {
+  nombre?: string;
+}
+
 interface NavbarProps {
   setSidebarOpen?: (open: boolean) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user?: any;
+  user?: User | null;
   onLogout?: () => void;
+  className?: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ setSidebarOpen, user, onLogout }) => {

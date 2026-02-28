@@ -14,19 +14,44 @@ export const DashboardLayout: React.FC<Props> = ({ children, user, onLogout }) =
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-neutral-950">
-      {/* Sidebar (ya adaptado) */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="flex flex-col flex-1 md:ml-64 min-w-0">
-        <Navbar setSidebarOpen={setSidebarOpen} user={user} onLogout={onLogout} />
+    <div className="min-h-screen bg-neutral-950 flex flex-col">
 
-        {/* Añadimos un margin-top o padding-top para compensar el tamaño de la Navbar */}
-        <main className="flex-1 w-full max-w-7xl mx-auto p-6 md:p-12 animate-fade-in">
+      {/* Navbar por encima de todo */}
+      <Navbar
+        setSidebarOpen={setSidebarOpen}
+        user={user}
+        onLogout={onLogout}
+        className="fixed top-0 left-0 w-full z-50"
+      />
+
+      <div className="flex flex-1 pt-16 relative">
+
+        {/* Sidebar interna */}
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          className="
+        fixed top-16 left-0 h-[calc(100vh-4rem)]
+        w-64 bg-neutral-900
+        transform transition-transform duration-300
+        z-40
+      "
+        />
+
+        {/* Contenido principal */}
+        <main className="
+      flex-1 w-full
+      max-w-7xl mx-auto
+      p-6 md:p-12
+      animate-fade-in
+    ">
           {children}
         </main>
 
-        <Footer />
       </div>
+
+      {/* Footer por encima de la sidebar */}
+      <Footer className="relative z-50" />
     </div>
   );
 };

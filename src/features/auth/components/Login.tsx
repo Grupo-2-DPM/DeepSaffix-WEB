@@ -67,7 +67,7 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
         {(!apiReady || checkingApi) && (
           <div className={`p-4 rounded-xl mb-8 text-[10px] font-mono border flex items-center gap-4 animate-pulse ${checkingApi ? 'bg-brand-500/5 border-brand-500/20 text-brand-400' : 'bg-amber-500/5 border-amber-500/20 text-amber-500'}`}>
               <div className="h-2 w-2 rounded-full bg-current animate-ping" />
-              {checkingApi ? 'INICIALIZANDO ENLACE...' : 'SIN CONEXIÓN: ESPERANDO RESPUESTA DEL SERVIDOR'}
+              {checkingApi ? 'INICIALIZANDO ENLACE A RENDER...' : 'SIN CONEXIÓN: ESPERANDO RESPUESTA DEL SERVIDOR'}
           </div>
         )}
 

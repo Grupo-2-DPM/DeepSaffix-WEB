@@ -95,7 +95,7 @@ export const SimulationPanel: React.FC = () => {
         if (Array.isArray(msg)) return alert(msg.join('\n'));
         if (typeof msg === 'string') return alert(msg);
         return alert('Error creando/actualizando simulacro');
-      } catch (e) {
+      } catch {
         return alert('Error creando/actualizando simulacro');
       }
     }
@@ -206,7 +206,7 @@ export const SimulationPanel: React.FC = () => {
                       <div className="text-right text-[10px] font-mono text-neutral-500 mt-1">{r.progreso}%</div>
                     </div>
                     <button
-                      onClick={() => { window.location.hash = `#/simulacros/view/${r.id}`; }}
+                      onClick={() => { window.location.hash = `#/simulacrum/view/${r.id}`; }}
                       className="text-[10px] font-mono tracking-widest text-neutral-400 hover:text-accent-cyan transition-all active:scale-95 uppercase border border-neutral-800 px-2 py-1 rounded"
                     >
                       Ver
@@ -272,7 +272,7 @@ export const SimulationPanel: React.FC = () => {
                           try {
                             const simId = Number(d.id);
                             const intento = await simulationService.startAttempt(simId, Number(userId));
-                            window.location.hash = `#/simulacros/run/${intento.id_intento}`;
+                            window.location.hash = `#/simulacrum/run/${intento.id_intento}`;
                           } catch (err: any) {
                             console.error(err);
                             alert('Error iniciando simulacro');

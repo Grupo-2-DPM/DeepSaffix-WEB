@@ -47,10 +47,12 @@ export const simulationService = {
     return http<SimulacroDTO>(`/simulacros/${simId}`);
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async createSimulacro(body: any): Promise<SimulacroDTO> {
     return http<SimulacroDTO>(`/simulacros`, { method: 'POST', body: JSON.stringify(body) });
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async updateSimulacro(simId: number, body: any): Promise<SimulacroDTO> {
     return http<SimulacroDTO>(`/simulacros/${simId}`, { method: 'PATCH', body: JSON.stringify(body) });
   },

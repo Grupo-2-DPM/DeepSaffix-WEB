@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NAV_LINKS } from '../navbar/navbar.data';
+import { NAV_LINKS } from './sidebar.data';
 
 interface Props {
   isOpen: boolean;

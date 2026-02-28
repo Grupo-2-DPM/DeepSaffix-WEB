@@ -8,7 +8,7 @@ import { SimulationPanel } from './features/simulation/components/SimulationPane
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
 import { About } from './layouts/about/about'
-import { SimulationDashboard } from './components/ui/SimulationDashboard'
+import { OverviewDashboard } from './layouts/dashboard/OverviewDashboard'
 import { LicenseView } from './layouts/legal/LicenseView'
 import { PrivacyPolicy } from './layouts/legal/PrivacyPolicy'
 
@@ -46,7 +46,7 @@ function App() {
     );
   }
 
-  if (route === '#/simulacros') {
+  if (route === '#/simulacrum') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <SimulationPanel />
@@ -54,7 +54,7 @@ function App() {
     );
   }
 
-  if (route.startsWith('#/simulacros/run') || route.startsWith('#/simulacros/view')) {
+  if (route.startsWith('#/simulacrum/run') || route.startsWith('#/simulacrum/view')) {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <SimulationRun />
@@ -62,15 +62,15 @@ function App() {
     );
   }
 
-  if (route === '#/simulation') {
+  if (route === '#/overview') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
-        <SimulationDashboard />
+        <OverviewDashboard />
       </DashboardLayout>
     );
   }
 
-  if (route === '#/saber-mas') {
+  if (route === '#/about') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <About />
@@ -78,9 +78,7 @@ function App() {
     );
   }
 
-  // --- NUEVAS RUTAS: PRIVACIDAD Y LICENCIA ---
-
-  if (route === '#/privacidad') {
+  if (route === '#/privacy-policy') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <PrivacyPolicy />
@@ -88,7 +86,7 @@ function App() {
     );
   }
 
-  if (route === '#/licencia') {
+  if (route === '#/license') {
     return (
       <DashboardLayout user={user} onLogout={logout}>
         <LicenseView />
@@ -96,7 +94,6 @@ function App() {
     );
   }
 
-  // RUTA POR DEFECTO (HERO)
   return (
     <DashboardLayout user={user} onLogout={logout}>
       <Hero />

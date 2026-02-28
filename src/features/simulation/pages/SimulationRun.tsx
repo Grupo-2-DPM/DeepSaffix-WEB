@@ -238,7 +238,7 @@ export const SimulationRun: React.FC = () => {
     setShowLeaveConfirm(false);
     try {
       if (!attempt || !attempt.id_intento) {
-        window.location.hash = '#/simulacros';
+        window.location.hash = '#/simulacrum';
         return;
       }
 
@@ -248,7 +248,7 @@ export const SimulationRun: React.FC = () => {
       }
 
       // navigate back after sending answers
-      window.location.hash = '#/simulacros';
+      window.location.hash = '#/simulacrum';
     } catch (err) {
       console.error('Error enviando respuestas al salir', err);
       alert('Hubo un error al enviar las respuestas. Intenta nuevamente o revisa tu conexión.');

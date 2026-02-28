@@ -2,33 +2,25 @@
 import React, { useState, useEffect } from 'react';
 import type { LoginDto } from '../../../backend/services/authService';
 import { authService } from '../../../backend/services/authService';
-import { REMOTE_API_URL, LOCAL_API_URL } from '../../../api/http';
+import { checkHealth } from '../../../api/http';
 
-export type LoginFormData = LoginDto;
-
-interface Props {
-  onLoginSuccess: (user: unknown) => void;
-}
-
-export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
-  const [form, setForm] = useState<LoginFormData>({ correo: '', contraseña: '' });
+export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLoginSuccess }) => {
+  const [form, setForm] = useState<LoginDto>({ correo: '', contraseña: '' });
   const [loading, setLoading] = useState(false);
-  const [slowApi, setSlowApi] = useState(false); // <--- Nuevo estado
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-
   const [isLocal, setIsLocal] = useState(() => localStorage.getItem('api_preference') === 'local');
+  const [apiReady, setApiReady] = useState<boolean>(false);
+  const [checkingApi, setCheckingApi] = useState<boolean>(true);
 
-  // Lógica para detectar carga lenta
   useEffect(() => {
-    let timer: any;
-    if (loading) {
-      timer = setTimeout(() => setSlowApi(true), 2000);
-    } else {
-      setSlowApi(false);
-    }
-    return () => clearTimeout(timer);
-  }, [loading]);
+    const verify = async () => {
+      setCheckingApi(true);
+      setApiReady(await checkHealth());
+      setCheckingApi(false);
+    };
+    verify();
+  }, [isLocal]);
 
   const toggleApiMode = () => {
     const nextMode = !isLocal;
@@ -36,104 +28,86 @@ export const Login: React.FC<Props> = ({ onLoginSuccess }) => {
     localStorage.setItem('api_preference', nextMode ? 'local' : 'online');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  const parseError = (raw: any) => {
-    try {
-      const j = typeof raw === 'string' ? JSON.parse(raw) : raw;
-      if (Array.isArray(j.message)) return j.message.join(', ');
-      if (j.message) return typeof j.message === 'string' ? j.message : JSON.stringify(j.message);
-      return raw?.toString?.() ?? 'Error desconocido';
-    } catch {
-      return raw?.toString?.() ?? 'Error desconocido';
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!apiReady) return;
     setLoading(true);
     setError(null);
     try {
-      const user = await authService.login(form);
-      localStorage.setItem('user', JSON.stringify(user));
-      onLoginSuccess(user);
+      // La respuesta ahora trae { token, user }
+      const response = await authService.login(form);
+
+      // 1. Guardamos el token para que el interceptor de http.ts lo use
+      localStorage.setItem('token', response.token);
+
+      // 2. Guardamos los datos del usuario para la persistencia de sesión
+      localStorage.setItem('user', JSON.stringify(response.user));
+
+      // 3. Notificamos al componente padre que el login fue exitoso
+      onLoginSuccess(response.user);
     } catch (err: any) {
-      setError(parseError(err?.message ?? err));
+      setError(err?.message || 'Identidad no verificada');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 p-6">
-      <div className="bg-neutral-900 border border-neutral-800 rounded-xl shadow-2xl p-8 max-w-md w-full animate-fade-in">
+    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 p-6 selection:bg-brand-500/30">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl p-10 max-w-md w-full animate-fade-in border-b-brand-500/10 border-b-4">
 
-        <div className="flex justify-between items-start mb-10">
-          <div className="border-l-4 border-brand-500 pl-4">
-            <h1 className="text-2xl font-black text-white tracking-tight uppercase">
-              Deep <span className="text-brand-400">Saffix</span>
+        <header className="flex justify-between items-start mb-12">
+          <div className="border-l-4 border-brand-500 pl-5">
+            <h1 className="text-3xl font-black text-white uppercase tracking-tighter leading-none">
+              Deep <span className="text-brand-500">Saffix</span>
             </h1>
-            <p className="text-xs text-neutral-400 font-mono tracking-widest mt-1">SIMULACROS V2.0</p>
+            <p className="text-[9px] text-neutral-500 font-mono mt-2 tracking-[0.3em] font-bold">ACCESO CENTRAL V2.0</p>
           </div>
 
-          <button type="button" onClick={toggleApiMode} className="group flex flex-col items-end gap-1 transition-opacity hover:opacity-80">
-            <span className="text-[8px] font-bold text-neutral-500 uppercase tracking-tighter">Entorno de Datos</span>
-            <div className={`px-2 py-0.5 rounded text-[9px] font-bold border ${isLocal ? 'bg-amber-500/10 border-amber-500/50 text-amber-500' : 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'}`}>
-              {isLocal ? '● LOCALHOST:3000' : '● CLOUD API'}
+          <button type="button" onClick={toggleApiMode} className="group text-right">
+            <p className="text-[7px] font-black text-neutral-600 uppercase mb-1 tracking-tighter group-hover:text-neutral-400 transition-colors">Entorno de Datos</p>
+            <div className={`px-2 py-1 rounded-md text-[9px] font-bold border transition-all ${isLocal ? 'bg-amber-500/5 border-amber-500/40 text-amber-500' : 'bg-emerald-500/5 border-emerald-500/40 text-emerald-500'}`}>
+              {isLocal ? 'NODO_LOCAL' : 'API_REMOTA'}
             </div>
           </button>
-        </div>
+        </header>
 
-        {/* MENSAJE DE CARGA LENTA */}
-        {slowApi && !error && (
-          <div className="bg-brand-500/10 border border-brand-500/30 text-brand-400 rounded-lg p-3 mb-6 text-[10px] font-mono leading-relaxed animate-pulse">
-            LA API ESTÁ TARDANDO EN RESPONDER... <br />
-            Si es el primer acceso, el servidor remoto puede tardar hasta 30s en "despertar". Por favor, espera.
+        {(!apiReady || checkingApi) && (
+          <div className={`p-4 rounded-xl mb-8 text-[10px] font-mono border flex items-center gap-4 animate-pulse ${checkingApi ? 'bg-brand-500/5 border-brand-500/20 text-brand-400' : 'bg-amber-500/5 border-amber-500/20 text-amber-500'}`}>
+            <div className="h-2 w-2 rounded-full bg-current animate-ping" />
+            {checkingApi ? 'INICIALIZANDO ENLACE A RENDER...' : 'SIN CONEXIÓN: ESPERANDO RESPUESTA DEL SERVIDOR'}
           </div>
         )}
 
-        {error && (
-          <div className="bg-red-900/20 border border-red-500/50 text-red-400 rounded-lg p-3 mb-6 text-sm font-medium animate-shake">
-            {error}
-          </div>
-        )}
+        {error && <div className="bg-red-500/10 border-l-4 border-red-500 text-red-400 p-4 mb-8 text-xs font-bold uppercase tracking-tight animate-shake">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-
-          <div className="space-y-1">
-            <label htmlFor="correo" className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Identificación</label>
-            <input id="correo" name="correo" value={form.correo} onChange={handleChange} type="email" required placeholder="usuario@institucion.edu.co" className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
+        <form onSubmit={handleSubmit} className={`space-y-7 ${!apiReady ? 'opacity-30 grayscale pointer-events-none' : ''}`}>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-neutral-500 uppercase tracking-widest ml-1">ID de Credencial</label>
+            <input name="correo" value={form.correo} onChange={e => setForm({ ...form, correo: e.target.value })} type="email" required placeholder="usuario@institucion.edu.co" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-5 py-4 text-white focus:border-brand-500 outline-none transition-all placeholder:text-neutral-800" />
           </div>
 
-          <div className="space-y-1">
-            <label htmlFor="contraseña" className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Clave</label>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-neutral-500 uppercase tracking-widest ml-1">Llave de Seguridad</label>
             <div className="relative">
-              <input id="contraseña" name="contraseña" value={form.contraseña} onChange={handleChange} type={showPassword ? 'text' : 'password'} required placeholder="••••••••" className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-brand-50 outline-none focus:border-brand-500 transition-all" />
-              <button type="button" onClick={() => setShowPassword(s => !s)} className="absolute right-3 top-3 text-[10px] font-bold text-neutral-600 hover:text-brand-400">
-                {showPassword ? 'HIDE' : 'SHOW'}
+              <input name="contraseña" value={form.contraseña} onChange={e => setForm({ ...form, contraseña: e.target.value })} type={showPassword ? 'text' : 'password'} required placeholder="••••••••" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-5 py-4 text-white focus:border-brand-500 outline-none transition-all placeholder:text-neutral-800" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-4 text-[9px] font-black text-neutral-600 hover:text-brand-500 transition-colors uppercase tracking-tighter">
+                {showPassword ? 'OCULTAR' : 'MOSTRAR'}
               </button>
             </div>
           </div>
 
-          <div className="pt-2">
-            <button type="submit" disabled={loading} className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 border-b-2 border-brand-800">
-              {loading ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : null}
-              <span className="tracking-widest uppercase text-sm">{loading ? 'Procesando...' : 'Ejecutar Ingreso'}</span>
-            </button>
-          </div>
+          <button type="submit" disabled={loading || !apiReady} className="w-full bg-brand-600 hover:bg-brand-500 text-white font-black py-4 rounded-xl shadow-[0_10px_30px_rgba(0,115,187,0.3)] transition-all active:scale-[0.97] disabled:opacity-30 disabled:shadow-none flex items-center justify-center gap-3 border-b-4 border-brand-800 active:border-b-0 uppercase text-xs tracking-[0.2em]">
+            {loading ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : null}
+            {loading ? 'Autenticando...' : 'Autorizar Ingreso'}
+          </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-neutral-800 text-center">
-          <button onClick={() => window.dispatchEvent(new CustomEvent('show-register'))} className="text-xs font-bold text-brand-400 hover:text-accent-cyan transition-colors italic">
-            + SOLICITAR NUEVA CUENTA
+        <div className="mt-12 pt-8 border-t border-neutral-800/50 text-center">
+          <button onClick={() => window.dispatchEvent(new CustomEvent('show-register'))} className="text-[10px] font-black text-brand-500 hover:text-white transition-all uppercase tracking-[0.2em] italic">
+            + Solicitar Nuevo Protocolo de Acceso
           </button>
         </div>
-        <p className="text-[9px] text-center mt-4 text-neutral-700 font-mono italic">
-          Destino: {isLocal ? LOCAL_API_URL : REMOTE_API_URL}
-        </p>
       </div>
     </div>
   );

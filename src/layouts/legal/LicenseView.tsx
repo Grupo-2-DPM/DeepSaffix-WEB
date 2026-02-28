@@ -3,13 +3,40 @@ import React, { useEffect, useState } from 'react';
 export const LicenseView: React.FC = () => {
   const [content, setContent] = useState<string>("Cargando protocolo de licencia...");
 
+  const fallbackLicense = `MIT License
+Copyright (c) 2026 DeepSaffix
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.`;
+
   useEffect(() => {
-    // Simulamos la carga del archivo LICENSE.md
     fetch('/LICENSE.md')
-      .then(res => res.text())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('No se encontró LICENSE.md');
+        }
+        return res.text();
+      })
       .then(text => setContent(text))
-      .catch(() => setContent("Error al cargar LICENSE.md. Verifique el repositorio raíz."));
-  }, []);
+      .catch(() => {
+        setContent(fallbackLicense);
+      });
+  }, [fallbackLicense]);
 
   return (
     <div className="max-w-4xl mx-auto w-full animate-fade-in p-4">
@@ -33,7 +60,7 @@ export const LicenseView: React.FC = () => {
         </div>
 
         <div className="bg-neutral-950/50 p-4 border-t border-neutral-800 flex justify-end">
-          <button 
+          <button
             onClick={() => window.history.back()}
             className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-[10px] font-bold tracking-widest uppercase border border-neutral-700 rounded-lg transition-all active:scale-95"
           >

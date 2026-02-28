@@ -14,9 +14,16 @@ export interface UsuarioSafe {
   estado_cuenta: string;
 }
 
+// Nueva interfaz para la respuesta completa del Login
+export interface LoginResponse {
+  token: string;       // El JWT
+  user: UsuarioSafe;   // Los datos del usuario
+}
+
 export const authService = {
-  async login(dto: LoginDto): Promise<UsuarioSafe> {
-    return http<UsuarioSafe>('/auth/login', {
+  // Ahora el Promise devuelve LoginResponse en lugar de solo UsuarioSafe
+  async login(dto: LoginDto): Promise<LoginResponse> {
+    return http<LoginResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(dto),
     });

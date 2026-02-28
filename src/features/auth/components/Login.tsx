@@ -34,18 +34,17 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
     setLoading(true);
     setError(null);
     try {
-      // 1. Llamada al servicio
+      // La respuesta ahora trae { token, user }
       const response = await authService.login(form);
 
-      // 2. Guardar el Token (Esto es lo nuevo)
-      if (response.token) {
-        localStorage.setItem('token', response.token);
-      }
+      // 1. Guardamos el token para que el interceptor de http.ts lo use
+      localStorage.setItem('token', response.token);
 
-      // 3. Guardar el usuario (ya lo hacías, pero asegúrate de guardar response.user si el objeto viene anidado)
-      localStorage.setItem('user', JSON.stringify(response.user || response));
+      // 2. Guardamos los datos del usuario para la persistencia de sesión
+      localStorage.setItem('user', JSON.stringify(response.user));
 
-      onLoginSuccess(response.user || response);
+      // 3. Notificamos al componente padre que el login fue exitoso
+      onLoginSuccess(response.user);
     } catch (err: any) {
       setError(err?.message || 'Identidad no verificada');
     } finally {

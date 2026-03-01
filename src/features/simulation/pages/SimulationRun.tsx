@@ -262,7 +262,7 @@ export const SimulationRun: React.FC = () => {
       {/* MODAL CONFIRMACIÓN */}
       <AnimatePresence>
         {showLeaveConfirm && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
             <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-sm w-full text-center">
               <div className="w-16 h-16 bg-accent-cyan/20 rounded-full flex items-center justify-center mx-auto mb-4 text-accent-cyan text-2xl"><i className="fas fa-flag-checkered"></i></div>
               <h3 className="text-white text-xl font-bold mb-2">¿Terminar ahora?</h3>

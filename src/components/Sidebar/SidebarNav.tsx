@@ -1,24 +1,26 @@
-import { SIDE_LINKS } from "./sidebar.data";
+import { type SidebarItemType } from "./sidebar.types";
 import { SidebarItem } from "./SidebarItem";
 
 interface Props {
+  items: SidebarItemType[];
   activePath: string;
-  onNavigate: () => void;
+  collapsed: boolean;
 }
 
 export const SidebarNav: React.FC<Props> = ({
+  items,
   activePath,
-  onNavigate,
+  collapsed,
 }) => {
   return (
-    <nav className="flex-1 overflow-y-auto px-2 py-4">
+    <nav className="flex-1 overflow-y-auto py-4 px-2">
       <ul className="space-y-1">
-        {SIDE_LINKS.map((link) => (
+        {items.map(item => (
           <SidebarItem
-            key={link.href}
-            link={link}
-            isActive={activePath === link.href}
-            onNavigate={onNavigate}
+            key={item.id}
+            item={item}
+            active={activePath === item.href}
+            collapsed={collapsed}
           />
         ))}
       </ul>

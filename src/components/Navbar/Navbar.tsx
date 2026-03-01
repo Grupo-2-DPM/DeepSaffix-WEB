@@ -24,12 +24,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   return (
     <nav
-      className={`w-full border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-xl ${className}`}
+      className={`w-full h-14 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-xl ${className}`}
       role="navigation"
       aria-label="Main Navigation"
     >
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="flex h-16 items-center justify-between">
+      <div className="mx-auto max-w-10xl md:px-8">
+        <div className="flex h-14 items-center justify-between">
 
           {/* Mobile menu button */}
           <button

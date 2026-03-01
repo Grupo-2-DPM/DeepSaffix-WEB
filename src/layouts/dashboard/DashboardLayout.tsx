@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Navbar, type User } from "../../components/Navbar/Navbar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Footer } from "../../components/Footer/Footer";
+import { SIDEBAR_ITEMS } from "../../components/Sidebar/sidebar.data";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
   user?: User | null;
   onLogout?: () => void;
-  activePath: string; // viene del router
+  activePath: string;
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
@@ -16,50 +17,54 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   onLogout,
   activePath,
 }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const handleOpenSidebar = () => setIsSidebarOpen(true);
-  const handleCloseSidebar = () => setIsSidebarOpen(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex flex-col">
+    <div className="h-screen bg-neutral-950">
 
-      {/* Navbar */}
-      <Navbar
-        user={user}
-        onLogout={onLogout}
-        onOpenSidebar={handleOpenSidebar}
-        className="fixed top-0 left-0 w-full z-50"
-      />
+      <div
+        className="
+          grid
+          grid-cols-[auto_1fr]
+          grid-rows-[auto_1fr_auto]
+          h-full
+        "
+      >
 
-      <div className="flex flex-1 pt-16">
+        {/* SIDEBAR */}
+        <div className="row-span-3">
+          <Sidebar
+            items={SIDEBAR_ITEMS}
+            activePath={activePath}
+            isMobileOpen={isMobileOpen}
+            onCloseMobile={() => setIsMobileOpen(false)}
+            collapsed={collapsed}
+            onToggleCollapse={() => setCollapsed(!collapsed)}
+          />
+        </div>
 
-        {/* Sidebar */}
-        <Sidebar
-          isOpen={isSidebarOpen}
-          onClose={handleCloseSidebar}
-          activePath={activePath}
-        />
+        {/* NAVBAR */}
+        <div className="sticky top-0 z-50">
+          <Navbar
+            user={user}
+            onLogout={onLogout}
+            onOpenSidebar={() => setIsMobileOpen(true)}
+          />
+        </div>
 
-        {/* Main Content */}
+        {/* MAIN */}
         <main
           role="main"
-          className="
-            flex-1
-            w-full
-            max-w-7xl
-            mx-auto
-            px-6 md:px-12
-            py-8
-            focus:outline-none
-          "
+          className="overflow-y-auto px-6 md:px-8 py-6"
         >
           {children}
         </main>
-      </div>
 
-      {/* Footer */}
-      <Footer />
+        {/* FOOTER */}
+        <Footer />
+
+      </div>
     </div>
   );
 };

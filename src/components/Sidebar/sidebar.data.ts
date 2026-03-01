@@ -1,7 +1,25 @@
-export const SIDE_LINKS = [
-  { label: 'Inicio', href: '#/' },
-  { label: 'Perfil', href: '#/profile' },
-  // { label: 'Historial', href: '#/simulacro' },
-  { label: 'Overview', href: '#/overview' },
-  { label: 'Saber Mas', href: '#/about' },
+// sidebar.data.ts
+import type { SidebarItemType } from "./sidebar.types";
+
+export const SIDEBAR_ITEMS: SidebarItemType[] = [
+  {
+    id: "home",
+    label: "Inicio",
+    href: "#/",
+  },
+  {
+    id: "profile",
+    label: "Perfil",
+    href: "#/profile",
+  },
+  {
+    id: "overview",
+    label: "Overview",
+    href: "#/overview",
+  },
+  {
+    id: "about",
+    label: "Saber Más",
+    href: "#/about",
+  },
 ];

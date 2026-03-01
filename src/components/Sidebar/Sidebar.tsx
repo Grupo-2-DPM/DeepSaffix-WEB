@@ -1,65 +1,63 @@
-import React, { useEffect, useRef } from "react";
-import { SidebarHeader } from "./SidebarHeader";
+import React from "react";
 import { SidebarNav } from "./SidebarNav";
+import { SidebarHeader } from "./SidebarHeader";
+import { type SidebarItemType } from "./sidebar.types";
 
 interface SidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
+  items: SidebarItemType[];
   activePath: string;
+  isMobileOpen: boolean;
+  onCloseMobile: () => void;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  isOpen,
-  onClose,
+  items,
   activePath,
+  isMobileOpen,
+  onCloseMobile,
+  collapsed,
+  onToggleCollapse,
 }) => {
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  // Cerrar con ESC
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEsc);
-      document.body.style.overflow = "hidden";
-      sidebarRef.current?.focus();
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, onClose]);
-
   return (
     <>
-      {/* Overlay accesible */}
-      <div
-        onClick={onClose}
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-200
-                    md:hidden ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
-        aria-hidden="true"
-      />
+      {/* Overlay móvil */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onCloseMobile}
+          aria-hidden="true"
+        />
+      )}
 
       <aside
-        ref={sidebarRef}
-        tabIndex={-1}
-        role="navigation"
-        aria-label="Sidebar navigation"
-        aria-hidden={!isOpen}
         className={`
-          fixed top-0 left-0 z-40 h-full w-64
-          bg-neutral-950 border-r border-neutral-800
-          transform transition-transform duration-200 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0
+          hidden md:flex
+          flex-col
+          ${collapsed ? "w-20" : "w-50"}
+          bg-neutral-950
+          border-r border-neutral-800
+          transition-all duration-300
+          shrink-0
+
+          sticky top-0
+          h-screen
         `}
       >
-        <div className="flex h-full flex-col">
-          <SidebarHeader />
-          <SidebarNav activePath={activePath} onNavigate={onClose} />
+        <div className="flex flex-col h-full">
+
+          <SidebarHeader
+            collapsed={collapsed}
+            onToggleCollapse={onToggleCollapse}
+          />
+
+          <SidebarNav
+            items={items}
+            activePath={activePath}
+            collapsed={collapsed}
+          />
+
         </div>
       </aside>
     </>

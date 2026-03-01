@@ -65,7 +65,7 @@ export const Hero = () => {
             <div className="flex flex-wrap gap-4 pt-4">
               <button
                 onClick={async () => {
-                  return window.location.hash = '#/simulation';
+                  return window.location.hash = '#/overview';
                 }}
                 className="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-neutral-950 shadow-brand-600/50">
                 {content.cta}
@@ -76,34 +76,109 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Columna derecha: visualización de datos (estilo consola) */}
-          <div className="relative hidden lg:block">
-            <div className="relative w-full h-96 bg-neutral-900 rounded-2xl p-6 border border-neutral-800 shadow-2xl overflow-hidden">
-              {/* Gráfico de barras simulado */}
-              <div className="grid grid-cols-4 gap-3 h-full items-end">
-                {[75, 60, 90, 45].map((height, i) => (
-                  <div
-                    key={i}
-                    className="bg-linear-to-t from-brand-600 to-accent-cyan rounded-t-lg transition-all duration-500 hover:from-brand-500"
-                    style={{ height: `${height}%` }}
-                  ></div>
-                ))}
+          {/* Columna derecha: visualización de métricas (Acertadas vs Fallidas) */}
+          <div className="relative hidden lg:block js-avoid">
+
+            {/* Columna derecha: Visualización Circular Prototipo */}
+            <div className="relative hidden lg:block js-avoid">
+              <div className="relative w-full h-105 rounded-3xl p-8 border border-white/10 bg-neutral-800/40 backdrop-blur-xl flex flex-col items-center justify-center overflow-hidden shadow-2xl">
+
+                {/* Encabezado de la interfaz */}
+                <div className="absolute top-6 left-8 right-8 flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-[10px] font-mono text-accent-cyan tracking-[0.2em] animate-pulse">SYSTEM_DIAGNOSTIC</span>
+                  <span className="text-[9px] font-mono text-neutral-500">REF_ID: 88-X2</span>
+                </div>
+
+                {/* GRÁFICO CIRCULAR (SVG) */}
+                {/* Contenedor Circular Externo */}
+                <div className="relative w-52 h-52 flex items-center justify-center p-2 rounded-full border border-white/10 bg-neutral-950/40 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden">
+
+                  {/* Efecto de 'Vidrio' o Lente (opcional para realismo) */}
+                  <div className="absolute inset-0 bg-linear-to-tr from-accent-cyan/5 to-transparent pointer-events-none"></div>
+
+                  {/* SVG del Gráfico */}
+                  <div className="relative w-64 h-64 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                      {/* Track de fondo */}
+                      <circle
+                        cx="50" cy="50" r="42"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        fill="transparent"
+                        className="text-neutral-800/50"
+                      />
+
+                      {/* Segmento: FALLIDAS (15%) */}
+                      <circle
+                        cx="50" cy="50" r="42"
+                        stroke="#ef4444"
+                        strokeWidth="6"
+                        strokeDasharray="39.6 263.9"
+                        strokeDashoffset="0"
+                        strokeLinecap="round"
+                        fill="transparent"
+                        className="drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"
+                      />
+
+                      {/* Segmento: ACERTADAS (85%) */}
+                      <circle
+                        cx="50" cy="50" r="42"
+                        stroke="#00f2ff"
+                        strokeWidth="6"
+                        strokeDasharray="224.3 263.9"
+                        strokeDashoffset="-39.6"
+                        strokeLinecap="round"
+                        fill="transparent"
+                        className="drop-shadow-[0_0_12px_rgba(0,242,255,0.5)]"
+                      />
+
+                      {/* Anillos de escaneo decorativos internos */}
+                      <circle cx="50" cy="50" r="35" stroke="white" strokeWidth="0.1" fill="transparent" className="opacity-20" />
+                    </svg>
+
+                    {/* Texto Central */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                      <span className="text-4xl font-mono font-bold text-white leading-none">85<span className="text-sm text-accent-cyan">%</span></span>
+                      <span className="text-[9px] font-mono text-neutral-400 mt-1 uppercase tracking-widest">Efficiency</span>
+                    </div>
+                  </div>
+
+                  {/* Efecto de luz de escaneo circular (Barrido de radar) */}
+                  <div className="absolute inset-0 w-full h-full rounded-full border-t border-accent-cyan/20 animate-spin-slow pointer-events-none"></div>
+                </div>
+
+                {/* Leyenda Inferior (Estilo Consola) */}
+                <div className="mt-8 w-full grid grid-cols-2 gap-4">
+                  <div className="flex flex-col border-l-2 border-accent-cyan pl-3">
+                    <span className="text-[10px] text-neutral-500 font-mono uppercase">Correctas</span>
+                    <span className="text-lg font-mono text-white">1,284</span>
+                  </div>
+                  <div className="flex flex-col border-l-2 border-red-500 pl-3">
+                    <span className="text-[10px] text-neutral-500 font-mono uppercase">Errores</span>
+                    <span className="text-lg font-mono text-white">226</span>
+                  </div>
+                </div>
+
+                {/* Micro-métrica flotante */}
+                <div className="absolute bottom-4 right-8 flex items-center space-x-2 text-accent-cyan/40">
+                  <div className="h-1 w-8 bg-current rounded-full overflow-hidden">
+                    <div className="h-full bg-accent-cyan animate-[gradient-x_2s_infinite]"></div>
+                  </div>
+                  <span className="text-[8px] font-mono">ENCRYPTED_STREAM</span>
+                </div>
+
               </div>
-              {/* Etiqueta flotante con estilo de métrica */}
-              <div className="absolute top-4 left-4 bg-neutral-800/90 text-neutral-300 px-3 py-1 rounded-full text-xs font-mono border border-neutral-700">
-                <i className="fas fa-chart-line mr-1 text-accent-cyan"></i>
-                <span>PROGRESO_PROMEDIO</span>
-              </div>
-              {/* Icono técnico */}
-              <div className="absolute bottom-4 right-4 bg-neutral-800 p-3 rounded-full border border-neutral-700">
-                <i className="fas fa-terminal text-accent-cyan text-xl"></i>
-              </div>
+
+              {/* Efectos de luz periférica */}
+              <div className="absolute -z-10 -bottom-10 -left-10 w-40 h-40 bg-brand-600/10 rounded-full blur-[80px]"></div>
             </div>
-            {/* Pequeños destellos con acento cyan */}
-            <div className="absolute -top-4 -right-4 w-16 h-16 bg-accent-cyan rounded-full opacity-20 animate-ping"></div>
-            <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-brand-500 rounded-full opacity-20 animate-ping animation-delay-1000"></div>
+
+            {/* Decoración Cyan (Ping) */}
+            <div className="absolute -top-6 -right-6 w-20 h-20 bg-accent-cyan/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute top-0 right-0 w-1 h-1 bg-accent-cyan shadow-[0_0_15px_#00f2ff]"></div>
           </div>
         </div>
+
         {/* System Advisory Banner - DeepSaffix Didactic Warning */}
         <div className="mt-8 relative overflow-hidden rounded-lg border border-brand-500/20 bg-brand-500/5 px-4 py-3 animate-fade-in">
           {/* Fondo decorativo sutil (Escaneo de seguridad) */}

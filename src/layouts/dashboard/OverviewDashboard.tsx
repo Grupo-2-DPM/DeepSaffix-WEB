@@ -36,7 +36,7 @@ export const OverviewDashboard: React.FC = () => {
         {view === 'dashboard' ? (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Banner de Bienvenida Técnica */}
-            <div className="mb-10 p-8 rounded-xl  border-neutral-800 relative overflow-hidden">
+            <div className="mb-10 p-8 rounded-xl  border-neutral-800 ">
               <div className="relative z-10">
                 <span className="text-[10px] font-bold text-blue-500 tracking-widest uppercase">Módulo de Evaluación</span>
                 <h2 className="text-3xl font-bold text-white mt-1">Saber Pro: Central de Pruebas</h2>

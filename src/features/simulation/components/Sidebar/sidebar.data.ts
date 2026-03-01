@@ -1,4 +1,4 @@
-export const NAV_LINKS = [
+export const SIDE_LINKS = [
   { label: 'Inicio', href: '#/' },
   { label: 'Perfil', href: '#/profile' },
   // { label: 'Historial', href: '#/simulacro' },

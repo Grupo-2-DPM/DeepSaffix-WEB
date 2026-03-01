@@ -7,10 +7,10 @@ import { AuthForm } from './features/auth/components/AuthForm'
 import { SimulationPanel } from './features/simulation/components/SimulationPanel'
 import DashboardLayout from './layouts/dashboard/DashboardLayout'
 import SimulationRun from './features/simulation/pages/SimulationRun'
-import { About } from './layouts/about/about'
+import { About } from './components/About/about'
 import { OverviewDashboard } from './layouts/dashboard/OverviewDashboard'
-import { LicenseView } from './layouts/legal/LicenseView'
-import { PrivacyPolicy } from './layouts/legal/PrivacyPolicy'
+import { LicenseView } from './components/Legal/LicenseView'
+import { PrivacyPolicy } from './components/Legal/PrivacyPolicy'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

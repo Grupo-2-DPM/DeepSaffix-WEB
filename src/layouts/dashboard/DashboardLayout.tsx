@@ -1,57 +1,65 @@
-import React, { useState } from 'react';
-import Sidebar from '../sidebar/Sidebar';
-import { Navbar } from '../navbar/Navbar'; // nuestro Navbar adaptado
-import { Footer } from '../footer/Footer';
+import React, { useState } from "react";
+import { Navbar, type User } from "../../components/Navbar/Navbar";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { Footer } from "../../components/Footer/Footer";
 
-interface Props {
+interface DashboardLayoutProps {
   children: React.ReactNode;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user?: any;
+  user?: User | null;
   onLogout?: () => void;
+  activePath: string; // viene del router
 }
 
-export const DashboardLayout: React.FC<Props> = ({ children, user, onLogout }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+  children,
+  user,
+  onLogout,
+  activePath,
+}) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleOpenSidebar = () => setIsSidebarOpen(true);
+  const handleCloseSidebar = () => setIsSidebarOpen(false);
 
   return (
     <div className="min-h-screen bg-neutral-950 flex flex-col">
 
-      {/* Navbar por encima de todo */}
+      {/* Navbar */}
       <Navbar
-        setSidebarOpen={setSidebarOpen}
         user={user}
         onLogout={onLogout}
+        onOpenSidebar={handleOpenSidebar}
         className="fixed top-0 left-0 w-full z-50"
       />
 
-      <div className="flex flex-1 pt-16 relative">
+      <div className="flex flex-1 pt-16">
 
-        {/* Sidebar interna */}
+        {/* Sidebar */}
         <Sidebar
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          className="
-        fixed top-16 left-0 h-[calc(100vh-4rem)]
-        w-64 bg-neutral-900
-        transform transition-transform duration-300
-        z-40
-      "
+          isOpen={isSidebarOpen}
+          onClose={handleCloseSidebar}
+          activePath={activePath}
         />
 
-        {/* Contenido principal */}
-        <main className="
-      flex-1 w-full
-      max-w-7xl mx-auto
-      p-6 md:p-12
-      animate-fade-in
-    ">
+        {/* Main Content */}
+        <main
+          role="main"
+          className="
+            flex-1
+            w-full
+            max-w-7xl
+            mx-auto
+            px-6 md:px-12
+            py-8
+            focus:outline-none
+          "
+        >
           {children}
         </main>
-
       </div>
 
-      {/* Footer por encima de la sidebar */}
-      <Footer className="relative z-50" />
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

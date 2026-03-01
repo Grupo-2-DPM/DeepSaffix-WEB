@@ -134,7 +134,7 @@ export const SimulationRun: React.FC = () => {
       setSaving(true);
       if (optionIds.length) await simulationService.submitAnswers(attempt.id_intento, optionIds);
       await simulationService.finishAttempt(attempt.id_intento);
-      try { window.dispatchEvent(new CustomEvent('attemptFinished', { detail: { id_intento: attempt.id_intento } })); } catch (e) { /* empty */ }
+      try { window.dispatchEvent(new CustomEvent('attemptFinished', { detail: { id_intento: attempt.id_intento } })); } catch { /* empty */ }
       window.location.hash = '#/overview'; 
     } catch {
       alert('Error al finalizar la prueba');

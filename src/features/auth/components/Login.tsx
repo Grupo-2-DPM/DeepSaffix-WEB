@@ -35,8 +35,15 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
     setError(null);
     try {
       const user = await authService.login(form);
-      localStorage.setItem('user', JSON.stringify(user));
-      onLoginSuccess(user);
+
+      // VALIDACIÓN CRÍTICA:
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        onLoginSuccess(user);
+      } else {
+        throw new Error('El servidor devolvió un usuario vacío');
+      }
+
     } catch (err: any) {
       setError(err?.message || 'Identidad no verificada');
     } finally {
@@ -48,7 +55,7 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
     <div className="min-h-screen w-full flex items-center justify-center  selection:bg-brand-500/30">
       <div className="bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl p-10 max-w-md w-full animate-fade-in border-b-brand-500/10 border-b-4">
 
-        
+
         <header className="flex justify-between items-start mb-12">
           <div className="border-l-4 border-brand-500 pl-5">
             <h1 className="text-3xl font-black text-white uppercase tracking-tighter leading-none">

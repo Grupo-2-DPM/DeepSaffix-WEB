@@ -32,11 +32,23 @@ function App() {
     const onHash = () => setRoute(window.location.hash || '#/');
     window.addEventListener('hashchange', onHash);
 
-    // Persistencia: Recuperar usuario del localStorage al cargar
+    // Persistencia SEGURA
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
+
+    if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser && typeof parsedUser === 'object') {
+          setUser(parsedUser);
+          setIsAuthenticated(true);
+        } else {
+          // Si no es un objeto válido, limpiamos basura
+          localStorage.removeItem('user');
+        }
+      } catch (e) {
+        console.error("Error al recuperar sesión:", e);
+        localStorage.removeItem('user'); // Limpiamos el JSON corrupto
+      }
     }
 
     return () => window.removeEventListener('hashchange', onHash);
@@ -84,7 +96,7 @@ function App() {
   // --- RENDERIZADO ---
   return (
     <div className="relative min-h-screen w-full bg-neutral-950 text-slate-200 selection:bg-accent-cyan/20">
-      
+
       {/* FONDO GLOBAL: Siempre presente, pero no interactuable */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralPulseBackground />
@@ -92,7 +104,7 @@ function App() {
 
       <main className="relative z-10 min-h-screen">
         <AnimatePresence mode="wait">
-          
+
           {/* LÓGICA DE SEGURIDAD PRIMARIA: Si no está autenticado, solo AuthForm */}
           {!isAuthenticated ? (
             <motion.div
@@ -113,9 +125,9 @@ function App() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <DashboardLayout 
-                user={user} 
-                onLogout={handleLogout} 
+              <DashboardLayout
+                user={user}
+                onLogout={handleLogout}
                 activePath={route}
               >
                 <AnimatePresence mode="wait">

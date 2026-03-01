@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SimulationPanel } from '../../features/simulation/components/SimulationPanel';
-import SimulationRun from '../../features/simulation/pages/SimulationRun';
+import { SimulationRun }from '../../features/simulation/pages/SimulationRun';
 
 export const OverviewDashboard: React.FC = () => {
   const [view, setView] = useState<'dashboard' | 'run' | 'view'>('dashboard');

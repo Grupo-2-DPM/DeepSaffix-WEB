@@ -16,7 +16,7 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer
       role="contentinfo"
-      className={`border-neutral-800 bg-neutral-950 text-neutral-400 ${className}`}
+      className={`border-neutral-800 text-neutral-400 ${className}`}
     >
       <div className="md:px-4 py-5">
         <FooterMeta

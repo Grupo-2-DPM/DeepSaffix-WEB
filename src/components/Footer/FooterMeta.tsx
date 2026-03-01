@@ -10,7 +10,7 @@ export const FooterMeta: React.FC<Props> = ({
   protocolVersion,
 }) => {
   return (
-    <div className="mt-5 border-t border-neutral-800 pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-xs font-mono text-neutral-600">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-xs font-mono text-neutral-600">
       <p>
         © {year} DeepSaffix. All rights reserved.
       </p>

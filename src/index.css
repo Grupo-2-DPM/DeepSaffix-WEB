@@ -1,22 +1,68 @@
 @import "tailwindcss";
 
+/* index.css */
+:root {
+  background-color: #080c12;
+  /* El color oscuro de tu tema */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #080c12;
+  color: #f8fafc;
+  overflow-x: hidden;
+  /* Evita scrolls horizontales accidentales */
+}
+
+/* Opcional: Haz que el scrollbar sea cian y minimalista para que combine */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080c12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 255, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 255, 0.5);
+}
+
 @theme {
   /* Paleta "Deep Tech" - Estilo AWS/Intel */
   --color-brand-50: #ebf8ff;
-  --color-brand-400: #00a1c9; /* Cian AWS */
-  --color-brand-500: #0073bb; /* Azul Corporativo */
+  --color-brand-400: #00a1c9;
+  /* Cian AWS */
+  --color-brand-500: #0073bb;
+  /* Azul Corporativo */
   --color-brand-600: #005a92;
-  
-  --color-neutral-800: #192735; /* Gris azulado oscuro */
-  --color-neutral-900: #0f1720; /* Fondo principal */
-  --color-neutral-950: #080c12; /* Fondo de inputs */
 
-  --color-accent-cyan: #00f2ff; /* El color de "energía" */
+  --color-neutral-800: #192735;
+  /* Gris azulado oscuro */
+  --color-neutral-900: #0f1720;
+  /* Fondo principal */
+  --color-neutral-950: #080c12;
+  /* Fondo de inputs */
+
+  --color-accent-cyan: #00f2ff;
+  /* El color de "energía" */
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
@@ -24,9 +70,17 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
@@ -35,24 +89,164 @@
 .animation-delay-2000 {
   animation-delay: 2s;
 }
+
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
 .animation-delay-1000 {
   animation-delay: 1s;
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
+
 .animate-fade-in {
   animation: fade-in 0.2s ease-out;
 }
+
 .animate-scale-in {
   animation: scale-in 0.2s ease-out;
+}
+
+/* En tu archivo .css, o dentro de @layer components en tailwind */
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+@keyframes rotate-ring {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-rotate-ring {
+  animation: rotate-ring 12s linear infinite;
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+@keyframes particle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+.animate-particle {
+  animation: particle 3s ease-in-out infinite;
+}
+
+.animate-particle-delay {
+  animation: particle 3s ease-in-out 1.5s infinite;
+}
+
+.animate-particle-slow {
+  animation: particle 5s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.1;
+  }
+}
+
+.animate-scan {
+  animation: scan 10s linear infinite;
+}
+
+@keyframes gradient-x {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 8s ease infinite;
+}
+
+/* Añade esto a tu App.css o Tailwind classes */
+.glass-effect {
+  background: rgba(15, 23, 32, 0.7);
+  /* Neutral-900 con transparencia */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }

@@ -6,8 +6,8 @@ import { checkHealth } from '../../../api/http';
 
 export const AuthForm = ({ onLoginSuccess }: { onLoginSuccess: (user: any) => void }) => {
   const [isRegister, setIsRegister] = useState(false);
-  const [form, setForm] = useState({ 
-    nombre: '', apellido: '', correo: '', contraseña: '', confirmContraseña: '', programa_academico: '', semestre: '' as number | '' 
+  const [form, setForm] = useState({
+    nombre: '', apellido: '', correo: '', contraseña: '', confirmContraseña: '', programa_academico: '', semestre: '' as number | ''
   });
   const [loading, setLoading] = useState(false);
   const [, setError] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export const AuthForm = ({ onLoginSuccess }: { onLoginSuccess: (user: any) => vo
   useEffect(() => {
     const verify = async () => { setApiReady(await checkHealth()); };
     verify();
-    const interval = setInterval(async () => { if(!apiReady) setApiReady(await checkHealth()); }, 10000);
+    const interval = setInterval(async () => { if (!apiReady) setApiReady(await checkHealth()); }, 10000);
     return () => clearInterval(interval);
   }, [apiReady, isRegister]);
 
@@ -69,9 +69,9 @@ export const AuthForm = ({ onLoginSuccess }: { onLoginSuccess: (user: any) => vo
   if (!isRegister) return <Login onLoginSuccess={onLoginSuccess} />;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 p-6 selection:bg-brand-500/30">
+    <div className="min-h-screen w-full flex items-center justify-center p-6 selection:bg-brand-500/30">
       <div className="bg-neutral-900 border border-neutral-800 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-8 max-w-2xl w-full animate-fade-in border-t-brand-500/20 border-t-2">
-        
+
         <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <div className={`h-12 w-12 ${apiReady ? 'bg-brand-500 shadow-[0_0_20px_rgba(0,115,187,0.4)]' : 'bg-neutral-800'} rounded-xl flex items-center justify-center transition-all duration-500`}>
@@ -98,24 +98,24 @@ export const AuthForm = ({ onLoginSuccess }: { onLoginSuccess: (user: any) => vo
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-neutral-500 uppercase ml-1">Nombre</label>
-              <input placeholder="Ej. Carlos" onChange={e => setForm({...form, nombre: e.target.value})} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all placeholder:text-neutral-700" />
+              <input placeholder="Ej. Carlos" onChange={e => setForm({ ...form, nombre: e.target.value })} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all placeholder:text-neutral-700" />
             </div>
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-neutral-500 uppercase ml-1">Apellido</label>
-              <input placeholder="Ej. Pérez" onChange={e => setForm({...form, apellido: e.target.value})} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all placeholder:text-neutral-700" />
+              <input placeholder="Ej. Pérez" onChange={e => setForm({ ...form, apellido: e.target.value })} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all placeholder:text-neutral-700" />
             </div>
           </div>
 
           <div className="space-y-1.5">
             <label className="text-[10px] font-bold text-neutral-500 uppercase ml-1">Correo Institucional</label>
-            <input type="email" placeholder="usuario@universidad.edu.co" onChange={e => setForm({...form, correo: e.target.value})} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all placeholder:text-neutral-700" />
+            <input type="email" placeholder="usuario@universidad.edu.co" onChange={e => setForm({ ...form, correo: e.target.value })} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all placeholder:text-neutral-700" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-neutral-500 uppercase ml-1">Contraseña</label>
-              <input type="password" placeholder="••••••••" onChange={e => setForm({...form, contraseña: e.target.value})} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all" />
-              
+              <input type="password" placeholder="••••••••" onChange={e => setForm({ ...form, contraseña: e.target.value })} required className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all" />
+
               {/* Medidor de Fuerza */}
               <div className="px-1 pt-1">
                 <div className="flex justify-between items-center mb-1">
@@ -131,14 +131,14 @@ export const AuthForm = ({ onLoginSuccess }: { onLoginSuccess: (user: any) => vo
 
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-neutral-500 uppercase ml-1">Confirmar</label>
-              <input type="password" placeholder="••••••••" onChange={e => setForm({...form, confirmContraseña: e.target.value})} required className={`w-full bg-neutral-950 border rounded-xl px-4 py-3 text-white focus:ring-1 outline-none transition-all ${form.confirmContraseña ? (passwordsMatch ? 'border-emerald-500/50 focus:ring-emerald-500' : 'border-red-500/50 focus:ring-red-500') : 'border-neutral-800 focus:border-brand-500'}`} />
+              <input type="password" placeholder="••••••••" onChange={e => setForm({ ...form, confirmContraseña: e.target.value })} required className={`w-full bg-neutral-950 border rounded-xl px-4 py-3 text-white focus:ring-1 outline-none transition-all ${form.confirmContraseña ? (passwordsMatch ? 'border-emerald-500/50 focus:ring-emerald-500' : 'border-red-500/50 focus:ring-red-500') : 'border-neutral-800 focus:border-brand-500'}`} />
               {form.confirmContraseña && !passwordsMatch && <p className="text-[9px] text-red-500 font-bold uppercase mt-1">No coinciden</p>}
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <input placeholder="Programa Académico" onChange={e => setForm({...form, programa_academico: e.target.value})} className="bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none" />
-            <input placeholder="Semestre" type="number" onChange={e => setForm({...form, semestre: Number(e.target.value)})} className="bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none" />
+            <input placeholder="Programa Académico" onChange={e => setForm({ ...form, programa_academico: e.target.value })} className="bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none" />
+            <input placeholder="Semestre" type="number" onChange={e => setForm({ ...form, semestre: Number(e.target.value) })} className="bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none" />
           </div>
 
           <button disabled={loading || !apiReady || !passwordsMatch} type="submit" className="group w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl mt-4 shadow-xl shadow-brand-950/20 transition-all active:scale-[0.98] uppercase text-xs tracking-[0.2em] flex justify-center items-center gap-3 disabled:opacity-50 disabled:grayscale">

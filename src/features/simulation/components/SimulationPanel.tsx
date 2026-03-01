@@ -169,7 +169,7 @@ export const SimulationPanel: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full bg-neutral-950 p-4 animate-fade-in">
+    <section className="w-full p-4 animate-fade-in">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Simulacros realizados */}
         <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
@@ -190,7 +190,7 @@ export const SimulationPanel: React.FC = () => {
           ) : (
             <ul className="space-y-3">
               {realizados.map(r => (
-                <li key={r.id} className="bg-neutral-950 border border-neutral-800 rounded-lg p-3 hover:border-neutral-700 transition-all">
+                <li key={r.id} className="border border-neutral-800 rounded-lg p-3 hover:border-neutral-700 transition-all">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-white truncate">{r.nombre}</div>
@@ -240,7 +240,7 @@ export const SimulationPanel: React.FC = () => {
           ) : (
             <ul className="space-y-3">
               {disponibles.map(d => (
-                <li key={d.id} className="bg-neutral-950 border border-neutral-800 rounded-lg p-4 hover:border-neutral-700 transition-all">
+                <li key={d.id} className="border border-neutral-800 rounded-lg p-4 hover:border-neutral-700 transition-all">
                   <div className="flex items-start justify-between gap-3 flex-wrap">
                     <div className="flex-1">
                       <div className="text-sm font-medium text-white">{d.nombre}</div>

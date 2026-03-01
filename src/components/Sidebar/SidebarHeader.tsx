@@ -8,11 +8,11 @@ export const SidebarHeader: React.FC<Props> = ({
   onToggleCollapse,
 }) => {
   return (
-    <div className="h-14 flex items-center justify-between px-5 border-b border-neutral-800">
+    <div className="h-16 flex items-center justify-between px-5 border-b border-neutral-800">
       {!collapsed && (
         <>
           <span
-            className="h-2.5 w-2.5 rounded-full bg-accent-cyan shadow-[0_0_8px_#00f2ff]"
+            className="h-2.5 w-2.5 rounded-full bg-accent-cyan shadow-[0_0_8px_#00f2ff]s"
             aria-hidden="true" />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-bold tracking-widest text-neutral-100">

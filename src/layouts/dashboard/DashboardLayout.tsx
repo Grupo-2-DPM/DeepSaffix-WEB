@@ -21,7 +21,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="h-screen bg-neutral-950">
+    <div className="h-screen">
 
       <div
         className="
@@ -56,7 +56,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {/* MAIN */}
         <main
           role="main"
-          className="overflow-y-auto px-6 md:px-8 py-6"
+          className="overflow-y-auto "
         >
           {children}
         </main>

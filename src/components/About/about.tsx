@@ -4,7 +4,7 @@ import { FEATURES } from './about.data' // Se mantiene import aunque luego usemo
 
 export const About: React.FC = () => {
   return (
-    <div className="min-h-screen bg-neutral-950 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
       <div className="max-w-6xl mx-auto space-y-16">
         {/* Cabecera con badges */}
         <div className="text-center space-y-6">

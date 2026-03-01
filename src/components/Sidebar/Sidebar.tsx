@@ -25,7 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Overlay móvil */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 z-40 md:hidden"
           onClick={onCloseMobile}
           aria-hidden="true"
         />
@@ -36,7 +36,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           hidden md:flex
           flex-col
           ${collapsed ? "w-20" : "w-50"}
-          bg-neutral-950
           border-r border-neutral-800
           transition-all duration-300
           shrink-0

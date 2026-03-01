@@ -45,8 +45,9 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 p-6 selection:bg-brand-500/30">
+    <div className="min-h-screen w-full flex items-center justify-center  selection:bg-brand-500/30">
       <div className="bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl p-10 max-w-md w-full animate-fade-in border-b-brand-500/10 border-b-4">
+
         
         <header className="flex justify-between items-start mb-12">
           <div className="border-l-4 border-brand-500 pl-5">
@@ -66,8 +67,8 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
 
         {(!apiReady || checkingApi) && (
           <div className={`p-4 rounded-xl mb-8 text-[10px] font-mono border flex items-center gap-4 animate-pulse ${checkingApi ? 'bg-brand-500/5 border-brand-500/20 text-brand-400' : 'bg-amber-500/5 border-amber-500/20 text-amber-500'}`}>
-              <div className="h-2 w-2 rounded-full bg-current animate-ping" />
-              {checkingApi ? 'INICIALIZANDO ENLACE DE RENDER...' : 'SIN CONEXIÓN: ESPERANDO RESPUESTA DEL SERVIDOR'}
+            <div className="h-2 w-2 rounded-full bg-current animate-ping" />
+            {checkingApi ? 'INICIALIZANDO ENLACE DE RENDER...' : 'SIN CONEXIÓN: ESPERANDO RESPUESTA DEL SERVIDOR'}
           </div>
         )}
 
@@ -76,13 +77,13 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({ onLog
         <form onSubmit={handleSubmit} className={`space-y-7 ${!apiReady ? 'opacity-30 grayscale pointer-events-none' : ''}`}>
           <div className="space-y-2">
             <label className="text-[10px] font-black text-neutral-500 uppercase tracking-widest ml-1">ID de Credencial</label>
-            <input name="correo" value={form.correo} onChange={e => setForm({...form, correo: e.target.value})} type="email" required placeholder="usuario@institucion.edu.co" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-5 py-4 text-white focus:border-brand-500 outline-none transition-all placeholder:text-neutral-800" />
+            <input name="correo" value={form.correo} onChange={e => setForm({ ...form, correo: e.target.value })} type="email" required placeholder="usuario@institucion.edu.co" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-5 py-4 text-white focus:border-brand-500 outline-none transition-all placeholder:text-neutral-800" />
           </div>
 
           <div className="space-y-2">
             <label className="text-[10px] font-black text-neutral-500 uppercase tracking-widest ml-1">Llave de Seguridad</label>
             <div className="relative">
-              <input name="contraseña" value={form.contraseña} onChange={e => setForm({...form, contraseña: e.target.value})} type={showPassword ? 'text' : 'password'} required placeholder="••••••••" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-5 py-4 text-white focus:border-brand-500 outline-none transition-all placeholder:text-neutral-800" />
+              <input name="contraseña" value={form.contraseña} onChange={e => setForm({ ...form, contraseña: e.target.value })} type={showPassword ? 'text' : 'password'} required placeholder="••••••••" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-5 py-4 text-white focus:border-brand-500 outline-none transition-all placeholder:text-neutral-800" />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-4 text-[9px] font-black text-neutral-600 hover:text-brand-500 transition-colors uppercase tracking-tighter">
                 {showPassword ? 'OCULTAR' : 'MOSTRAR'}
               </button>

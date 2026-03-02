@@ -19,9 +19,6 @@ export const SidebarHeader: React.FC<Props> = ({
             <span className="text-sm font-bold tracking-widest text-neutral-100">
               DEEPSAFFIX
             </span>
-            <span className="font-mono text-[10px] text-neutral-500">
-              Kernel v2.4.1
-            </span>
           </div>
         </>
       )}

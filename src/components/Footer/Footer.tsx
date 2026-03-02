@@ -3,23 +3,19 @@ import { FooterMeta } from "./FooterMeta";
 interface FooterProps {
   version?: string;
   build?: string;
-  protocolVersion?: string;
   className?: string;
 }
 
-export const Footer: React.FC<FooterProps> = ({
-  protocolVersion = "v2.4",
-  className = "",
-}) => {
+export const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer
       role="contentinfo"
-      className={`border-neutral-800 text-neutral-400 ${className}`}
+      className={`h-10 border-t border-neutral-800 text-neutral-400 ${className}`}
     >
-      <div className="py-5 md:px-4">
-        <FooterMeta year={currentYear} protocolVersion={protocolVersion} />
+      <div className="flex h-full items-center justify-center px-4 text-xs">
+        <FooterMeta year={currentYear} />
       </div>
     </footer>
   );

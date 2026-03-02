@@ -6,6 +6,7 @@ interface Metric {
   value: number | string;
   unit?: string;
   status: "healthy" | "warning" | "critical";
+  icon: string;
 }
 
 export const SystemHealth: React.FC = () => {
@@ -15,18 +16,34 @@ export const SystemHealth: React.FC = () => {
   const metrics: Metric[] = useMemo(() => {
     if (!stats) {
       return [
-        { label: "ACC", value: 0, unit: "%", status: "critical" },
-        { label: "QST", value: 0, unit: "", status: "critical" },
-        { label: "AVG", value: 0, unit: "", status: "critical" },
+        {
+          label: "Eficiencia",
+          value: 0,
+          unit: "%",
+          status: "critical",
+          icon: "fa-chart-line",
+        },
+        {
+          label: "Correctas",
+          value: 0,
+          status: "critical",
+          icon: "fa-check-circle",
+        },
+        {
+          label: "Errores",
+          value: 0,
+          status: "critical",
+          icon: "fa-xmark-circle",
+        },
       ];
     }
 
     const eficiencia = stats.eficiencia ?? 0;
-    const totalPreguntas =
-      (stats.totalCorrectas ?? 0) + (stats.totalIncorrectas ?? 0);
+    const correctas = stats.totalCorrectas ?? 0;
+    const incorrectas = stats.totalIncorrectas ?? 0;
     const promedio = stats.promedioPuntaje ?? 0;
 
-    const getStatusFromEfficiency = (val: number) => {
+    const getStatus = (val: number) => {
       if (val >= 75) return "healthy";
       if (val >= 50) return "warning";
       return "critical";
@@ -34,27 +51,33 @@ export const SystemHealth: React.FC = () => {
 
     return [
       {
-        label: "ACC",
+        label: "Eficiencia",
         value: eficiencia,
         unit: "%",
-        status: getStatusFromEfficiency(eficiencia),
+        status: getStatus(eficiencia),
+        icon: "fa-chart-line",
       },
       {
-        label: "QST",
-        value: totalPreguntas,
-        unit: "",
-        status: totalPreguntas > 0 ? "healthy" : "warning",
+        label: "Correctas",
+        value: correctas,
+        status: "healthy",
+        icon: "fa-check-circle",
       },
       {
-        label: "AVG",
+        label: "Errores",
+        value: incorrectas,
+        status: incorrectas > correctas ? "warning" : "healthy",
+        icon: "fa-xmark-circle",
+      },
+      {
+        label: "Promedio",
         value: promedio,
-        unit: "",
-        status: getStatusFromEfficiency(eficiencia),
+        status: getStatus(eficiencia),
+        icon: "fa-star",
       },
     ];
   }, [stats]);
 
-  // Canvas decorativo (igual que antes)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -62,18 +85,18 @@ export const SystemHealth: React.FC = () => {
     if (!ctx) return;
 
     const width = canvas.parentElement?.clientWidth || 300;
-    const height = 40;
+    const height = 50;
     canvas.width = width;
     canvas.height = height;
 
     const particles: Array<{ x: number; y: number; vx: number; vy: number }> =
       [];
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.1,
+        vx: (Math.random() - 0.5) * 0.15,
         vy: (Math.random() - 0.5) * 0.05,
       });
     }
@@ -90,7 +113,7 @@ export const SystemHealth: React.FC = () => {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0, 242, 255, 0.1)";
+        ctx.fillStyle = "rgba(0, 242, 255, 0.08)";
         ctx.fill();
       });
 
@@ -104,56 +127,53 @@ export const SystemHealth: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "healthy":
-        return "bg-green-500";
+        return "text-green-400";
       case "warning":
-        return "bg-yellow-500";
+        return "text-yellow-400";
       case "critical":
-        return "bg-red-500";
+        return "text-red-400";
       default:
-        return "bg-neutral-500";
+        return "text-neutral-400";
     }
   };
 
   return (
-    <div className="relative flex h-10 w-full items-center overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/30 px-4 backdrop-blur-sm">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+    <div className="flex w-full justify-center">
+      <div className="relative inline-flex items-center gap-6 rounded-full border border-neutral-800 bg-neutral-950/40 px-8 py-3 shadow-2xl backdrop-blur-xl">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full rounded-full"
+        />
 
-      <div className="relative z-10 flex w-full flex-wrap items-center justify-center gap-4 sm:justify-start">
-        {loading ? (
-          <span className="font-mono text-xs text-neutral-500">
-            Syncing data...
-          </span>
-        ) : (
-          metrics.map((metric, idx) => (
-            <div key={idx} className="flex items-center gap-1.5">
-              <div className="relative flex items-center justify-center">
-                <div
-                  className={`absolute h-2 w-2 animate-ping rounded-full ${getStatusColor(
-                    metric.status
-                  )} opacity-75`}
-                />
-                <div
-                  className={`relative h-1.5 w-1.5 rounded-full ${getStatusColor(
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-6">
+          {loading ? (
+            <span className="font-mono text-xs text-neutral-500">
+              Sincronizando métricas...
+            </span>
+          ) : (
+            metrics.map((metric, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-2 font-mono text-sm"
+              >
+                <i
+                  className={`fa-solid ${metric.icon} ${getStatusColor(
                     metric.status
                   )}`}
                 />
+
+                <span className="text-brand-400 font-bold">
+                  {metric.value}
+                  {metric.unit}
+                </span>
+
+                <span className="hidden text-[10px] tracking-wider text-neutral-500 uppercase sm:inline">
+                  {metric.label}
+                </span>
               </div>
-
-              <span className="text-brand-400 font-mono text-xs">
-                {metric.value}
-                {metric.unit && (
-                  <span className="ml-0.5 text-[0.6rem] text-neutral-500">
-                    {metric.unit}
-                  </span>
-                )}
-              </span>
-
-              <span className="hidden text-[0.6rem] tracking-wider text-neutral-500 uppercase sm:inline">
-                {metric.label}
-              </span>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

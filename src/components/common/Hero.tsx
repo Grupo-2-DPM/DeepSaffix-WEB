@@ -19,7 +19,7 @@ export const Hero = () => {
   const hasData = stats && totalIntentos > 0;
 
   return (
-    <section className="relative overflow-auto border-b border-neutral-800 px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="relative overflow-auto px-4 py-20 text-white sm:px-6 lg:px-8">
       <div className="relative mx-auto max-w-7xl">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Columna izquierda */}

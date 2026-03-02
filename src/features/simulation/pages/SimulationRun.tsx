@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,17 +16,16 @@ export const SimulationRun: React.FC = () => {
   const [attempt, setAttempt] = useState<any | null>(null);
   const [viewOnly, setViewOnly] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [, setProgress] = useState<number>(0);
-  const [running] = useState<boolean>(true);
-  const [, setStatus] = useState<string>("Iniciando...");
+  const [progress, setProgress] = useState<number>(0);
+  const [running, setRunning] = useState<boolean>(true);
+  const [status, setStatus] = useState<string>("Iniciando...");
   const [selected, setSelected] = useState<Record<number, number>>({});
   const [saving, setSaving] = useState(false);
-  const [, setSavedAt] = useState<number | null>(null);
+  const [savedAt, setSavedAt] = useState<number | null>(null);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
 
   // --- REFS PARA LÓGICA DE TIEMPO Y BLOQUEOS ---
   const intervalRef = useRef<number | null>(null);
-
   const finishLockRef = useRef(false);
   const saveTimer = useRef<number | null>(null);
   const pausedAccumRef = useRef<number>(0);
@@ -142,7 +142,7 @@ export const SimulationRun: React.FC = () => {
     return () => {
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
     };
-  }, [selected, attempt.id_intento, viewOnly, attempt]);
+  }, [selected, attempt?.id_intento, viewOnly]);
 
   // --- ACCIONES DE UI ---
   const handleSubmitAnswers = async () => {
@@ -161,11 +161,11 @@ export const SimulationRun: React.FC = () => {
             detail: { id_intento: attempt.id_intento },
           })
         );
-      } catch {
+      } catch (e) {
         /* empty */
       }
       window.location.hash = "#/overview";
-    } catch {
+    } catch (err) {
       alert("Error al finalizar la prueba");
       finishLockRef.current = false;
     } finally {

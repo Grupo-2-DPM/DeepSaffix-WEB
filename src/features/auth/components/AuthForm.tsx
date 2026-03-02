@@ -168,83 +168,81 @@ export const AuthForm = ({
             }
             className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white transition-all outline-none placeholder:text-neutral-700 focus:ring-1"
           />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
-                Contraseña
-              </label>
+          <div className="space-y-1.5">
+            <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
+              Contraseña
+            </label>
 
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  onChange={(e) =>
-                    setForm({ ...form, contraseña: e.target.value })
-                  }
-                  required
-                  className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none focus:ring-1"
-                />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                onChange={(e) =>
+                  setForm({ ...form, contraseña: e.target.value })
+                }
+                required
+                className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none focus:ring-1"
+              />
 
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="hover:text-brand-500 absolute top-4 right-4 text-[9px] font-black tracking-tighter text-neutral-600 uppercase transition-colors"
-                >
-                  {showPassword ? "OCULTAR" : "MOSTRAR"}
-                </button>
-              </div>
-
-              {/* Medidor de Fuerza */}
-              <div className="px-1 pt-1">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-[9px] font-bold text-neutral-500 uppercase">
-                    Seguridad: {passwordStats.label}
-                  </span>
-                </div>
-                <div className="flex h-1 w-full gap-0.5 overflow-hidden rounded-full bg-neutral-800">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className={`h-full flex-1 transition-all duration-500 ${
-                        i < passwordStats.score
-                          ? passwordStats.color
-                          : "bg-neutral-800"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="hover:text-brand-500 absolute top-4 right-4 text-[9px] font-black tracking-tighter text-neutral-600 uppercase transition-colors"
+              >
+                {showPassword ? "OCULTAR" : "MOSTRAR"}
+              </button>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
-                Confirmar
-              </label>
-
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  onChange={(e) =>
-                    setForm({ ...form, confirmContraseña: e.target.value })
-                  }
-                  required
-                  className={`w-full rounded-xl border bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none focus:ring-1 ${
-                    form.confirmContraseña
-                      ? passwordsMatch
-                        ? "border-emerald-500/50 focus:ring-emerald-500"
-                        : "border-red-500/50 focus:ring-red-500"
-                      : "focus:border-brand-500 border-neutral-800"
-                  }`}
-                />
+            {/* Medidor de Fuerza */}
+            <div className="px-1 pt-1">
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-[9px] font-bold text-neutral-500 uppercase">
+                  Seguridad: {passwordStats.label}
+                </span>
               </div>
-
-              {form.confirmContraseña && !passwordsMatch && (
-                <p className="mt-1 text-[9px] font-bold text-red-500 uppercase">
-                  No coinciden
-                </p>
-              )}
+              <div className="flex h-1 w-full gap-0.5 overflow-hidden rounded-full bg-neutral-800">
+                {[...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-full flex-1 transition-all duration-500 ${
+                      i < passwordStats.score
+                        ? passwordStats.color
+                        : "bg-neutral-800"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
+              Confirmar
+            </label>
+
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="••••••••"
+                onChange={(e) =>
+                  setForm({ ...form, confirmContraseña: e.target.value })
+                }
+                required
+                className={`w-full rounded-xl border bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none focus:ring-1 ${
+                  form.confirmContraseña
+                    ? passwordsMatch
+                      ? "border-emerald-500/50 focus:ring-emerald-500"
+                      : "border-red-500/50 focus:ring-red-500"
+                    : "focus:border-brand-500 border-neutral-800"
+                }`}
+              />
+            </div>
+
+            {form.confirmContraseña && !passwordsMatch && (
+              <p className="mt-1 text-[9px] font-bold text-red-500 uppercase">
+                No coinciden
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">

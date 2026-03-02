@@ -26,6 +26,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {/* SIDEBAR */}
         <div className="row-span-3">
           <Sidebar
+            user={user}
+            onLogout={onLogout}
             items={SIDEBAR_ITEMS}
             activePath={activePath}
             isMobileOpen={isMobileOpen}
@@ -37,11 +39,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         {/* NAVBAR */}
         <div className="sticky top-0 z-50">
-          <Navbar
-            user={user}
-            onLogout={onLogout}
-            onOpenSidebar={() => setIsMobileOpen(true)}
-          />
+          <Navbar />
         </div>
 
         {/* MAIN */}

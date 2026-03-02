@@ -2,6 +2,7 @@ import React from "react";
 import { SidebarNav } from "./SidebarNav";
 import { SidebarHeader } from "./SidebarHeader";
 import { type SidebarItemType } from "./sidebar.types";
+import { SidebarFooter } from "./SIdebarFooter";
 
 interface SidebarProps {
   items: SidebarItemType[];
@@ -10,8 +11,13 @@ interface SidebarProps {
   onCloseMobile: () => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
-}
 
+  user?: {
+    nombre?: string;
+    role?: string;
+  } | null;
+  onLogout?: () => void;
+}
 export const Sidebar: React.FC<SidebarProps> = ({
   items,
   activePath,
@@ -19,10 +25,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onCloseMobile,
   collapsed,
   onToggleCollapse,
+  user,
+  onLogout,
 }) => {
   return (
     <>
-      {/* Overlay móvil */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 z-40 md:hidden"
@@ -32,7 +39,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside
-        className={`hidden flex-col md:flex ${collapsed ? "w-20" : "w-50"} sticky top-0 h-screen shrink-0 border-r border-neutral-800 transition-all duration-300`}
+        className={`hidden flex-col md:flex ${
+          collapsed ? "w-20" : "w-50"
+        } sticky top-0 h-screen shrink-0 border-r border-neutral-800 transition-all duration-300`}
       >
         <div className="flex h-full flex-col">
           <SidebarHeader
@@ -45,6 +54,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             activePath={activePath}
             collapsed={collapsed}
           />
+
+          {/* Footer debe ir aquí */}
+          <SidebarFooter user={user} onLogout={onLogout} />
         </div>
       </aside>
     </>

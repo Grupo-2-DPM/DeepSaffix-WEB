@@ -1,6 +1,6 @@
 import React from "react";
-import { UserMenu } from "./UserMenu";
 import { QuantumOrb } from "./QuantumOrb";
+import { SystemHealth } from "./SystemHealth";
 
 export interface User {
   id: string;
@@ -16,8 +16,6 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  user,
-  onLogout,
   onOpenSidebar,
   className = "",
 }) => {
@@ -27,23 +25,23 @@ export const Navbar: React.FC<NavbarProps> = ({
       role="navigation"
       aria-label="Main Navigation"
     >
-      <div className="max-w-10xl mx-auto h-full md:px-8">
-        <div className="grid h-full grid-cols-2 items-center">
-          {/* Columna izquierda: carrusel */}
-          <div className="flex justify-start">
+      <div className="max-w-10xl mx-auto h-full px-4 md:px-8">
+        <div className="grid h-full grid-cols-3 items-center">
+          {/* Columna izquierda: QuantumOrb + botón móvil */}
+          <div className="flex items-center gap-3">
             <button
               onClick={onOpenSidebar}
               className="text-accent-cyan focus:ring-accent-cyan rounded-lg border border-neutral-800 bg-neutral-900 p-2 hover:bg-neutral-800 focus:ring-2 focus:outline-none md:hidden"
-              aria-label="Open sidebar menu"
+              aria-label="Abrir menú lateral"
             >
-              <i className="fas fa-bars" aria-hidden="true"></i>
+              <i className="fas fa-bars" aria-hidden="true" />
             </button>
-            <UserMenu user={user} onLogout={onLogout} />
+            <QuantumOrb />
           </div>
 
-          {/* Columna derecha: botón móvil y menú de usuario */}
-          <div className="flex items-center justify-end gap-2">
-            <QuantumOrb />
+          {/* Columna central: SystemHealth (centrado) */}
+          <div className="flex justify-end">
+            <SystemHealth />
           </div>
         </div>
       </div>

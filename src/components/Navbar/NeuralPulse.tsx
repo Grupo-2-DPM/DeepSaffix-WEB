@@ -104,21 +104,24 @@ export const NeuralPulse: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative h-10 w-64 overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/50 backdrop-blur-sm md:w-80">
-      {/* Fondo con gradiente móvil */}
-      <div className="from-brand-500/5 via-accent-cyan/5 to-brand-500/5 animate-gradient-x absolute inset-0 bg-linear-to-r" />
+    <div className="relative h-14 w-full overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950/40 backdrop-blur-md">
+      {/* Gradiente de fondo más amplio */}
+      <div className="from-brand-500/10 via-accent-cyan/10 to-brand-500/10 animate-gradient-x absolute inset-0 bg-linear-to-r" />
 
-      {/* Canvas para partículas */}
+      {/* Canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
-        style={{ filter: "blur(0.5px)" }}
+        style={{ filter: "blur(1px)" }}
       />
 
-      {/* Texto superpuesto (opcional) */}
+      {/* Overlay técnico sutil */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#00f2ff_1px,transparent_1px)] bg-size-[40px_40px] opacity-[0.05]" />
+
+      {/* Texto minimalista */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-mono text-xs tracking-widest text-neutral-400">
-          <span className="text-accent-cyan">NEURAL</span> PULSE
+        <span className="font-mono text-sm tracking-widest text-neutral-400">
+          <span className="text-accent-cyan">NEURAL</span> NETWORK ACTIVE
         </span>
       </div>
     </div>

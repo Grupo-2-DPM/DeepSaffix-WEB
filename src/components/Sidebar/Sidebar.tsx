@@ -56,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           />
 
           {/* Footer debe ir aquí */}
-          <SidebarFooter user={user} onLogout={onLogout} />
+          <SidebarFooter user={user} onLogout={onLogout} collapsed={false} />
         </div>
       </aside>
     </>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Navbar, type User } from "../../components/Navbar/Navbar";
+import { Navbar } from "../../components/Navbar/Navbar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Footer } from "../../components/Footer/Footer";
 import { SIDEBAR_ITEMS } from "../../components/Sidebar/sidebar.data";
+import type { User } from "../../features/usuarios/components/ProfileCard";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

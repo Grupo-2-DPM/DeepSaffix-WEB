@@ -1,16 +1,6 @@
-import React from "react";
-import { QuantumOrb } from "./QuantumOrb";
 import { SystemHealth } from "./SystemHealth";
 
-export interface User {
-  id: string;
-  nombre?: string;
-  role?: string;
-}
-
 interface NavbarProps {
-  user?: User | null;
-  onLogout?: () => void;
   onOpenSidebar?: () => void;
   className?: string;
 }
@@ -20,29 +10,27 @@ export const Navbar: React.FC<NavbarProps> = ({
   className = "",
 }) => {
   return (
-    <nav
-      className={`h-16 w-full border-b border-neutral-800 backdrop-blur-xl ${className}`}
-      role="navigation"
-      aria-label="Main Navigation"
-    >
-      <div className="max-w-10xl mx-auto h-full px-4 md:px-8">
-        <div className="grid h-full grid-cols-3 items-center">
-          {/* Columna izquierda: QuantumOrb + botón móvil */}
-          <div className="flex items-center gap-3">
+    <nav className={`h-16 w-full border-b border-neutral-800 ${className}`}>
+      <div className="mx-auto h-full px-4 md:px-8">
+        <div className="grid h-full grid-cols-[auto_1fr_auto] items-center">
+          {/* IZQUIERDA */}
+          <div className="flex items-center">
             <button
               onClick={onOpenSidebar}
-              className="text-accent-cyan focus:ring-accent-cyan rounded-lg border border-neutral-800 bg-neutral-900 p-2 hover:bg-neutral-800 focus:ring-2 focus:outline-none md:hidden"
+              className="rounded-lg border border-neutral-800 bg-neutral-900 p-2 text-neutral-400 transition hover:bg-neutral-800 hover:text-white md:hidden"
               aria-label="Abrir menú lateral"
             >
-              <i className="fas fa-bars" aria-hidden="true" />
+              <i className="fas fa-bars" />
             </button>
-            <QuantumOrb />
           </div>
 
-          {/* Columna central: SystemHealth (centrado) */}
-          <div className="flex justify-end">
+          {/* CENTRO (realmente centrado) */}
+          <div className="flex justify-center">
             <SystemHealth />
           </div>
+
+          {/* DERECHA (espacio vacío para balance visual) */}
+          <div />
         </div>
       </div>
     </nav>

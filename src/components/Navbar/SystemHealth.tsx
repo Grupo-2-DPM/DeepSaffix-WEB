@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
+import { useUserStats } from "../../hooks/useUserStats";
 
 interface Metric {
   label: string;
@@ -9,37 +10,51 @@ interface Metric {
 
 export const SystemHealth: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [metrics, setMetrics] = useState<Metric[]>([
-    { label: "LAT", value: 24, unit: "ms", status: "healthy" },
-    { label: "ACT", value: 1432, unit: "", status: "healthy" },
-    { label: "UPT", value: "99.9", unit: "%", status: "healthy" },
-  ]);
+  const { stats, loading } = useUserStats();
 
-  // Simular cambios periódicos en las métricas (opcional)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMetrics((prev) =>
-        prev.map((m) => {
-          if (m.label === "LAT") {
-            const newVal = Math.floor(Math.random() * 30) + 10;
-            return {
-              ...m,
-              value: newVal,
-              status: newVal > 25 ? "warning" : "healthy",
-            };
-          }
-          if (m.label === "ACT") {
-            const newVal = Math.floor(Math.random() * 500) + 1200;
-            return { ...m, value: newVal };
-          }
-          return m;
-        })
-      );
-    }, 8000);
-    return () => clearInterval(interval);
-  }, []);
+  const metrics: Metric[] = useMemo(() => {
+    if (!stats) {
+      return [
+        { label: "ACC", value: 0, unit: "%", status: "critical" },
+        { label: "QST", value: 0, unit: "", status: "critical" },
+        { label: "AVG", value: 0, unit: "", status: "critical" },
+      ];
+    }
 
-  // Canvas de partículas de fondo (muy sutil)
+    const eficiencia = stats.eficiencia ?? 0;
+    const totalPreguntas =
+      (stats.totalCorrectas ?? 0) + (stats.totalIncorrectas ?? 0);
+    const promedio = stats.promedioPuntaje ?? 0;
+
+    const getStatusFromEfficiency = (val: number) => {
+      if (val >= 75) return "healthy";
+      if (val >= 50) return "warning";
+      return "critical";
+    };
+
+    return [
+      {
+        label: "ACC",
+        value: eficiencia,
+        unit: "%",
+        status: getStatusFromEfficiency(eficiencia),
+      },
+      {
+        label: "QST",
+        value: totalPreguntas,
+        unit: "",
+        status: totalPreguntas > 0 ? "healthy" : "warning",
+      },
+      {
+        label: "AVG",
+        value: promedio,
+        unit: "",
+        status: getStatusFromEfficiency(eficiencia),
+      },
+    ];
+  }, [stats]);
+
+  // Canvas decorativo (igual que antes)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -53,6 +68,7 @@ export const SystemHealth: React.FC = () => {
 
     const particles: Array<{ x: number; y: number; vx: number; vy: number }> =
       [];
+
     for (let i = 0; i < 15; i++) {
       particles.push({
         x: Math.random() * width,
@@ -77,14 +93,14 @@ export const SystemHealth: React.FC = () => {
         ctx.fillStyle = "rgba(0, 242, 255, 0.1)";
         ctx.fill();
       });
+
       animationFrame = requestAnimationFrame(draw);
     };
-    draw();
 
+    draw();
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  // Función para obtener el color del indicador de estado
   const getStatusColor = (status: string) => {
     switch (status) {
       case "healthy":
@@ -99,48 +115,45 @@ export const SystemHealth: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-10 items-center overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/30 px-4 backdrop-blur-sm">
-      {/* Canvas de partículas de fondo */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 h-full w-full"
-        style={{ objectFit: "cover" }}
-      />
+    <div className="relative flex h-10 w-full items-center overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/30 px-4 backdrop-blur-sm">
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-      {/* Contenido: métricas */}
-      <div className="relative z-10 flex items-center gap-4">
-        {metrics.map((metric, idx) => (
-          <div key={idx} className="flex items-center gap-1.5">
-            {/* Indicador de estado con ping */}
-            <div className="relative flex items-center justify-center">
-              <div
-                className={`absolute h-2 w-2 animate-ping rounded-full ${getStatusColor(
-                  metric.status
-                )} opacity-75`}
-              />
-              <div
-                className={`relative h-1.5 w-1.5 rounded-full ${getStatusColor(
-                  metric.status
-                )}`}
-              />
+      <div className="relative z-10 flex w-full flex-wrap items-center justify-center gap-4 sm:justify-start">
+        {loading ? (
+          <span className="font-mono text-xs text-neutral-500">
+            Syncing data...
+          </span>
+        ) : (
+          metrics.map((metric, idx) => (
+            <div key={idx} className="flex items-center gap-1.5">
+              <div className="relative flex items-center justify-center">
+                <div
+                  className={`absolute h-2 w-2 animate-ping rounded-full ${getStatusColor(
+                    metric.status
+                  )} opacity-75`}
+                />
+                <div
+                  className={`relative h-1.5 w-1.5 rounded-full ${getStatusColor(
+                    metric.status
+                  )}`}
+                />
+              </div>
+
+              <span className="text-brand-400 font-mono text-xs">
+                {metric.value}
+                {metric.unit && (
+                  <span className="ml-0.5 text-[0.6rem] text-neutral-500">
+                    {metric.unit}
+                  </span>
+                )}
+              </span>
+
+              <span className="hidden text-[0.6rem] tracking-wider text-neutral-500 uppercase sm:inline">
+                {metric.label}
+              </span>
             </div>
-
-            {/* Valor y unidad */}
-            <span className="text-brand-400 font-mono text-xs">
-              {metric.value}
-              {metric.unit && (
-                <span className="ml-0.5 text-[0.6rem] text-neutral-500">
-                  {metric.unit}
-                </span>
-              )}
-            </span>
-
-            {/* Etiqueta (opcional, para desktop) */}
-            <span className="hidden text-[0.6rem] tracking-wider text-neutral-500 uppercase sm:inline">
-              {metric.label}
-            </span>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

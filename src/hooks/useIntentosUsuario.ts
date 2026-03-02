@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import simulationService from "../../../backend/services/simulationService";
+import simulationService from "../backend/services/simulationService";
 
 export type Realizado = {
   id: string;

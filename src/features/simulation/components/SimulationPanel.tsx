@@ -1,6 +1,6 @@
 import React from "react";
-import { useSimulacros } from "../hooks/useSimulacros";
-import { useIntentosUsuario } from "../hooks/useIntentosUsuario";
+import { useSimulacros } from "../../../hooks/useSimulacros";
+import { useIntentosUsuario } from "../../../hooks/useIntentosUsuario";
 import DisponiblesList from "./DisponiblesList";
 import RecentAttemptsList from "./RecentAttemptsList";
 

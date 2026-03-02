@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import type { Realizado } from "../hooks/useIntentosUsuario";
+import type { Realizado } from "../../../hooks/useIntentosUsuario";
 
 type Props = {
   realizados: Realizado[];

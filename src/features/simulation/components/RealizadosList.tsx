@@ -1,5 +1,5 @@
 import React from "react";
-import { type Realizado } from "../hooks/useIntentosUsuario";
+import { type Realizado } from "../../../hooks/useIntentosUsuario";
 
 type Props = {
   realizados: Realizado[];

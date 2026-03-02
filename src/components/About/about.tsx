@@ -151,9 +151,9 @@ export const About: React.FC = () => {
                 />
                 <div className="flex-1">
                   <h3 className="text-white font-mono text-lg font-medium">Daniel Alejandro Lasso</h3>
-                  <p className="text-accent-cyan font-mono text-xs tracking-widest uppercase mb-2">Backend Developer</p>
+                  <p className="text-accent-cyan font-mono text-xs tracking-widest uppercase mb-2">Full Stack Developer</p>
                   <p className="text-neutral-400 font-mono text-sm mb-3">
-                    Especialista Backend (Node.js & Django). Desarrollador con dominio en TypeScript, JavaScript y Python. Especializado en crear aplicaciones robustas y manejo experto de bases de datos relacionales (PostgreSQL, MySQL) y administración de Linux.
+                    Especialista Backend (Node.js & Django). Desarrollador con dominio en TypeScript, JavaScript y Python. Especializado en crear aplicaciones robustas y administración de Linux.
                   </p>
                   <a
                     href="https://github.com/Gerbetwo"
@@ -205,7 +205,7 @@ export const About: React.FC = () => {
                   <h3 className="text-white font-mono text-lg font-medium">Omar Jhon Hualpa</h3>
                   <p className="text-accent-cyan font-mono text-xs tracking-widest uppercase mb-2">Software Developer</p>
                   <p className="text-neutral-400 font-mono text-sm mb-3">
-                    Interés en aplicaciones web y arquitectura de sistemas. Experiencia en C#, .NET y SQL. Enfocado en soluciones modulares, eficientes y mantenibles, integrando buenas prácticas de desarrollo colaborativo.
+                    Interés en aplicaciones web y arquitectura de sistemas. Enfocado en soluciones modulares, eficientes y mantenibles, integrando buenas prácticas de desarrollo colaborativo.
                   </p>
                   <a
                     href="https://github.com/jhonomar1403"
@@ -276,7 +276,7 @@ export const About: React.FC = () => {
         {/* Footer */}
         <footer className="border-t border-neutral-800 pt-8 text-center">
           <p className="text-neutral-600 font-mono text-[10px] tracking-widest">
-            © 2024 DeepSaffix · Grupo 2 · Todos los derechos reservados.
+            © 2026 DeepSaffix · Grupo 2 · Todos los derechos reservados.
           </p>
         </footer>
       </div>

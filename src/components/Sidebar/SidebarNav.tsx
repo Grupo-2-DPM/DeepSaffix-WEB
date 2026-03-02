@@ -13,9 +13,9 @@ export const SidebarNav: React.FC<Props> = ({
   collapsed,
 }) => {
   return (
-    <nav className="flex-1 overflow-y-auto py-4 px-2">
+    <nav className="flex-1 overflow-y-auto px-2 py-4">
       <ul className="space-y-1">
-        {items.map(item => (
+        {items.map((item) => (
           <SidebarItem
             key={item.id}
             item={item}

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 
 interface Particle {
   x: number;
@@ -17,7 +17,7 @@ export const ParticleWave: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Ajustar tamaño del canvas al contenedor (ancho fijo, alto 40px)
@@ -28,9 +28,9 @@ export const ParticleWave: React.FC = () => {
 
     // Colores de la paleta (con opacidad variable)
     const colors = [
-      'rgba(0, 114, 188, 0.8)',  // brand-500
-      'rgba(0, 242, 255, 0.9)',  // accent-cyan
-      'rgba(0, 161, 201, 0.7)',  // brand-400
+      "rgba(0, 114, 188, 0.8)", // brand-500
+      "rgba(0, 242, 255, 0.9)", // accent-cyan
+      "rgba(0, 161, 201, 0.7)", // brand-400
     ];
 
     // Crear partículas
@@ -55,11 +55,11 @@ export const ParticleWave: React.FC = () => {
       ctx.clearRect(0, 0, width, height);
 
       // Dibujar un fondo muy sutil (opcional) para dar profundidad
-      ctx.fillStyle = 'rgba(9, 18, 28, 0.2)'; // neutral-950 con baja opacidad
+      ctx.fillStyle = "rgba(9, 18, 28, 0.2)"; // neutral-950 con baja opacidad
       ctx.fillRect(0, 0, width, height);
 
       // Actualizar y dibujar partículas
-      particles.forEach(p => {
+      particles.forEach((p) => {
         // Movimiento base
         p.x += p.speedX;
         p.y += p.speedY;
@@ -88,7 +88,13 @@ export const ParticleWave: React.FC = () => {
         ctx.shadowBlur = 5;
         ctx.globalAlpha = 0.3;
         ctx.beginPath();
-        ctx.arc(p.x - p.speedX * 2, drawY - p.speedY * 2, p.size * 1.5, 0, Math.PI * 2);
+        ctx.arc(
+          p.x - p.speedX * 2,
+          drawY - p.speedY * 2,
+          p.size * 1.5,
+          0,
+          Math.PI * 2
+        );
         ctx.fillStyle = p.color;
         ctx.fill();
 
@@ -107,15 +113,15 @@ export const ParticleWave: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center w-60 h-10 overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/30 backdrop-blur-sm">
+    <div className="relative flex h-10 w-60 items-center justify-center overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/30 backdrop-blur-sm">
       <canvas
         ref={canvasRef}
-        className="block w-full h-full"
-        style={{ width: '100%', height: '100%' }}
+        className="block h-full w-full"
+        style={{ width: "100%", height: "100%" }}
       />
       {/* Texto superpuesto opcional para dar contexto */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-xs font-mono text-neutral-400/50 tracking-widest">
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <span className="font-mono text-xs tracking-widest text-neutral-400/50">
           SISTEMA ACTIVO
         </span>
       </div>

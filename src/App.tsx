@@ -1,93 +1,100 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import './App.css';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import "./App.css";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Componentes Base
-import NeuralPulseBackground from './components/common/NeuralPulseBackground';
-import DashboardLayout from './layouts/dashboard/DashboardLayout';
+import NeuralPulseBackground from "./components/common/NeuralPulseBackground";
+import DashboardLayout from "./layouts/dashboard/DashboardLayout";
 
 // Vistas de Negocio
-import { Profile } from './features/usuarios/components/Profile';
-import { Hero } from './components/common/Hero';
-import { AuthForm } from './features/auth/components/AuthForm';
-import { SimulationPanel } from './features/simulation/components/SimulationPanel';
-import SimulationRun from './features/simulation/pages/SimulationRun';
-import { OverviewDashboard } from './layouts/dashboard/OverviewDashboard';
+import { Profile } from "./features/usuarios/components/Profile";
+import { Hero } from "./components/common/Hero";
+import { AuthForm } from "./features/auth/components/AuthForm";
+import { SimulationPanel } from "./features/simulation/components/SimulationPanel";
+import SimulationRun from "./features/simulation/pages/SimulationRun";
+import { OverviewDashboard } from "./layouts/dashboard/OverviewDashboard";
 
 // Vistas Legales e Info
-import { About } from './components/About/about';
-import { LicenseView } from './components/Legal/LicenseView';
-import { PrivacyPolicy } from './components/Legal/PrivacyPolicy';
+import { About } from "./components/About/about";
+import { LicenseView } from "./components/Legal/LicenseView";
+import { PrivacyPolicy } from "./components/Legal/PrivacyPolicy";
+import SimulationHistory from "./features/simulation/pages/SimulationHistory";
+import SimulacrosAdmin from "./features/simulation/pages/SimulacrosAdmin";
 
 function App() {
   // --- ESTADO ---
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any | null>(null);
-  const [route, setRoute] = useState<string>(window.location.hash || '#/');
+  const [route, setRoute] = useState<string>(window.location.hash || "#/");
 
   // --- EFECTOS ---
   useEffect(() => {
     // Sincronizar hash de la URL
-    const onHash = () => setRoute(window.location.hash || '#/');
-    window.addEventListener('hashchange', onHash);
+    const onHash = () => setRoute(window.location.hash || "#/");
+    window.addEventListener("hashchange", onHash);
 
     // Persistencia SEGURA
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
 
     if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
       try {
         const parsedUser = JSON.parse(storedUser);
-        if (parsedUser && typeof parsedUser === 'object') {
+        if (parsedUser && typeof parsedUser === "object") {
           setUser(parsedUser);
           setIsAuthenticated(true);
         } else {
           // Si no es un objeto válido, limpiamos basura
-          localStorage.removeItem('user');
+          localStorage.removeItem("user");
         }
       } catch (e) {
         console.error("Error al recuperar sesión:", e);
-        localStorage.removeItem('user'); // Limpiamos el JSON corrupto
+        localStorage.removeItem("user"); // Limpiamos el JSON corrupto
       }
     }
 
-    return () => window.removeEventListener('hashchange', onHash);
+    return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
   // --- ACCIONES ---
   const handleLogin = (u: any) => {
     setUser(u);
     setIsAuthenticated(true);
-    localStorage.setItem('user', JSON.stringify(u));
+    localStorage.setItem("user", JSON.stringify(u));
     // Opcional: Redirigir al home tras login
-    window.location.hash = '#/';
+    window.location.hash = "#/";
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setUser(null);
-    localStorage.removeItem('user');
-    window.location.hash = '#/';
+    localStorage.removeItem("user");
+    window.location.hash = "#/";
   };
 
   // --- ENRUTADOR DINÁMICO ---
   // Extraemos la lógica de qué vista mostrar para mantener el JSX limpio
   const renderCurrentView = () => {
     switch (true) {
-      case route === '#/profile':
+      case route === "#/profile":
         return <Profile user={user} onLogout={handleLogout} />;
-      case route === '#/simulacrum':
+      case route === "#/simulacrum":
         return <SimulationPanel />;
-      case route.startsWith('#/simulacrum/run') || route.startsWith('#/simulacrum/view'):
+      case route.startsWith("#/simulacrum/run") ||
+        route.startsWith("#/simulacrum/view"):
         return <SimulationRun />;
-      case route === '#/overview':
+      case route === "#/overview":
         return <OverviewDashboard />;
-      case route === '#/about':
+      case route === "#/about":
         return <About />;
-      case route === '#/privacy-policy':
+      case route === "#/privacy-policy":
         return <PrivacyPolicy />;
-      case route === '#/license':
+      case route === "#/license":
         return <LicenseView />;
+      case route === "#/simulacrum/history":
+        return <SimulationHistory />;
+      case route === "#/simulacrum/admin":
+        return <SimulacrosAdmin />;
       default:
         return <Hero />;
     }
@@ -95,16 +102,14 @@ function App() {
 
   // --- RENDERIZADO ---
   return (
-    <div className="relative min-h-screen w-full bg-neutral-950 text-slate-200 selection:bg-accent-cyan/20">
-
+    <div className="selection:bg-accent-cyan/20 relative min-h-screen w-full bg-neutral-950 text-slate-200">
       {/* FONDO GLOBAL: Siempre presente, pero no interactuable */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      <div className="pointer-events-none fixed inset-0 z-0">
         <NeuralPulseBackground />
       </div>
 
       <main className="relative z-10 min-h-screen">
         <AnimatePresence mode="wait">
-
           {/* LÓGICA DE SEGURIDAD PRIMARIA: Si no está autenticado, solo AuthForm */}
           {!isAuthenticated ? (
             <motion.div
@@ -113,7 +118,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4 }}
-              className="flex items-center justify-center min-h-screen"
+              className="flex min-h-screen items-center justify-center"
             >
               <AuthForm onLoginSuccess={handleLogin} />
             </motion.div>

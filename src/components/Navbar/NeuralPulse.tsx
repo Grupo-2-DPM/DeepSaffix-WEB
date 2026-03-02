@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
 export const NeuralPulse: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,7 +7,7 @@ export const NeuralPulse: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Ajustar tamaño del canvas al contenedor (será 240x40 en la navbar)
@@ -19,7 +19,7 @@ export const NeuralPulse: React.FC = () => {
       }
     };
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
 
     // Parámetros de la animación
     const particles: Array<{
@@ -63,7 +63,7 @@ export const NeuralPulse: React.FC = () => {
       }
 
       // Dibujar conexiones
-      ctx.strokeStyle = 'rgba(0, 242, 255, 0.15)'; // --color-accent-cyan con baja opacidad
+      ctx.strokeStyle = "rgba(0, 242, 255, 0.15)"; // --color-accent-cyan con baja opacidad
       ctx.lineWidth = 1;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -84,8 +84,8 @@ export const NeuralPulse: React.FC = () => {
       for (const p of particles) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#00f2ff';
-        ctx.shadowColor = '#00f2ff';
+        ctx.fillStyle = "#00f2ff";
+        ctx.shadowColor = "#00f2ff";
         ctx.shadowBlur = 8;
         ctx.fill();
         // reset shadow para no afectar a otros dibujos
@@ -98,27 +98,30 @@ export const NeuralPulse: React.FC = () => {
     draw();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrame);
     };
   }, []);
 
   return (
-    <div className="relative h-10 w-64 md:w-80 overflow-hidden rounded-full border border-neutral-800 bg-neutral-950/50 backdrop-blur-sm">
-      {/* Fondo con gradiente móvil */}
-      <div className="absolute inset-0 bg-linear-to-r from-brand-500/5 via-accent-cyan/5 to-brand-500/5 animate-gradient-x" />
-      
-      {/* Canvas para partículas */}
+    <div className="relative h-14 w-full overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950/40 backdrop-blur-md">
+      {/* Gradiente de fondo más amplio */}
+      <div className="from-brand-500/10 via-accent-cyan/10 to-brand-500/10 animate-gradient-x absolute inset-0 bg-linear-to-r" />
+
+      {/* Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ filter: 'blur(0.5px)' }}
+        className="absolute inset-0 h-full w-full"
+        style={{ filter: "blur(1px)" }}
       />
 
-      {/* Texto superpuesto (opcional) */}
+      {/* Overlay técnico sutil */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#00f2ff_1px,transparent_1px)] bg-size-[40px_40px] opacity-[0.05]" />
+
+      {/* Texto minimalista */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-xs font-mono text-neutral-400 tracking-widest">
-          <span className="text-accent-cyan">NEURAL</span> PULSE
+        <span className="font-mono text-sm tracking-widest text-neutral-400">
+          <span className="text-accent-cyan">NEURAL</span> NETWORK ACTIVE
         </span>
       </div>
     </div>

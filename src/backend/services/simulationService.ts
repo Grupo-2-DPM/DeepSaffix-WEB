@@ -1,4 +1,4 @@
-import { http } from '../../api/http';
+import { http } from "../../api/http";
 
 export interface SimulacroDTO {
   id_simulacro: number;
@@ -21,12 +21,12 @@ export interface IntentoDTO {
 
 export const simulationService = {
   async list(): Promise<SimulacroDTO[]> {
-    return http<SimulacroDTO[]>('/simulacros');
+    return http<SimulacroDTO[]>("/simulacros");
   },
 
   async startAttempt(simId: number, id_usuario: number): Promise<IntentoDTO> {
     return http<IntentoDTO>(`/simulacros/${simId}/intentos`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ id_usuario }),
     });
   },
@@ -40,7 +40,9 @@ export const simulationService = {
   },
 
   async finishAttempt(attemptId: number): Promise<IntentoDTO> {
-    return http<IntentoDTO>(`/simulacros/intentos/${attemptId}/finalizar`, { method: 'POST' });
+    return http<IntentoDTO>(`/simulacros/intentos/${attemptId}/finalizar`, {
+      method: "POST",
+    });
   },
 
   async getSimulacro(simId: number): Promise<SimulacroDTO> {
@@ -49,23 +51,35 @@ export const simulationService = {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async createSimulacro(body: any): Promise<SimulacroDTO> {
-    return http<SimulacroDTO>(`/simulacros`, { method: 'POST', body: JSON.stringify(body) });
+    return http<SimulacroDTO>(`/simulacros`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   },
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async updateSimulacro(simId: number, body: any): Promise<SimulacroDTO> {
-    return http<SimulacroDTO>(`/simulacros/${simId}`, { method: 'PATCH', body: JSON.stringify(body) });
+    return http<SimulacroDTO>(`/simulacros/${simId}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
   },
 
   async deleteSimulacro(simId: number): Promise<void> {
-    return http<void>(`/simulacros/${simId}`, { method: 'DELETE' });
+    return http<void>(`/simulacros/${simId}`, { method: "DELETE" });
   },
 
-  async submitAnswers(attemptId: number, optionIds: number[]): Promise<{ inserted: number }> {
-    return http<{ inserted: number }>(`/simulacros/intentos/${attemptId}/respuestas`, {
-      method: 'POST',
-      body: JSON.stringify({ selected_option_ids: optionIds }),
-    });
+  async submitAnswers(
+    attemptId: number,
+    optionIds: number[]
+  ): Promise<{ inserted: number }> {
+    return http<{ inserted: number }>(
+      `/simulacros/intentos/${attemptId}/respuestas`,
+      {
+        method: "POST",
+        body: JSON.stringify({ selected_option_ids: optionIds }),
+      }
+    );
   },
 };
 

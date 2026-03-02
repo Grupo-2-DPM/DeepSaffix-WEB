@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Navbar, type User } from "../../components/Navbar/Navbar";
+import { Navbar } from "../../components/Navbar/Navbar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Footer } from "../../components/Footer/Footer";
 import { SIDEBAR_ITEMS } from "../../components/Sidebar/sidebar.data";
+import type { User } from "../../features/usuarios/components/ProfileCard";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -22,19 +23,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="h-screen">
-
-      <div
-        className="
-          grid
-          grid-cols-[auto_1fr]
-          grid-rows-[auto_1fr_auto]
-          h-full
-        "
-      >
-
+      <div className="grid h-full grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]">
         {/* SIDEBAR */}
         <div className="row-span-3">
           <Sidebar
+            user={user}
+            onLogout={onLogout}
             items={SIDEBAR_ITEMS}
             activePath={activePath}
             isMobileOpen={isMobileOpen}
@@ -46,24 +40,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         {/* NAVBAR */}
         <div className="sticky top-0 z-50">
-          <Navbar
-            user={user}
-            onLogout={onLogout}
-            onOpenSidebar={() => setIsMobileOpen(true)}
-          />
+          <Navbar />
         </div>
 
         {/* MAIN */}
-        <main
-          role="main"
-          className="overflow-y-auto "
-        >
+        <main role="main" className="overflow-y-auto">
           {children}
         </main>
 
         {/* FOOTER */}
         <Footer />
-
       </div>
     </div>
   );

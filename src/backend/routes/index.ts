@@ -7,14 +7,14 @@
 
 export const API_ROUTES = {
   auth: {
-    login: '/auth/login',
+    login: "/auth/login",
   },
   usuarios: {
-    base: '/usuarios',
+    base: "/usuarios",
     eliminar: (id: number) => `/usuarios/${id}/eliminar`,
   },
   perfilAcademico: (id: number) => `/perfil-academico/${id}`,
-  simulation: '/simulation',
+  simulation: "/simulation",
 };
 
 export default API_ROUTES;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
-import type { Usuario } from '../../../backend/models/Usuario';
-import ModalConfirm from './ModalConfirm';
-import { UserEdit } from './UserEdit';
+import React, { useEffect, useState } from "react";
+import type { Usuario } from "../../../backend/models/Usuario";
+import ModalConfirm from "./ModalConfirm";
+import { UserEdit } from "./UserEdit";
 
 export type User = Usuario;
 
@@ -13,22 +13,30 @@ interface ProfileCardProps {
 }
 
 function initials(name: string | undefined, apellido?: string | undefined) {
-  if (!name) return 'U';
-  const first = name.trim().split(' ')[0] || name;
-  const a = apellido ?? '';
-  const second = a.trim().split(' ')[0] || '';
-  const i = (first[0] ?? '').toUpperCase();
-  const j = (second[0] ?? '').toUpperCase();
+  if (!name) return "U";
+  const first = name.trim().split(" ")[0] || name;
+  const a = apellido ?? "";
+  const second = a.trim().split(" ")[0] || "";
+  const i = (first[0] ?? "").toUpperCase();
+  const j = (second[0] ?? "").toUpperCase();
   return (i + j).slice(0, 2);
 }
 
-export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProfileUpdated }) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({
+  user,
+  onDelete,
+  onProfileUpdated,
+}) => {
   const [, setMounted] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [localUser, setLocalUser] = useState<User | null>(user);
-  useEffect(() => { setLocalUser(user); }, [user]);
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setLocalUser(user);
+  }, [user]);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const displayUser = localUser ?? user;
   if (!displayUser) return null;
@@ -39,44 +47,54 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
     await onDelete(displayUser.id_usuario);
   };
 
-  const formattedDate = displayUser.fecha_registro ? new Date(displayUser.fecha_registro).toLocaleString() : '-';
+  const formattedDate = displayUser.fecha_registro
+    ? new Date(displayUser.fecha_registro).toLocaleString()
+    : "-";
 
   return (
-    <div className="bg-neutral-900 w-full rounded-2xl border border-neutral-800 shadow-2xl p-6 md:p-10 animate-fade-in relative overflow-hidden">
+    <div className="animate-fade-in relative w-full overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl md:p-10">
       <div className="flex flex-col items-center text-center">
         {/* Avatar con iniciales, estilo consola */}
-        <div className="w-24 h-24 rounded-full flex items-center justify-center bg-linear-to-r from-brand-600 to-brand-500 mb-4 border-2 border-accent-cyan/50">
-          <span className="text-white font-mono font-bold text-xl">{initials(displayUser.nombre, displayUser.apellido)}</span>
+        <div className="from-brand-600 to-brand-500 border-accent-cyan/50 mb-4 flex h-24 w-24 items-center justify-center rounded-full border-2 bg-linear-to-r">
+          <span className="font-mono text-xl font-bold text-white">
+            {initials(displayUser.nombre, displayUser.apellido)}
+          </span>
         </div>
 
         {/* Nombre y correo con tipografía técnica */}
-        <h2 className="text-2xl font-mono font-bold text-white">
+        <h2 className="font-mono text-2xl font-bold text-white">
           {displayUser.nombre} {displayUser.apellido}
         </h2>
-        <p className="text-sm font-mono text-neutral-500 mt-1 mb-4">
+        <p className="mt-1 mb-4 font-mono text-sm text-neutral-500">
           <span className="text-accent-cyan">➜</span> {displayUser.correo}
         </p>
 
         {/* Línea divisoria */}
-        <div className="w-full border-t border-neutral-800 my-6"></div>
+        <div className="my-6 w-full border-t border-neutral-800"></div>
 
         {/* Grid de información */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="text-left">
-            <div className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">Registrado</div>
-            <div className="text-sm font-mono text-neutral-300">{formattedDate}</div>
+            <div className="font-mono text-[10px] tracking-widest text-neutral-500 uppercase">
+              Registrado
+            </div>
+            <div className="font-mono text-sm text-neutral-300">
+              {formattedDate}
+            </div>
           </div>
           <div className="text-left sm:text-right">
-            <div className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">Estado</div>
+            <div className="font-mono text-[10px] tracking-widest text-neutral-500 uppercase">
+              Estado
+            </div>
             <div className="mt-1">
-              {displayUser.estado_cuenta === 'ACTIVO' ? (
-                <span className="inline-flex items-center gap-1 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-mono text-brand-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse"></span>
+              {displayUser.estado_cuenta === "ACTIVO" ? (
+                <span className="border-brand-500/30 bg-brand-500/10 text-brand-400 inline-flex items-center gap-1 rounded-full border px-3 py-1 font-mono text-xs">
+                  <span className="bg-brand-400 h-1.5 w-1.5 animate-pulse rounded-full"></span>
                   ACTIVO
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-xs font-mono text-red-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span className="inline-flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 font-mono text-xs text-red-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-400"></span>
                   INACTIVO
                 </span>
               )}
@@ -85,27 +103,35 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
         </div>
 
         {/* Perfil académico */}
-        <div className="w-full border-t border-neutral-800 pt-4 mt-4">
-          <div className="mb-2 text-[10px] font-mono tracking-widest text-neutral-500 uppercase flex items-center gap-1">
+        <div className="mt-4 w-full border-t border-neutral-800 pt-4">
+          <div className="mb-2 flex items-center gap-1 font-mono text-[10px] tracking-widest text-neutral-500 uppercase">
             <i className="fas fa-graduation-cap text-accent-cyan text-xs"></i>
             Perfil académico
           </div>
           {displayUser.perfilAcademico ? (
-            <div className="text-sm font-mono text-neutral-300 space-y-1">
-              <div><span className="text-neutral-500">PROGRAMA:</span> {displayUser.perfilAcademico.programa_academico ?? '-'}</div>
-              <div><span className="text-neutral-500">SEMESTRE:</span> {displayUser.perfilAcademico.semestre ?? '-'}</div>
+            <div className="space-y-1 font-mono text-sm text-neutral-300">
+              <div>
+                <span className="text-neutral-500">PROGRAMA:</span>{" "}
+                {displayUser.perfilAcademico.programa_academico ?? "-"}
+              </div>
+              <div>
+                <span className="text-neutral-500">SEMESTRE:</span>{" "}
+                {displayUser.perfilAcademico.semestre ?? "-"}
+              </div>
             </div>
           ) : (
-            <div className="text-sm font-mono text-neutral-500">No hay información académica registrada.</div>
+            <div className="font-mono text-sm text-neutral-500">
+              No hay información académica registrada.
+            </div>
           )}
 
           {/* Botones de acción con estilo técnico */}
-          <div className="mt-3 flex gap-2 justify-center">
+          <div className="mt-3 flex justify-center gap-2">
             <button
-              onClick={() => setEditing(e => !e)}
-              className="px-3 py-1 bg-transparent border border-neutral-700 hover:bg-neutral-800 text-neutral-400 hover:text-accent-cyan rounded text-[10px] font-mono tracking-widest uppercase transition-all active:scale-95"
+              onClick={() => setEditing((e) => !e)}
+              className="hover:text-accent-cyan rounded border border-neutral-700 bg-transparent px-3 py-1 font-mono text-[10px] tracking-widest text-neutral-400 uppercase transition-all hover:bg-neutral-800 active:scale-95"
             >
-              {editing ? 'Cerrar' : 'Editar perfil'}
+              {editing ? "Cerrar" : "Editar perfil"}
             </button>
           </div>
 
@@ -116,8 +142,16 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
                 user={displayUser}
                 onSaved={async (updated) => {
                   setEditing(false);
-                  if (updated) setLocalUser(prev => ({ ...(prev ?? displayUser), perfilAcademico: updated } as any));
-                  if (typeof onProfileUpdated === 'function') await onProfileUpdated();
+                  if (updated)
+                    setLocalUser(
+                      (prev) =>
+                        ({
+                          ...(prev ?? displayUser),
+                          perfilAcademico: updated,
+                        }) as any
+                    );
+                  if (typeof onProfileUpdated === "function")
+                    await onProfileUpdated();
                 }}
                 onCancel={() => setEditing(false)}
               />
@@ -125,10 +159,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onDelete, onProf
           )}
 
           {/* Botón de desactivar cuenta con estilo danger */}
-          <div className="w-full flex justify-center mt-6">
+          <div className="mt-6 flex w-full justify-center">
             <button
               onClick={() => setConfirmOpen(true)}
-              className="px-4 py-2 bg-transparent border border-red-500/50 hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-lg text-xs font-mono tracking-widest uppercase transition-all active:scale-95"
+              className="rounded-lg border border-red-500/50 bg-transparent px-4 py-2 font-mono text-xs tracking-widest text-red-400 uppercase transition-all hover:bg-red-500/10 hover:text-red-300 active:scale-95"
             >
               <i className="fas fa-exclamation-triangle mr-1 text-xs"></i>
               Desactivar cuenta

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 export const LicenseView: React.FC = () => {
-  const [content, setContent] = useState<string>("Cargando protocolo de licencia...");
+  const [content, setContent] = useState<string>(
+    "Cargando protocolo de licencia..."
+  );
 
   const fallbackLicense = `MIT License
 Copyright (c) 2026 DeepSaffix
@@ -25,44 +27,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.`;
 
   useEffect(() => {
-    fetch('/LICENSE.md')
-      .then(res => {
+    fetch("/LICENSE.md")
+      .then((res) => {
         if (!res.ok) {
-          throw new Error('No se encontró LICENSE.md');
+          throw new Error("No se encontró LICENSE.md");
         }
         return res.text();
       })
-      .then(text => setContent(text))
+      .then((text) => setContent(text))
       .catch(() => {
         setContent(fallbackLicense);
       });
   }, [fallbackLicense]);
 
   return (
-    <div className="max-w-4xl mx-auto w-full animate-fade-in p-4">
-      <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden shadow-2xl">
+    <div className="animate-fade-in mx-auto w-full max-w-4xl p-4">
+      <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900 shadow-2xl">
         {/* Header Técnico */}
-        <div className="bg-neutral-850 border-b border-neutral-800 p-4 flex items-center justify-between">
+        <div className="bg-neutral-850 flex items-center justify-between border-b border-neutral-800 p-4">
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-brand-500 animate-pulse"></div>
+            <div className="bg-brand-500 h-3 w-3 animate-pulse rounded-full"></div>
             <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
               Legal_System / OpenSource_License
             </span>
           </div>
-          <span className="text-[10px] font-mono text-neutral-600">v1.0.0-MIT</span>
+          <span className="font-mono text-[10px] text-neutral-600">
+            v1.0.0-MIT
+          </span>
         </div>
 
         {/* Visor de Licencia */}
         <div className="p-6 md:p-8">
-          <pre className="text-sm font-mono text-neutral-400 leading-relaxed whitespace-pre-wrap bg-neutral-950 border border-neutral-800 p-6 rounded-lg">
+          <pre className="rounded-lg border border-neutral-800 bg-neutral-950 p-6 font-mono text-sm leading-relaxed whitespace-pre-wrap text-neutral-400">
             {content}
           </pre>
         </div>
 
-        <div className="bg-neutral-950/50 p-4 border-t border-neutral-800 flex justify-end">
+        <div className="flex justify-end border-t border-neutral-800 bg-neutral-950/50 p-4">
           <button
             onClick={() => window.history.back()}
-            className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-[10px] font-bold tracking-widest uppercase border border-neutral-700 rounded-lg transition-all active:scale-95"
+            className="rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-2 text-[10px] font-bold tracking-widest text-neutral-300 uppercase transition-all hover:bg-neutral-800 active:scale-95"
           >
             Cerrar Terminal
           </button>

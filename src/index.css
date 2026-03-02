@@ -159,7 +159,6 @@ body {
 }
 
 @keyframes pulse-slow {
-
   0%,
   100% {
     opacity: 0.3;
@@ -227,7 +226,6 @@ body {
 }
 
 @keyframes gradient-x {
-
   0%,
   100% {
     background-position: 0% 50%;
@@ -249,4 +247,39 @@ body {
   /* Neutral-900 con transparencia */
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 4px rgba(0, 242, 255, 0.3),
+      0 0 8px rgba(0, 115, 187, 0.2);
+  }
+  50% {
+    text-shadow:
+      0 0 12px rgba(0, 242, 255, 0.7),
+      0 0 20px rgba(0, 115, 187, 0.5);
+  }
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 4px rgba(0, 242, 255, 0.3),
+      0 0 8px rgba(0, 115, 187, 0.2);
+  }
+  50% {
+    text-shadow:
+      0 0 12px rgba(0, 242, 255, 0.7),
+      0 0 20px rgba(0, 115, 187, 0.5);
+  }
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
 }

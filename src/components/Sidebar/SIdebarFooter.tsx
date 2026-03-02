@@ -17,7 +17,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
   if (!user) return null;
 
   return (
-    <div className="mt-auto border-t border-neutral-800 p-3">
+    <div className="mt-auto h-14 border-t border-neutral-800 p-3">
       <div
         className={`flex items-center ${
           collapsed ? "justify-center" : "justify-between"

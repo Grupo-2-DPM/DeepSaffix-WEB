@@ -12,9 +12,9 @@ export const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   return (
     <footer
       role="contentinfo"
-      className={`h-10 border-t border-neutral-800 text-neutral-400 ${className}`}
+      className={`h-14 border-t border-neutral-800 text-neutral-400 ${className}`}
     >
-      <div className="flex h-full items-center justify-center px-4 text-xs">
+      <div className="py-5 md:px-4">
         <FooterMeta year={currentYear} />
       </div>
     </footer>

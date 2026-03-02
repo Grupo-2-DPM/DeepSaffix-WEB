@@ -205,7 +205,7 @@ export const SimulationRun: React.FC = () => {
         <header className="flex items-center justify-between border-b border-white/5 bg-neutral-900/40 px-6 py-4 md:px-8">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => (window.location.hash = "#/simulacrum")}
+              onClick={() => (window.location.hash = "#/overview")}
               className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-white/5 hover:text-white"
             >
               <i className="fas fa-arrow-left"></i>

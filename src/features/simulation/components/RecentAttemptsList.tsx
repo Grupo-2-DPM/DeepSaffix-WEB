@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import type { Realizado } from "../hooks/useIntentosUsuario";
 
 type Props = {
@@ -10,45 +11,61 @@ const RecentAttemptsList: React.FC<Props> = ({ realizados, limit = 5 }) => {
   const recientes = realizados.slice(0, limit);
 
   return (
-    <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h4 className="text-sm font-bold text-white">Historial reciente</h4>
+    <div className="rounded-3xl border border-white/10 bg-neutral-900/70 p-8 shadow-2xl backdrop-blur-xl">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-bold tracking-[0.2em] text-neutral-500 uppercase">
+            Registro
+          </p>
+          <h3 className="text-lg font-semibold text-white">
+            Historial Reciente
+          </h3>
+        </div>
+
         {realizados.length > limit && (
           <button
             onClick={() => (window.location.hash = "#/simulacrum/history")}
-            className="text-xs text-blue-400 hover:text-white"
+            className="text-accent-cyan text-[11px] font-bold tracking-widest uppercase opacity-70 hover:opacity-100"
           >
-            Ver historial completo
+            Ver todo →
           </button>
         )}
       </div>
 
       {recientes.length === 0 ? (
-        <div className="text-xs text-neutral-500">No hay registros</div>
+        <div className="flex h-32 items-center justify-center text-xs text-neutral-600">
+          Sin registros
+        </div>
       ) : (
-        <ul className="space-y-2">
+        <div className="space-y-3">
           {recientes.map((r) => (
-            <li
+            <motion.div
               key={r.id}
-              className="flex justify-between rounded border border-neutral-800 p-2"
+              whileHover={{ scale: 1.01 }}
+              className="rounded-2xl border border-white/5 bg-white/5 p-4 transition-all hover:border-white/20"
             >
-              <div>
-                <div className="text-sm text-white">{r.nombre}</div>
-                <div className="text-xs text-neutral-500">
-                  {r.fecha} • {r.resultado}
+              <div className="flex justify-between">
+                <div>
+                  <div className="text-sm font-medium text-white">
+                    {r.nombre}
+                  </div>
+                  <div className="text-xs text-neutral-500">
+                    {r.fecha} • {r.resultado}
+                  </div>
                 </div>
+
+                <button
+                  onClick={() =>
+                    (window.location.hash = `#/simulacrum/view/${r.id}`)
+                  }
+                  className="text-accent-cyan text-xs font-bold tracking-wide uppercase hover:opacity-70"
+                >
+                  Ver
+                </button>
               </div>
-              <button
-                onClick={() =>
-                  (window.location.hash = `#/simulacrum/view/${r.id}`)
-                }
-                className="text-xs text-neutral-400"
-              >
-                Ver
-              </button>
-            </li>
+            </motion.div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

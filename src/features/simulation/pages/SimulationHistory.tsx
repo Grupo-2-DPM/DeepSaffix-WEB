@@ -1,5 +1,5 @@
 import React from "react";
-import { useIntentosUsuario } from "../../../hooks/useIntentosUsuario";
+import { useIntentosUsuario } from "../hooks/useIntentosUsuario";
 
 const SimulationHistory: React.FC = () => {
   const { realizados } = useIntentosUsuario();

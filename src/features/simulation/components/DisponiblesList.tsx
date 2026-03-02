@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import simulationService from "../../../backend/services/simulationService";
-import { type Disponible } from "../../../hooks/useSimulacros";
+import { type Disponible } from "../hooks/useSimulacros";
 
 type Props = {
   disponibles: Disponible[];

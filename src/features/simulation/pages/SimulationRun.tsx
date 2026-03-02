@@ -16,12 +16,12 @@ export const SimulationRun: React.FC = () => {
   const [attempt, setAttempt] = useState<any | null>(null);
   const [viewOnly, setViewOnly] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [progress, setProgress] = useState<number>(0);
-  const [running, setRunning] = useState<boolean>(true);
-  const [status, setStatus] = useState<string>("Iniciando...");
+  const [, setProgress] = useState<number>(0);
+  const [running] = useState<boolean>(true);
+  const [, setStatus] = useState<string>("Iniciando...");
   const [selected, setSelected] = useState<Record<number, number>>({});
   const [saving, setSaving] = useState(false);
-  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [, setSavedAt] = useState<number | null>(null);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
 
   // --- REFS PARA LÓGICA DE TIEMPO Y BLOQUEOS ---

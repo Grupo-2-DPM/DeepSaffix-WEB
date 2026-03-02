@@ -18,11 +18,8 @@ export const Footer: React.FC<FooterProps> = ({
       role="contentinfo"
       className={`border-neutral-800 text-neutral-400 ${className}`}
     >
-      <div className="md:px-4 py-5">
-        <FooterMeta
-          year={currentYear}
-          protocolVersion={protocolVersion}
-        />
+      <div className="py-5 md:px-4">
+        <FooterMeta year={currentYear} protocolVersion={protocolVersion} />
       </div>
     </footer>
   );

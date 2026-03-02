@@ -1,4 +1,4 @@
-export type EstadoCuenta = 'ACTIVO' | 'INACTIVO' | 'ELIMINADO';
+export type EstadoCuenta = "ACTIVO" | "INACTIVO" | "ELIMINADO";
 
 export interface PerfilAcademico {
   id_perfil: number;

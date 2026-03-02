@@ -1,4 +1,4 @@
-import { http } from '../../api/http';
+import { http } from "../../api/http";
 
 export interface CreatePerfilDto {
   programa_academico: string;
@@ -13,14 +13,14 @@ export interface UpdatePerfilDto {
 export const perfilAcademicoService = {
   async create(id_usuario: number, payload: CreatePerfilDto) {
     return http(`/perfil-academico/${id_usuario}`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(payload),
     });
   },
 
   async update(id_usuario: number, payload: UpdatePerfilDto) {
     return http(`/perfil-academico/${id_usuario}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(payload),
     });
   },
@@ -30,6 +30,6 @@ export const perfilAcademicoService = {
   },
 
   async delete(id_usuario: number) {
-    return http(`/perfil-academico/${id_usuario}`, { method: 'DELETE' });
+    return http(`/perfil-academico/${id_usuario}`, { method: "DELETE" });
   },
 };

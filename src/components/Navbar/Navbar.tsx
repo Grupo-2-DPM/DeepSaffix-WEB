@@ -1,6 +1,6 @@
-import React from 'react';
-import { UserMenu } from './UserMenu';
-import { QuantumOrb } from './QuantumOrb';
+import React from "react";
+import { UserMenu } from "./UserMenu";
+import { QuantumOrb } from "./QuantumOrb";
 
 export interface User {
   id: string;
@@ -19,38 +19,32 @@ export const Navbar: React.FC<NavbarProps> = ({
   user,
   onLogout,
   onOpenSidebar,
-  className = '',
+  className = "",
 }) => {
   return (
     <nav
-      className={`w-full h-16 border-b border-neutral-800 backdrop-blur-xl ${className}`}
+      className={`h-16 w-full border-b border-neutral-800 backdrop-blur-xl ${className}`}
       role="navigation"
       aria-label="Main Navigation"
     >
-
-      <div className="mx-auto max-w-10xl md:px-8 h-full">
-        <div className="grid grid-cols-2 items-center h-full">
-
+      <div className="max-w-10xl mx-auto h-full md:px-8">
+        <div className="grid h-full grid-cols-2 items-center">
           {/* Columna izquierda: carrusel */}
           <div className="flex justify-start">
             <button
               onClick={onOpenSidebar}
-              className="md:hidden p-2 rounded-lg border border-neutral-800 bg-neutral-900 text-accent-cyan
-                         hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+              className="text-accent-cyan focus:ring-accent-cyan rounded-lg border border-neutral-800 bg-neutral-900 p-2 hover:bg-neutral-800 focus:ring-2 focus:outline-none md:hidden"
               aria-label="Open sidebar menu"
             >
               <i className="fas fa-bars" aria-hidden="true"></i>
             </button>
             <UserMenu user={user} onLogout={onLogout} />
-
           </div>
-
 
           {/* Columna derecha: botón móvil y menú de usuario */}
-          <div className="flex justify-end items-center gap-2">
+          <div className="flex items-center justify-end gap-2">
             <QuantumOrb />
           </div>
-
         </div>
       </div>
     </nav>

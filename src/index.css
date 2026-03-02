@@ -159,7 +159,6 @@ body {
 }
 
 @keyframes pulse-slow {
-
   0%,
   100% {
     opacity: 0.3;
@@ -227,7 +226,6 @@ body {
 }
 
 @keyframes gradient-x {
-
   0%,
   100% {
     background-position: 0% 50%;

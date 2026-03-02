@@ -1,9 +1,9 @@
-import { http } from '../../api/http';
-import type { Usuario } from '../models/Usuario';
+import { http } from "../../api/http";
+import type { Usuario } from "../models/Usuario";
 
 export const usuariosService = {
   async list(): Promise<Usuario[]> {
-    return http<Usuario[]>('/usuarios');
+    return http<Usuario[]>("/usuarios");
   },
 
   async get(id: number): Promise<Usuario> {
@@ -11,22 +11,22 @@ export const usuariosService = {
   },
 
   async create(payload: Partial<Usuario>): Promise<Usuario> {
-    return http<Usuario>('/usuarios', {
-      method: 'POST',
+    return http<Usuario>("/usuarios", {
+      method: "POST",
       body: JSON.stringify(payload),
     });
   },
 
   async deactivateUsuario(id: number): Promise<void> {
     return http<void>(`/usuarios/${id}/desactivar`, {
-      method: 'PATCH',
+      method: "PATCH",
     });
   },
 
   async updatePerfil(id: number, payload: Partial<Usuario>): Promise<Usuario> {
     return http<Usuario>(`/usuarios/${id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(payload),
     });
-  }
+  },
 };

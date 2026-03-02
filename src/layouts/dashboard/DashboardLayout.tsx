@@ -22,16 +22,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="h-screen">
-
-      <div
-        className="
-          grid
-          grid-cols-[auto_1fr]
-          grid-rows-[auto_1fr_auto]
-          h-full
-        "
-      >
-
+      <div className="grid h-full grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]">
         {/* SIDEBAR */}
         <div className="row-span-3">
           <Sidebar
@@ -54,16 +45,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         {/* MAIN */}
-        <main
-          role="main"
-          className="overflow-y-auto "
-        >
+        <main role="main" className="overflow-y-auto">
           {children}
         </main>
 
         {/* FOOTER */}
         <Footer />
-
       </div>
     </div>
   );

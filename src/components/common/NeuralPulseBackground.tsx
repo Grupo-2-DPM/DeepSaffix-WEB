@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 
 interface Particle {
   x: number;
@@ -33,25 +33,35 @@ const NeuralPulseBackground: React.FC = () => {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     // Función para crear/ajustar partículas según el área
     const syncParticles = (width: number, height: number) => {
       const area = width * height;
-      const targetCount = Math.min(Math.floor(area * SETTINGS.density), SETTINGS.maxParticles);
-      
+      const targetCount = Math.min(
+        Math.floor(area * SETTINGS.density),
+        SETTINGS.maxParticles
+      );
+
       // Si el tamaño cambia drásticamente, regeneramos para evitar "huecos"
-      if (Math.abs(particles.current.length - targetCount) > 10 || particles.current.length === 0) {
+      if (
+        Math.abs(particles.current.length - targetCount) > 10 ||
+        particles.current.length === 0
+      ) {
         const newParticles: Particle[] = [];
         for (let i = 0; i < targetCount; i++) {
           const x = Math.random() * width;
           const y = Math.random() * height;
           newParticles.push({
-            x, y, originX: x, originY: y,
-            vx: 0, vy: 0,
+            x,
+            y,
+            originX: x,
+            originY: y,
+            vx: 0,
+            vy: 0,
             size: Math.random() * 1.5 + 0.5,
-            phase: Math.random() * Math.PI * 2
+            phase: Math.random() * Math.PI * 2,
           });
         }
         particles.current = newParticles;
@@ -62,13 +72,13 @@ const NeuralPulseBackground: React.FC = () => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
-        
+
         // Ajustamos la resolución interna del canvas al tamaño real del DOM
         const dpr = window.devicePixelRatio || 1;
         canvas.width = width * dpr;
         canvas.height = height * dpr;
         ctx.scale(dpr, dpr);
-        
+
         // Sincronizamos partículas con el nuevo tamaño
         syncParticles(width, height);
       }
@@ -108,7 +118,7 @@ const NeuralPulseBackground: React.FC = () => {
       ctx.stroke();
 
       // Actualizar y Dibujar Neuronas
-      pArr.forEach(p => {
+      pArr.forEach((p) => {
         // Física de retorno
         p.vx += (p.originX - p.x) * SETTINGS.spring;
         p.vy += (p.originY - p.y) * SETTINGS.spring;
@@ -132,7 +142,7 @@ const NeuralPulseBackground: React.FC = () => {
 
         // Dibujado Estético
         const pulse = Math.sin(time + p.phase) * 0.3 + 0.7;
-        
+
         // Brillo sutil
         ctx.fillStyle = `rgba(0, 242, 255, ${0.8 * pulse})`;
         ctx.beginPath();
@@ -141,10 +151,10 @@ const NeuralPulseBackground: React.FC = () => {
 
         // Glow radial (solo si quieres un efecto más 'premium')
         if (pulse > 0.8) {
-            ctx.fillStyle = `rgba(0, 242, 255, ${0.1 * pulse})`;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size * 5, 0, Math.PI * 2);
-            ctx.fill();
+          ctx.fillStyle = `rgba(0, 242, 255, ${0.1 * pulse})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 5, 0, Math.PI * 2);
+          ctx.fill();
         }
       });
 
@@ -156,23 +166,37 @@ const NeuralPulseBackground: React.FC = () => {
     // Eventos de Mouse
     const handleMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top, active: true };
+      mouse.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        active: true,
+      };
     };
 
-    window.addEventListener('mousemove', handleMove);
+    window.addEventListener("mousemove", handleMove);
 
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener("mousemove", handleMove);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [SETTINGS.connectionDist, SETTINGS.density, SETTINGS.maxParticles, SETTINGS.mouseRadius, SETTINGS.spring, SETTINGS.viscosity]);
+  }, [
+    SETTINGS.connectionDist,
+    SETTINGS.density,
+    SETTINGS.maxParticles,
+    SETTINGS.mouseRadius,
+    SETTINGS.spring,
+    SETTINGS.viscosity,
+  ]);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden bg-neutral-900">
+    <div
+      ref={containerRef}
+      className="absolute inset-0 h-full w-full overflow-hidden bg-neutral-900"
+    >
       <canvas
         ref={canvasRef}
-        className="block w-full h-full pointer-events-none"
+        className="pointer-events-none block h-full w-full"
         style={{ opacity: 0.7 }}
       />
     </div>

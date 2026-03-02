@@ -1,4 +1,4 @@
-import { http } from '../../api/http';
+import { http } from "../../api/http";
 
 export interface LoginDto {
   correo: string;
@@ -16,8 +16,8 @@ export interface UsuarioSafe {
 
 export const authService = {
   async login(dto: LoginDto): Promise<UsuarioSafe> {
-    return http<UsuarioSafe>('/auth/login', {
-      method: 'POST',
+    return http<UsuarioSafe>("/auth/login", {
+      method: "POST",
       body: JSON.stringify(dto),
     });
   },

@@ -32,20 +32,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside
-        className={`
-          hidden md:flex
-          flex-col
-          ${collapsed ? "w-20" : "w-50"}
-          border-r border-neutral-800
-          transition-all duration-300
-          shrink-0
-
-          sticky top-0
-          h-screen
-        `}
+        className={`hidden flex-col md:flex ${collapsed ? "w-20" : "w-50"} sticky top-0 h-screen shrink-0 border-r border-neutral-800 transition-all duration-300`}
       >
-        <div className="flex flex-col h-full">
-
+        <div className="flex h-full flex-col">
           <SidebarHeader
             collapsed={collapsed}
             onToggleCollapse={onToggleCollapse}
@@ -56,7 +45,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
             activePath={activePath}
             collapsed={collapsed}
           />
-
         </div>
       </aside>
     </>

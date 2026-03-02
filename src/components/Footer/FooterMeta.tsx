@@ -5,15 +5,10 @@ interface Props {
   protocolVersion: string;
 }
 
-export const FooterMeta: React.FC<Props> = ({
-  year,
-  protocolVersion,
-}) => {
+export const FooterMeta: React.FC<Props> = ({ year, protocolVersion }) => {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-xs font-mono text-neutral-600">
-      <p>
-        © {year} DeepSaffix. All rights reserved.
-      </p>
+    <div className="flex flex-col gap-4 font-mono text-xs text-neutral-600 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} DeepSaffix. All rights reserved.</p>
 
       <p>
         <FooterLinks></FooterLinks>
@@ -21,7 +16,7 @@ export const FooterMeta: React.FC<Props> = ({
 
       <p className="flex items-center gap-2">
         <span
-          className="h-2 w-2 rounded-full bg-accent-cyan"
+          className="bg-accent-cyan h-2 w-2 rounded-full"
           aria-hidden="true"
         />
         Secure connection · Protocol {protocolVersion}

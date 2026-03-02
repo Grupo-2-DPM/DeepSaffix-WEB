@@ -123,7 +123,7 @@ export const Login: React.FC<{ onLoginSuccess: (user: any) => void }> = ({
           </div>
           <div className="space-y-2">
             <label className="ml-1 text-[10px] font-black tracking-widest text-neutral-500 uppercase">
-              Llave de Seguridad
+              Contraseña
             </label>
             <div className="relative">
               <input

@@ -24,7 +24,7 @@ export const AuthForm = ({
   const [apiReady, setApiReady] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword] = useState(false);
   // Lógica de fuerza de contraseña
   const passwordStats = useMemo(() => {
     const pass = form.contraseña;
@@ -188,9 +188,9 @@ export const AuthForm = ({
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 text-[10px] font-bold text-neutral-400 uppercase hover:text-white"
+                  className="hover:text-brand-500 absolute top-4 right-4 text-[9px] font-black tracking-tighter text-neutral-600 uppercase transition-colors"
                 >
-                  {showPassword ? "Ocultar" : "Ver"}
+                  {showPassword ? "OCULTAR" : "MOSTRAR"}
                 </button>
               </div>
 
@@ -237,14 +237,6 @@ export const AuthForm = ({
                       : "focus:border-brand-500 border-neutral-800"
                   }`}
                 />
-
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 text-[10px] font-bold text-neutral-400 uppercase hover:text-white"
-                >
-                  {showConfirmPassword ? "Ocultar" : "Ver"}
-                </button>
               </div>
 
               {form.confirmContraseña && !passwordsMatch && (

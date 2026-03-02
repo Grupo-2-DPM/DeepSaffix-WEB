@@ -20,6 +20,7 @@ import { About } from "./components/About/about";
 import { LicenseView } from "./components/Legal/LicenseView";
 import { PrivacyPolicy } from "./components/Legal/PrivacyPolicy";
 import SimulationHistory from "./features/simulation/pages/SimulationHistory";
+import SimulacrosAdmin from "./features/simulation/pages/SimulacrosAdmin";
 
 function App() {
   // --- ESTADO ---
@@ -92,6 +93,8 @@ function App() {
         return <LicenseView />;
       case route === "#/simulacrum/history":
         return <SimulationHistory />;
+      case route === "#/simulacrum/admin":
+        return <SimulacrosAdmin />;
       default:
         return <Hero />;
     }

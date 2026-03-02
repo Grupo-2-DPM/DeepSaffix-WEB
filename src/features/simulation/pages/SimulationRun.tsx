@@ -12,6 +12,7 @@ const parseHashAttemptId = (): { id: string | null; mode: string } => {
 };
 
 export const SimulationRun: React.FC = () => {
+  // --- ESTADOS TÉCNICOS ---
   const [attempt, setAttempt] = useState<any | null>(null);
   const [viewOnly, setViewOnly] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,6 +30,7 @@ export const SimulationRun: React.FC = () => {
   const saveTimer = useRef<number | null>(null);
   const pausedAccumRef = useRef<number>(0);
 
+  // 1. CARGA INICIAL DEL INTENTO
   useEffect(() => {
     const parsed = parseHashAttemptId();
     if (!parsed.id) return;
@@ -46,7 +48,7 @@ export const SimulationRun: React.FC = () => {
       });
   }, []);
 
-  // load simulacro preguntas if available
+  // 2. CARGA DE PREGUNTAS DEL SIMULACRO
   useEffect(() => {
     if (!attempt) return;
     const simId =
@@ -74,7 +76,7 @@ export const SimulationRun: React.FC = () => {
       });
   }, [attempt?.id_intento, viewOnly]);
 
-  // Progress should reflect elapsed time relative to simulacro.duracion_minutos when available.
+  // 3. LÓGICA DE CRONÓMETRO Y AUTOFINISH
   useEffect(() => {
     if (!running || !attempt) return;
     const fechaInicio = attempt?.fecha_inicio
@@ -121,7 +123,8 @@ export const SimulationRun: React.FC = () => {
   // 4. LÓGICA DE AUTOGUARDADO (Debounce 1.5s)
   useEffect(() => {
     if (saveTimer.current) window.clearTimeout(saveTimer.current);
-    if (!attempt || !attempt.id_intento) return;
+    if (!attempt || !attempt.id_intento || viewOnly) return;
+
     saveTimer.current = window.setTimeout(async () => {
       const optionIds = Object.values(selected).map(Number).filter(Boolean);
       if (!optionIds.length) return;
@@ -141,10 +144,10 @@ export const SimulationRun: React.FC = () => {
     };
   }, [selected, attempt?.id_intento, viewOnly]);
 
+  // --- ACCIONES DE UI ---
   const handleSubmitAnswers = async () => {
     if (!attempt) return alert("No hay intento cargado");
     const optionIds = Object.values(selected).map(Number).filter(Boolean);
-    if (!optionIds.length) return alert('Selecciona al menos una opción');
     try {
       if (finishLockRef.current) return;
       finishLockRef.current = true;
@@ -344,7 +347,7 @@ export const SimulationRun: React.FC = () => {
               </button>
             )}
           </div>
-        )}
+        </footer>
       </div>
 
       {/* MODAL CONFIRMACIÓN */}

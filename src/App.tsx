@@ -19,6 +19,7 @@ import { OverviewDashboard } from "./layouts/dashboard/OverviewDashboard";
 import { About } from "./components/About/about";
 import { LicenseView } from "./components/Legal/LicenseView";
 import { PrivacyPolicy } from "./components/Legal/PrivacyPolicy";
+import SimulationHistory from "./features/simulation/pages/SimulationHistory";
 
 function App() {
   // --- ESTADO ---
@@ -89,6 +90,8 @@ function App() {
         return <PrivacyPolicy />;
       case route === "#/license":
         return <LicenseView />;
+      case route === "#/simulacrum/history":
+        return <SimulationHistory />;
       default:
         return <Hero />;
     }

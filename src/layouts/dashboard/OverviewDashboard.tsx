@@ -3,14 +3,17 @@ import { SimulationPanel } from "../../features/simulation/components/Simulation
 import { SimulationRun } from "../../features/simulation/pages/SimulationRun";
 
 export const OverviewDashboard: React.FC = () => {
-  const [view, setView] = useState<"dashboard" | "run" | "view">("dashboard");
+  const [view, setView] = useState<"dashboard" | "run" | "view" | "history">(
+    "dashboard"
+  );
 
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      // Detectamos si la URL es de ejecución o de historial
+
       if (hash.includes("/run/")) setView("run");
       else if (hash.includes("/view/")) setView("view");
+      else if (hash.includes("/history")) setView("history");
       else setView("dashboard");
     };
 
@@ -21,21 +24,6 @@ export const OverviewDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen text-neutral-200">
-      {/* Header Estilo Consola */}
-      <header className="border-b border-neutral-800 bg-neutral-900/50 p-4 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-            <h1 className="text-xs font-bold tracking-[0.3em] text-neutral-400 uppercase">
-              Simulacro_Engine_v1.0
-            </h1>
-          </div>
-          <div className="font-mono text-[10px] text-neutral-600">
-            STATUS: READY_FOR_TESTING
-          </div>
-        </div>
-      </header>
-
       <main className="mx-auto max-w-7xl p-6">
         {view === "dashboard" ? (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Login } from "./Login";
 import { usuariosService } from "../../../backend/services/usuariosService";
 import { checkHealth } from "../../../api/http";
@@ -19,13 +20,13 @@ export const AuthForm = ({
     programa_academico: "",
     semestre: "" as number | "",
   });
-  const [loading, setLoading] = useState(false);
-  const [, setError] = useState<string | null>(null);
-  const [apiReady, setApiReady] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Ahora se usa para mostrar feedback
+  const [apiReady, setApiReady] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword] = useState(false);
-  // Lógica de fuerza de contraseña
+
+  // Lógica de fuerza de contraseña mejorada
   const passwordStats = useMemo(() => {
     const pass = form.contraseña;
     if (!pass) return { score: 0, label: "Vacía", color: "bg-neutral-800" };
@@ -45,18 +46,21 @@ export const AuthForm = ({
     return { score, ...config[score] };
   }, [form.contraseña]);
 
-  const passwordsMatch = form.contraseña === form.confirmContraseña;
+  const passwordsMatch =
+    form.contraseña === form.confirmContraseña && form.confirmContraseña !== "";
+
+  // Validación de negocio: ¿Es un correo institucional?
+  const isEduEmail = useMemo(() => {
+    return /^[^\s@]+@[^\s@]+\.edu\.co$/.test(form.correo);
+  }, [form.correo]);
 
   useEffect(() => {
     const verify = async () => {
-      setApiReady(await checkHealth());
+      const status = await checkHealth();
+      setApiReady(status);
     };
     verify();
-    const interval = setInterval(async () => {
-      if (!apiReady) setApiReady(await checkHealth());
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [apiReady, isRegister]);
+  }, [isRegister]);
 
   useEffect(() => {
     const handler = () => setIsRegister(true);
@@ -66,17 +70,48 @@ export const AuthForm = ({
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!apiReady || !passwordsMatch || passwordStats.score < 2) return;
-    setLoading(true);
     setError(null);
+
+    // VALIDACIONES PRE-ENVÍO
+    if (!apiReady) return setError("El servidor no está disponible.");
+    if (!passwordsMatch) return setError("Las contraseñas no coinciden.");
+    if (passwordStats.score < 2)
+      return setError("La contraseña es demasiado débil.");
+    if (!isEduEmail)
+      return setError("Se requiere un correo institucional (.edu.co)");
+    if (!form.programa_academico || !form.semestre)
+      return setError("Complete la información académica.");
+
+    setLoading(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmContraseña, ...dataToSend } = form;
-      await usuariosService.create(dataToSend as any);
-      alert("Registro exitoso.");
+      // Sanitización final
+      const cleanData = {
+        ...dataToSend,
+        nombre: dataToSend.nombre.trim(),
+        apellido: dataToSend.apellido.trim(),
+      };
+
+      await usuariosService.create(cleanData as any);
+
+      // Feedback de éxito y reseteo
+      alert("Registro exitoso. Ahora puede iniciar sesión.");
       setIsRegister(false);
+      setForm({
+        nombre: "",
+        apellido: "",
+        correo: "",
+        contraseña: "",
+        confirmContraseña: "",
+        programa_academico: "",
+        semestre: "",
+      });
     } catch (err: any) {
-      setError(err?.message || "Error en registro");
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Error crítico en el registro"
+      );
     } finally {
       setLoading(false);
     }
@@ -87,6 +122,7 @@ export const AuthForm = ({
   return (
     <div className="selection:bg-brand-500/30 flex min-h-screen w-full items-center justify-center p-6">
       <div className="animate-fade-in border-t-brand-500/20 w-full max-w-2xl rounded-2xl border border-t-2 border-neutral-800 bg-neutral-900 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        {/* Cabecera... (Mismo código tuyo) */}
         <header className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div
@@ -122,10 +158,10 @@ export const AuthForm = ({
           </div>
         </header>
 
-        {!apiReady && (
-          <div className="mb-6 flex items-center justify-center gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-center font-mono text-[11px] text-amber-500">
-            <div className="h-3 w-3 animate-spin rounded-full border-2 border-amber-500/30 border-t-amber-500" />
-            EL NODO CENTRAL NO RESPONDE. REINTENTANDO CONEXIÓN...
+        {/* Muestra el error si existe */}
+        {error && (
+          <div className="animate-shake mb-6 border-l-4 border-red-500 bg-red-500/10 p-4 text-[11px] font-bold tracking-tight text-red-400 uppercase">
+            {error}
           </div>
         )}
 
@@ -139,10 +175,11 @@ export const AuthForm = ({
                 Nombre
               </label>
               <input
+                value={form.nombre}
                 placeholder="Ej. Carlos"
                 onChange={(e) => setForm({ ...form, nombre: e.target.value })}
                 required
-                className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white transition-all outline-none placeholder:text-neutral-700 focus:ring-1"
+                className="focus:border-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white transition-all outline-none"
               />
             </div>
             <div className="space-y-1.5">
@@ -150,144 +187,148 @@ export const AuthForm = ({
                 Apellido
               </label>
               <input
+                value={form.apellido}
                 placeholder="Ej. Pérez"
                 onChange={(e) => setForm({ ...form, apellido: e.target.value })}
                 required
-                className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white transition-all outline-none placeholder:text-neutral-700 focus:ring-1"
+                className="focus:border-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white transition-all outline-none"
               />
             </div>
           </div>
 
-          <input
-            type="email"
-            placeholder="usuario@universidad.edu.co"
-            required
-            pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
-            onChange={(e) =>
-              setForm({ ...form, correo: e.target.value.toLowerCase() })
-            }
-            className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white transition-all outline-none placeholder:text-neutral-700 focus:ring-1"
-          />
+          <div className="space-y-1.5">
+            <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
+              Correo Institucional
+            </label>
+            <input
+              type="email"
+              value={form.correo}
+              placeholder="usuario@universidad.edu.co"
+              required
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  correo: e.target.value.toLowerCase().trim(),
+                })
+              }
+              className={`w-full rounded-xl border bg-neutral-950 px-4 py-3 text-white transition-all outline-none ${
+                form.correo && !isEduEmail
+                  ? "border-amber-500/50"
+                  : "focus:border-brand-500 border-neutral-800"
+              }`}
+            />
+            {form.correo && !isEduEmail && (
+              <p className="ml-1 text-[8px] font-bold text-amber-500 uppercase">
+                Debe terminar en .edu.co
+              </p>
+            )}
+          </div>
+
           <div className="space-y-1.5">
             <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
               Contraseña
             </label>
-
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
+                value={form.contraseña}
                 placeholder="••••••••"
                 onChange={(e) =>
                   setForm({ ...form, contraseña: e.target.value })
                 }
                 required
-                className="focus:border-brand-500 focus:ring-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none focus:ring-1"
+                className="focus:border-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none"
               />
-
               <button
                 type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="hover:text-brand-500 absolute top-4 right-4 text-[9px] font-black tracking-tighter text-neutral-600 uppercase transition-colors"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-4 right-4 text-[9px] font-black text-neutral-600 hover:text-white"
               >
                 {showPassword ? "OCULTAR" : "MOSTRAR"}
               </button>
             </div>
-
             {/* Medidor de Fuerza */}
             <div className="px-1 pt-1">
-              <div className="mb-1 flex items-center justify-between">
-                <span className="text-[9px] font-bold text-neutral-500 uppercase">
-                  Seguridad: {passwordStats.label}
-                </span>
-              </div>
               <div className="flex h-1 w-full gap-0.5 overflow-hidden rounded-full bg-neutral-800">
                 {[...Array(4)].map((_, i) => (
                   <div
                     key={i}
-                    className={`h-full flex-1 transition-all duration-500 ${
-                      i < passwordStats.score
-                        ? passwordStats.color
-                        : "bg-neutral-800"
-                    }`}
+                    className={`h-full flex-1 transition-all duration-500 ${i < passwordStats.score ? passwordStats.color : "bg-neutral-800"}`}
                   />
                 ))}
               </div>
+              <p className="mt-1 text-[8px] font-bold text-neutral-500 uppercase">
+                Seguridad: {passwordStats.label}
+              </p>
             </div>
           </div>
 
           <div className="space-y-1.5">
             <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
-              Confirmar
+              Confirmar Contraseña
             </label>
-
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="••••••••"
-                onChange={(e) =>
-                  setForm({ ...form, confirmContraseña: e.target.value })
-                }
-                required
-                className={`w-full rounded-xl border bg-neutral-950 px-4 py-3 pr-14 text-white transition-all outline-none focus:ring-1 ${
-                  form.confirmContraseña
-                    ? passwordsMatch
-                      ? "border-emerald-500/50 focus:ring-emerald-500"
-                      : "border-red-500/50 focus:ring-red-500"
-                    : "focus:border-brand-500 border-neutral-800"
-                }`}
-              />
-            </div>
-
-            {form.confirmContraseña && !passwordsMatch && (
-              <p className="mt-1 text-[9px] font-bold text-red-500 uppercase">
-                No coinciden
-              </p>
-            )}
+            <input
+              type="password"
+              value={form.confirmContraseña}
+              placeholder="••••••••"
+              onChange={(e) =>
+                setForm({ ...form, confirmContraseña: e.target.value })
+              }
+              required
+              className={`w-full rounded-xl border bg-neutral-950 px-4 py-3 text-white transition-all outline-none ${
+                form.confirmContraseña
+                  ? passwordsMatch
+                    ? "border-emerald-500/50"
+                    : "border-red-500/50"
+                  : "focus:border-brand-500 border-neutral-800"
+              }`}
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
-            <input
-              placeholder="Programa Académico"
-              onChange={(e) =>
-                setForm({ ...form, programa_academico: e.target.value })
-              }
-              className="focus:border-brand-500 rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white outline-none"
-            />
-            <input
-              placeholder="Semestre"
-              min="1"
-              max="10"
-              type="number"
-              onChange={(e) =>
-                setForm({ ...form, semestre: Number(e.target.value) })
-              }
-              className="focus:border-brand-500 rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white outline-none"
-            />
+            <div className="space-y-1.5">
+              <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
+                Programa
+              </label>
+              <input
+                value={form.programa_academico}
+                placeholder="Ingeniería..."
+                onChange={(e) =>
+                  setForm({ ...form, programa_academico: e.target.value })
+                }
+                className="focus:border-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white outline-none"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="ml-1 text-[10px] font-bold text-neutral-500 uppercase">
+                Semestre
+              </label>
+              <input
+                value={form.semestre}
+                placeholder="1-10"
+                min="1"
+                max="12"
+                type="number"
+                onChange={(e) =>
+                  setForm({ ...form, semestre: Number(e.target.value) })
+                }
+                className="focus:border-brand-500 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-white outline-none"
+              />
+            </div>
           </div>
 
           <button
-            disabled={loading || !apiReady || !passwordsMatch}
+            disabled={
+              loading || !apiReady || !passwordsMatch || passwordStats.score < 2
+            }
             type="submit"
-            className="group bg-brand-600 hover:bg-brand-500 shadow-brand-950/20 mt-4 flex w-full items-center justify-center gap-3 rounded-xl py-4 text-xs font-bold tracking-[0.2em] text-white uppercase shadow-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:grayscale"
+            className="group bg-brand-600 hover:bg-brand-500 mt-4 flex w-full items-center justify-center gap-3 rounded-xl py-4 text-xs font-bold tracking-[0.2em] text-white uppercase transition-all disabled:opacity-30"
           >
             {loading ? (
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
             ) : (
-              <svg
-                className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="3"
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
+              "Crear Perfil de Acceso"
             )}
-            {loading ? "Sincronizando Datos..." : "Crear Perfil de Acceso"}
           </button>
         </form>
 
@@ -295,9 +336,9 @@ export const AuthForm = ({
           <button
             type="button"
             onClick={() => setIsRegister(false)}
-            className="group hover:text-brand-400 text-[10px] font-bold tracking-widest text-neutral-500 uppercase transition-all"
+            className="hover:text-brand-400 text-[10px] font-bold tracking-widest text-neutral-500 uppercase"
           >
-            ¿Ya tienes acceso?
+            ¿Ya tienes acceso? Regresar al Login
           </button>
         </footer>
       </div>
